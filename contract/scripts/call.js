@@ -33,29 +33,6 @@ async function main() {
     let paths = ["0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"];
     let pathSlices = [2, 2];
     const swapTx = await greeter.multiSwap(symbols, amountIns, amountOutMins, pathSlices, paths);
-    // const swapTx = await greeter.aggSwap([{
-    // //     symbol: 2,
-    // //     amount: hre.ethers.utils.parseEther("0.1"),
-    // //     amountOutMin: 1,
-    // //     fromToken: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-    // //     toToken: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
-    // //     pairAddress: "0x58f876857a02d6762e0101bb5c46a8c1ed44dc16"
-    // // }, {
-    // //     symbol: 1,
-    // //     amount: hre.ethers.utils.parseEther("0.1"),
-    // //     amountOutMin: 1,
-    // //     fromToken: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-    // //     toToken: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
-    // //     pairAddress: "0x58f876857a02d6762e0101bb5c46a8c1ed44dc16"
-    // // }, {
-    //     symbol: 2,
-    //     amount: hre.ethers.utils.parseEther("0.1"),
-    //     amountOutMin: 1,
-    //     fromToken: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-    //     toToken: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
-    //     pairAddress: "0x58f876857a02d6762e0101bb5c46a8c1ed44dc16"
-    // }]);
-
     let result = await swapTx.wait();
     console.log(result);
 
