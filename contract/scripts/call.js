@@ -23,22 +23,22 @@ async function main() {
     const options = { value: hre.ethers.utils.parseEther("1.0") }
     await iwbnb.deposit(options);
     await iwbnb.transfer(greeter.address, hre.ethers.utils.parseEther("1.0"));
-    let balance = await iwbnb.balanceOf(greeter.address);
-    console.log("wbnb: ", greeter.address, balance);
 
     //datas
-    let symbols = [1,2];
-    let amountIns = [hre.ethers.utils.parseEther("1.0"), hre.ethers.utils.parseEther("250.0")];
-    let amountOutMins = [hre.ethers.utils.parseEther("250.0"), hre.ethers.utils.parseEther("0.5")];
-    let paths = ["0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"];
-    let pathSlices = [2, 2];
+    let symbols = [1, 2];
+    let amountIns = [hre.ethers.utils.parseEther("1.0"), hre.ethers.utils.parseEther("290.0")];
+    let amountOutMins = [hre.ethers.utils.parseEther("290"), hre.ethers.utils.parseEther("0.8")];
+    let paths = ["0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0x55d398326f99059ff775485246999027b3197955", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"];
+    let pathSlices = [2, 3];
     const swapTx = await greeter.multiSwap(symbols, amountIns, amountOutMins, pathSlices, paths);
-    let result = await swapTx.wait();
-    console.log(result);
+    await swapTx.wait();
 
     const busd = await hre.ethers.getContractAt(erc20abi, "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56");
-    let busdbalance = await busd.balanceOf(greeter.address);
-    console.log("busd: ", greeter.address, busdbalance);
+    let busdBalance = await busd.balanceOf(greeter.address);
+    console.log("busd: ", greeter.address, hre.ethers.utils.formatEther(busdBalance));
+    let wbnbBalance = await iwbnb.balanceOf(greeter.address);
+    console.log("wbnb: ", greeter.address, hre.ethers.utils.formatEther(wbnbBalance));
+
 
 
 }
