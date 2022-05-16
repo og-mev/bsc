@@ -1,0 +1,1 @@
+npx hardhat node --fork https://speedy-nodes-nyc.moralis.io/5c66f82a76ba601169cd112d/bsc/mainnet/archive
