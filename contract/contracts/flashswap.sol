@@ -51,9 +51,10 @@ contract Flashswap is Access {
             }
 
             if (symbol == 1) {
-                pancakeSwapV2(amountIn, amountOutMin, path, address(this));
+                uint[] memory amounts = pancakeSwapV2(amountIn, amountOutMin, path, address(this));
+                console.log("amounts[1]",amounts[1]);
             } else if (symbol == 2) {
-                // biSwapV2(amountIn, amountOutMin, path, address(this));
+                biSwapV2(amountIn, amountOutMin, path, address(this));
             }
         }
     }
@@ -69,12 +70,7 @@ contract Flashswap is Access {
             amounts[amounts.length - 1] >= amountOutMin,
             "PancakeRouter: INSUFFICIENT_OUTPUT_AMOUNT"
         );
-        TransferHelper.safeTransferFrom(
-            path[0],
-            address(this),
-            PancakeLibrary.pairFor(PANCAKE_FACTORY, path[0], path[1]),
-            amounts[0]
-        );
+        IERC20(path[0]).transfer(PancakeLibrary.pairFor(PANCAKE_FACTORY, path[0], path[1]),amounts[0]);
         _pancakeSwap(amounts, path, to);
     }
 
@@ -111,13 +107,8 @@ contract Flashswap is Access {
             amounts[amounts.length - 1] >= amountOutMin,
             "BiswapV2Router: INSUFFICIENT_OUTPUT_AMOUNT"
         );
-        TransferHelper.safeTransferFrom(
-            path[0],
-            address(this),
-            BiswapLibrary.pairFor(BISWAP_FACTORY, path[0], path[1]),
-            amounts[0]
-        );
-        _pancakeSwap(amounts, path, to);
+        IERC20(path[0]).transfer(BiswapLibrary.pairFor(BISWAP_FACTORY, path[0], path[1]),amounts[0]);
+        _biSwap(amounts, path, to);
     }
 
     // **** SWAP ****
@@ -129,15 +120,15 @@ contract Flashswap is Access {
     ) internal virtual {
         for (uint i; i < path.length - 1; i++) {
             (address input, address output) = (path[i], path[i + 1]);
-            (address token0, ) = PancakeLibrary.sortTokens(input, output);
+            (address token0, ) = BiswapLibrary.sortTokens(input, output);
             uint amountOut = amounts[i + 1];
             (uint amount0Out, uint amount1Out) = input == token0
                 ? (uint(0), amountOut)
                 : (amountOut, uint(0));
             address to = i < path.length - 2
-                ? PancakeLibrary.pairFor(BISWAP_FACTORY, output, path[i + 2])
+                ? BiswapLibrary.pairFor(BISWAP_FACTORY, output, path[i + 2])
                 : _to;
-            IPancakePair(PancakeLibrary.pairFor(BISWAP_FACTORY, input, output))
+            IBiswapPair(BiswapLibrary.pairFor(BISWAP_FACTORY, input, output))
                 .swap(amount0Out, amount1Out, to, new bytes(0));
         }
     }

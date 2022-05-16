@@ -27,7 +27,7 @@ async function main() {
     console.log("wbnb: ", greeter.address, balance);
 
     //datas
-    let symbols = [1, 2];
+    let symbols = [1,2];
     let amountIns = [hre.ethers.utils.parseEther("1.0"), hre.ethers.utils.parseEther("250.0")];
     let amountOutMins = [hre.ethers.utils.parseEther("250.0"), hre.ethers.utils.parseEther("0.5")];
     let paths = ["0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"];
