@@ -41,7 +41,7 @@ contract Flashswap is Access {
             for (uint j = 0; j < slice; j++) {
                 path[j] = paths[cursor + j];
             }
-            cursor = cursor + slice - 1;
+            cursor = cursor + slice;
 
             console.log("symbol", symbol);
             console.log("amountIn", amountIn);
