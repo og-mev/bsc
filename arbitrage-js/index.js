@@ -1,9 +1,10 @@
 const { ethers } = require("ethers");
-const { ERC20, SwapPair, SwapBridge } = require("./classes");
+const { ERC20, SwapPair, SwapBridge } = require("./common/classes");
 async function main() {
     console.log("hello world!");
     const bridge = new SwapBridge("BSC");
     await sleep(2000);
+    //demo params array
     let swapArr = [{
         symbol: "pancakeswap",
         amountIn: 10,

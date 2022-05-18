@@ -8,7 +8,6 @@ class ERC20 {
         this.decimals = decimals;
     }
 }
-
 class SwapPair {
     constructor(symbol, exchange, token0, token1, reverse0, reverse1) {
         this.symbol = symbol;
