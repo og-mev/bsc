@@ -23,7 +23,6 @@ class SwapPair {
         this.reverse0 = reverse0;
         this.reverse1 = reverse1;
     }
-
 }
 
 class SwapBridge {
@@ -118,7 +117,6 @@ class SwapBridge {
         // console.log(paths);
         // console.log(pathSlices);
         let wallet = this.#get_random_wallet();
-        console.log(wallet.nonce);
         let overrides = {
             nonce: wallet.nonce,
             gasLimit: 1500000,
@@ -128,27 +126,9 @@ class SwapBridge {
         wallet.nonce = wallet.nonce + 1;
         let unsignedTx = await this.contract.populateTransaction["multiSwap"](symbols, amountIns, amountOutMins, pathSlices, paths, overrides);
         let signedTx = await wallet.signTransaction(unsignedTx);
-        console.log(unsignedTx);
-        console.log(signedTx);
-        let tx = await this.provider.sendTransaction(signedTx);
-        console.log(tx);
-        // this.contract.multiSwap(symbols, amountIns, amountOutMins, pathSlices, paths);
-
-
-
-        //手续费= (gasPrice * gasLimit ) / 10^18 ether
-        // const swapTx = await this.contract.multiSwap(symbols, amountIns, amountOutMins, pathSlices, paths);
-        // console.log(swapTx);
-        // let tx = await swapTx.wait();
-        // console.log(tx);
-
-
-        // let symbols = [1, 2];
-        // let amountIns = [hre.ethers.utils.parseEther("1.0"), hre.ethers.utils.parseEther("290.0")];
-        // let amountOutMins = [hre.ethers.utils.parseEther("290"), hre.ethers.utils.parseEther("0.8")];
-        // let paths = ["0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0x55d398326f99059ff775485246999027b3197955", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c","0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"];
-        // let pathSlices = [2, 4];
-        // const swapTx = await greeter.multiSwap(symbols, amountIns, amountOutMins, pathSlices, paths);
+        let provider = new ethers.providers.JsonRpcBatchProvider();//TODO 需要调用本地的高速IPC
+        let tx = await provider.sendTransaction(signedTx);
+        console.log("tx hash:", tx.hash);
     }
 
 }
