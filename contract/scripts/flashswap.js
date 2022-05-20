@@ -21,15 +21,15 @@ async function main() {
     console.log("Greeter deployed to:", greeter.address);
     const iwbnb = await hre.ethers.getContractAt(wbnbabi, "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c");
     const options = { value: hre.ethers.utils.parseEther("1.0") }
-    await iwbnb.deposit(options);
-    await iwbnb.transfer(greeter.address, hre.ethers.utils.parseEther("1.0"));
+    await iwbnb.deposit(options); // 使用1BNB 兑换成一个WBNB
+    await iwbnb.transfer(greeter.address, hre.ethers.utils.parseEther("1.0")); //发送一个WBNB给部署后的合约地址
 
-    //datas
+    //使用swap 兑换1个WBNB为至少290BUSD，再用至少280BUSD兑换至少0.8个WBNB
     let symbols = [1, 2];
-    let amountIns = [hre.ethers.utils.parseEther("1.0"), hre.ethers.utils.parseEther("290.0")];
+    let amountIns = [hre.ethers.utils.parseEther("1.0"), hre.ethers.utils.parseEther("280.0")];
     let amountOutMins = [hre.ethers.utils.parseEther("290"), hre.ethers.utils.parseEther("0.8")];
-    let paths = ["0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0x55d398326f99059ff775485246999027b3197955", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c","0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"];
-    let pathSlices = [2, 4];
+    let paths = ["0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0x55d398326f99059ff775485246999027b3197955", "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"];
+    let pathSlices = [2, 3];
     const swapTx = await greeter.multiSwap(symbols, amountIns, amountOutMins, pathSlices, paths);
     await swapTx.wait();
 

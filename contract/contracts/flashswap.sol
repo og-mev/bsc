@@ -10,8 +10,9 @@ address constant PANCAKE_FACTORY = 0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73;
 
 contract Flashswap is Access {
     string public name = "flashswapv1";
+
     constructor() Access() {}
-    
+
     function withdraw(
         address token,
         uint amount,
