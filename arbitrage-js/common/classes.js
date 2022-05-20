@@ -26,7 +26,48 @@ class SwapPair {
 
 }
 
-class SwapHelper {
+class SwapBridge {
+
+    constructor(symbol, address = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", rpcUrl = null, swapAbi = null) {
+        this.symbol = symbol;
+        this.address = address;
+        this.#set_swap_abi(swapAbi);
+        this.#init_provider(rpcUrl);
+        this.#attach_swap_contract();
+
+    }
+    #set_swap_abi(abi) {
+        if (abi == null) {
+            this.bridgeAbi = this.#get_default_abi();
+        } else {
+            this.bridgeAbi = bridgeAbi;
+        }
+    }
+    #init_provider(url = "") {
+        let provider;
+        if (url) {
+            if (url.startsWith("ipc")) {
+                provider = new ethers.providers.IpcProvider(url);
+            } else if (url.startsWith("http")) {
+                provider = new ethers.providers.JsonRpcBatchProvider(url);
+            } else if (url.startsWith("ws")) {
+                provider = new ethers.providers.WebSocketProvider(url);
+            }
+        } else {
+            provider = new ethers.providers.JsonRpcBatchProvider();
+        }
+        this.provider = provider;
+    }
+
+    #get_default_abi() {
+        return require("../../contract/artifacts/contracts/flashswap.sol/Flashswap.json").abi;
+    }
+    async #attach_swap_contract() {
+        let contract = new ethers.Contract(this.address, this.bridgeAbi, this.provider);
+        let name = await contract.name()
+        console.log("contract name: " + name);
+        this.contract = contract;
+    }
     // 调用参数规范
     // let swapArr = [{
     //     symbol: "pancakeswap",
@@ -34,7 +75,7 @@ class SwapHelper {
     //     amountOutMin: 10,
     //     path: ["0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"]
     // }];
-    static convert2calldata(arr = []) {
+    async swap(privatekey, arr = []) {
         let symbols = [];
         let amountIns = [];
         let amountOutMins = [];
@@ -47,8 +88,18 @@ class SwapHelper {
             paths = paths.concat(element.path);
             pathSlices.push(element.path.length);
         });
-        let params = [symbols, amountIns, amountOutMins, pathSlices, paths];
-        return params;
+        // console.log(paths);
+        // console.log(pathSlices);
+        let wallet = new ethers.Wallet(privatekey);
+        
+        
+
+        //手续费= (gasPrice * gasLimit ) / 10^18 ether
+        // const swapTx = await this.contract.multiSwap(symbols, amountIns, amountOutMins, pathSlices, paths);
+        // console.log(swapTx);
+        // let tx = await swapTx.wait();
+        // console.log(tx);
+
 
         // let symbols = [1, 2];
         // let amountIns = [hre.ethers.utils.parseEther("1.0"), hre.ethers.utils.parseEther("290.0")];
@@ -60,4 +111,4 @@ class SwapHelper {
 
 }
 
-module.exports = { ERC20, SwapPair, SwapHelper };
+module.exports = { ERC20, SwapPair, SwapBridge };

@@ -1,7 +1,8 @@
 const { ethers } = require("ethers");
-const { ERC20, SwapPair, SwapHelper } = require("./common/classes");
+const { ERC20, SwapPair, SwapBridge } = require("./common/classes");
 async function main() {
     console.log("hello world!");
+    const bridge = new SwapBridge("BSC");
     await sleep(2000);
     //demo params array
     let swapArr = [{
@@ -9,14 +10,13 @@ async function main() {
         amountIn: 10,
         amountOutMin: 10,
         path: ["0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"]
-    }, {
+    },{
         symbol: "pancakeswap",
         amountIn: 10,
         amountOutMin: 10,
         path: ["0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"]
     }];
-    let params = SwapHelper.convert2calldata(swapArr);
-    console.log(params);
+    await bridge.swap(swapArr);
 }
 
 function sleep(ms) {
