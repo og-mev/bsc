@@ -34,6 +34,7 @@ class SwapBridge {
         this.#set_swap_abi(swapAbi);
         this.#init_provider(rpcUrl);
         this.#attach_swap_contract();
+        this.wallets = [];
 
     }
     #set_swap_abi(abi) {
@@ -68,6 +69,32 @@ class SwapBridge {
         console.log("contract name: " + name);
         this.contract = contract;
     }
+    async import_wallets(keys = []) {
+        await Promise.all(keys.map(async (key) => {
+            await this.#import_wallet(key);
+        }));
+    }
+    async #import_wallet(key) {
+        let wallet = new ethers.Wallet(key);
+        let address = await wallet.getAddress();
+        wallet = wallet.connect(this.provider);
+        let nonce = await wallet.getTransactionCount();
+        wallet.nonce = nonce;
+        this.wallets.push(wallet);
+        console.log("wallet nonce: " + nonce);
+        console.log("wallet address: " + address);
+
+    }
+    #get_random_int(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+    }
+    #get_random_wallet() {
+        let index = this.#get_random_int(0, this.wallets.length);
+        let wallet = this.wallets[index];
+        return wallet;
+    }
     // 调用参数规范
     // let swapArr = [{
     //     symbol: "pancakeswap",
@@ -75,7 +102,7 @@ class SwapBridge {
     //     amountOutMin: 10,
     //     path: ["0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"]
     // }];
-    async swap(privatekey, arr = []) {
+    async swap(arr = []) {
         let symbols = [];
         let amountIns = [];
         let amountOutMins = [];
@@ -90,9 +117,24 @@ class SwapBridge {
         });
         // console.log(paths);
         // console.log(pathSlices);
-        let wallet = new ethers.Wallet(privatekey);
-        
-        
+        let wallet = this.#get_random_wallet();
+        console.log(wallet.nonce);
+        let overrides = {
+            nonce: wallet.nonce,
+            gasLimit: 1500000,
+            gasPrice: ethers.utils.parseUnits("5.0", "gwei"),
+            value: 0
+        };
+        wallet.nonce = wallet.nonce + 1;
+        let unsignedTx = await this.contract.populateTransaction["multiSwap"](symbols, amountIns, amountOutMins, pathSlices, paths, overrides);
+        let signedTx = await wallet.signTransaction(unsignedTx);
+        console.log(unsignedTx);
+        console.log(signedTx);
+        let tx = await this.provider.sendTransaction(signedTx);
+        console.log(tx);
+        // this.contract.multiSwap(symbols, amountIns, amountOutMins, pathSlices, paths);
+
+
 
         //手续费= (gasPrice * gasLimit ) / 10^18 ether
         // const swapTx = await this.contract.multiSwap(symbols, amountIns, amountOutMins, pathSlices, paths);
