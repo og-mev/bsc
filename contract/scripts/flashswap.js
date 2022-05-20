@@ -38,9 +38,7 @@ async function main() {
     console.log("busd: ", greeter.address, hre.ethers.utils.formatEther(busdBalance));
     let wbnbBalance = await iwbnb.balanceOf(greeter.address);
     console.log("wbnb: ", greeter.address, hre.ethers.utils.formatEther(wbnbBalance));
-
-
-
+    require("./save-addr").save(greeter.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

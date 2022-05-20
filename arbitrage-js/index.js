@@ -1,8 +1,8 @@
 const { ethers } = require("ethers");
 const { ERC20, SwapPair, SwapBridge } = require("./common/classes");
 async function main() {
-    console.log("hello world!");
-    const bridge = new SwapBridge("BSC","0xEDF0E9D1d84706a389BD93B572b86D0739EfDF11");
+    let flashswapAddr = require("../contract/deploy.json").address;
+    const bridge = new SwapBridge("BSC", flashswapAddr);
     await sleep(2000);
     //demo params array
     let swapArr = [{

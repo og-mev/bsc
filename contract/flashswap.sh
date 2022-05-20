@@ -1,0 +1,1 @@
+npx hardhat run scripts/flashswap.js --network localhost

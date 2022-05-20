@@ -17,6 +17,7 @@ async function main() {
     const greeter = await Greeter.deploy();
     await greeter.deployed();
     console.log("Greeter deployed to:", greeter.address);
+    require("./save-addr").save(greeter.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
