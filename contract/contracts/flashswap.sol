@@ -9,8 +9,9 @@ address constant BISWAP_FACTORY = 0x858E3312ed3A876947EA49d572A7C42DE08af7EE;
 address constant PANCAKE_FACTORY = 0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73;
 
 contract Flashswap is Access {
+    string public name = "flashswapv1";
     constructor() Access() {}
-
+    
     function withdraw(
         address token,
         uint amount,
@@ -51,8 +52,13 @@ contract Flashswap is Access {
             }
 
             if (symbol == 1) {
-                uint[] memory amounts = pancakeSwapV2(amountIn, amountOutMin, path, address(this));
-                console.log("amounts[1]",amounts[1]);
+                uint[] memory amounts = pancakeSwapV2(
+                    amountIn,
+                    amountOutMin,
+                    path,
+                    address(this)
+                );
+                console.log("amounts[1]", amounts[1]);
             } else if (symbol == 2) {
                 biSwapV2(amountIn, amountOutMin, path, address(this));
             }
@@ -70,7 +76,10 @@ contract Flashswap is Access {
             amounts[amounts.length - 1] >= amountOutMin,
             "PancakeRouter: INSUFFICIENT_OUTPUT_AMOUNT"
         );
-        IERC20(path[0]).transfer(PancakeLibrary.pairFor(PANCAKE_FACTORY, path[0], path[1]),amounts[0]);
+        IERC20(path[0]).transfer(
+            PancakeLibrary.pairFor(PANCAKE_FACTORY, path[0], path[1]),
+            amounts[0]
+        );
         _pancakeSwap(amounts, path, to);
     }
 
@@ -107,7 +116,10 @@ contract Flashswap is Access {
             amounts[amounts.length - 1] >= amountOutMin,
             "BiswapV2Router: INSUFFICIENT_OUTPUT_AMOUNT"
         );
-        IERC20(path[0]).transfer(BiswapLibrary.pairFor(BISWAP_FACTORY, path[0], path[1]),amounts[0]);
+        IERC20(path[0]).transfer(
+            BiswapLibrary.pairFor(BISWAP_FACTORY, path[0], path[1]),
+            amounts[0]
+        );
         _biSwap(amounts, path, to);
     }
 
