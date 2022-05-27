@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "arbitrage-CSharp": {
+      "commandName": "Project",
+      "commandLineArgs": "-c ./myConfig.json"
+    }
+  }
+}
