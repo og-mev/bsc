@@ -154,7 +154,7 @@ namespace arbitrage_CSharp
             return contract;
         }
 
-        public async Task import_wallets(string[] keys)
+        public async Task import_wallets(params string[] keys)
         {
             foreach (var key in keys)
             {
@@ -180,7 +180,7 @@ namespace arbitrage_CSharp
             return wallets[idx];
         }
 
-        public void swap(List<(string symbol, decimal amountIn, decimal amountOutMin, string path)> arrs)//(string symbols, decimal amountIns, decimal amountOutMins,List<string> paths)
+        public void swap(List<(string symbol, decimal amountIn, decimal amountOutMin, string[] path)> arrs)//(string symbols, decimal amountIns, decimal amountOutMins,List<string> paths)
         {
             List<string> symbols = new List<string>();
             List<decimal> amountIns = new List<decimal>();

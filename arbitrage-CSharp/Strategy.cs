@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace arbitrage_CSharp
 {
@@ -39,15 +40,20 @@ namespace arbitrage_CSharp
 
         public async void StartAsync()
         {
-            var bridge = new SwapBridge("BSC");
+            var flashswapAddr = JObject.Parse(File.ReadAllText("../contract/deploy.json"))["address"].ToString();
+            var bridge = new SwapBridge("BSC", flashswapAddr);
             await Task.Delay(2000);
-//             Tuple swapArr = new
-//             {
-//                 symbol = "pancakeswap",
-//                 amountIn = 10,
-//                 amountOutMin= 10,
-//                 path=new[] { "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56" }
-//             };
+            var swapArr = new List<(string symbol, decimal amountIn, decimal amountOutMin, string[] path)> {
+            };
+            var swap = new
+            {
+                symbol = "pancakeswap",
+                amountIn = 2.0m,
+                amountOutMin = 1.0m,
+                path = new[] { "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56" }
+            };
+            swapArr.Add(swap);
+            await bridge.import_wallets("0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80");
             bridge.swap("pancakeswap",10,10,new List<string>() { "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56" });
         }
 
