@@ -12,7 +12,9 @@ using NLog;
 using NLog.Config;
 using NLog.LayoutRenderers;
 using System.Diagnostics;
-
+using Microsoft.Extensions.Configuration;
+//using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
+//using ConfigurationUserLevel = Microsoft.Extensions.Configuration.ConfigurationUserLevel;
 #endregion Imports
 namespace Tools
 {
@@ -114,9 +116,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             try
             {
                 LogFactory factory = null;
-                if (File.Exists(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath))
+                if (File.Exists(System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath))
                 {
-                    factory = LogManager.LoadConfiguration(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath);
+                    factory = LogManager.LoadConfiguration(System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath);
                 }
                 {
                     if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "nlog.config")))

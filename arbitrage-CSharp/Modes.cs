@@ -191,6 +191,7 @@ namespace arbitrage_CSharp
             foreach (var item in arrs)
             {
                 symbols.Add(item.symbol);
+                //symbols.Add(Constants.exchanges[symbol]);
                 amountIns.Add(item.amountIn);
                 amountOutMins.Add(item.amountOutMin);
                 paths.AddRange(paths);
@@ -216,5 +217,97 @@ namespace arbitrage_CSharp
         }
 
 
+    }
+    /// <summary>
+    /// 交易池中的交易对
+    /// </summary>
+    public class PoolPairs
+    {
+        public PoolToken poolTokenA;
+
+        public PoolToken poolTokenB;
+
+        public PoolPairs(PoolToken poolTokenA, PoolToken poolTokenB)
+        {
+            this.poolTokenA = poolTokenA;
+            this.poolTokenB = poolTokenB;
+        }
+    }
+
+    public class PoolToken
+    {
+        public PoolToken(string tokenSymbol, BigInteger tokenReverse ,string tokenAddress)
+        {
+            this.tokenSymbol = tokenSymbol;
+            this.tokenReverse = tokenReverse;
+            this.tokenAddress = tokenAddress;
+        }
+
+        /// <summary>
+        /// 币种名称
+        /// </summary>
+        public string tokenSymbol { get; set; }
+        /// <summary>
+        /// 池子中数量
+        /// </summary>
+        public BigInteger tokenReverse { get; set; }
+        /// <summary>
+        /// 币种地址
+        /// </summary>
+        public string tokenAddress { get; set; }
+    }
+
+    public class PathDataAll
+    {
+
+        public List<(string exchange, List<(string address,decimal reverse)> tokenAddresses)> paths;
+
+        public PathDataAll(string str)
+        //exchangeName:USDT&234-BNB&234,exchangeName:USDT&234-BNB&234
+        {
+            paths = new List<(string exchange, List<(string address, decimal reverse)> tokenAddresses)>();
+            //里面包含多个交易所
+            var strs = str.Split(',');
+            foreach (var item in strs)
+            {
+                (string exchange, List<(string address, decimal reverse)> tokenAddresses) path = ("", new List<(string address, decimal reverse)>());
+                var pathStr = item.Split(':');
+                path.exchange = pathStr[0];
+                var tokenAddresses = new List<string>( pathStr[1].Split('-'));
+                foreach (var p in tokenAddresses)
+                {
+                    var pp = p.Split('&');
+                    var tokenAddresse = (pp[0], decimal.Parse(pp[1]));
+                    path.tokenAddresses.Add(tokenAddresse);
+                }
+                paths.Add(path);   
+            }
+        }
+        /// <summary>
+        /// 返回利润
+        /// </summary>
+        /// <param name="maxBalance"></param>
+        /// <returns></returns>
+        public decimal GetProfit(decimal maxBalance)
+        {
+
+
+            return 0;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var path in paths)
+            {
+                sb.Append($"{path.exchange}:");
+                foreach (var item in path.tokenAddresses)
+                {
+                    sb.Append($"{item.address}-{item.reverse}->");
+                }
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
     }
 }

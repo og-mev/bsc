@@ -1,4 +1,7 @@
 {
   "symbol": "BSC",
-  "address": "sdaffffffadfaf4535"
+  "address": "sdaffffffadfaf4535",
+  "abiPath": "../../contract/artifacts/contracts/flashswap.sol/Flashswap.json",
+  "uniswapV3_factoryAbi": "./uniswapV3_factoryAbi.json",
+  "uniswapV3_pairAbi": "./uniswapV3_pairAbi.json"
 }

@@ -1,0 +1,2206 @@
+﻿{
+  "data": {
+    "pairs": [
+      {
+        "token0": {
+          "id": "0x4d44d6c288b7f32ff676a4b2dafd625992f8ffbd",
+          "symbol": "SLC",
+          "name": "Solution Life Coin",
+          "derivedETH": "0.0001547454790123682327778900270130313"
+        },
+        "token1": {
+          "id": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "symbol": "USDT",
+          "name": "Tether USD",
+          "derivedETH": "0.0005698482744512324822625348542281651"
+        },
+        "reserve0": "199.713907280830191521",
+        "reserve1": "40.523599",
+        "reserveUSD": "81.00572993301350481265154215168061",
+        "trackedReserveETH": "0.06180964849520752719762027449979837",
+        "token0Price": "4.928335888449350007658500420952246",
+        "token1Price": "0.2029082478618639106177128627761995",
+        "volumeUSD": "0",
+        "txCount": "118"
+      },
+      {
+        "token0": {
+          "id": "0x5152e1cb69a2ffa3997e89cbb4aba76a01d82141",
+          "symbol": "HORE",
+          "name": "HARDCORE",
+          "derivedETH": "0.01970649895178197064989517819706499"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000000007155",
+        "reserve1": "0.000000000000000141",
+        "reserveUSD": "0.00000000000009764515173366604499968328796917891",
+        "trackedReserveETH": "0.000000000000000282",
+        "token0Price": "50.74468085106382978723404255319149",
+        "token1Price": "0.01970649895178197064989517819706499",
+        "volumeUSD": "0",
+        "txCount": "37"
+      },
+      {
+        "token0": {
+          "id": "0x65f9a292f1aeed5d755aa2fd2fb17ab2e9431447",
+          "symbol": "SOMEE",
+          "name": "SoMee.Social",
+          "derivedETH": "0.000003667432971714407066783227102984056"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "2070686.446997178004094724",
+        "reserve1": "7.594103749799607587",
+        "reserveUSD": "26724.80572159613676283444529040141",
+        "trackedReserveETH": "15.188207499599215174",
+        "token0Price": "272670.2867407913752571675214757729",
+        "token1Price": "0.000003667432971714407066783227102984056",
+        "volumeUSD": "0",
+        "txCount": "4727"
+      },
+      {
+        "token0": {
+          "id": "0x59c8c614bcf74041143710ec09e5837d9383ba16",
+          "symbol": "DATCx",
+          "name": "DATO Curve x",
+          "derivedETH": "8871876353.243016355478361557388913"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000000020727",
+        "reserve1": "0.000183887381173668",
+        "reserveUSD": "0.1469467966437433309224845826987036",
+        "trackedReserveETH": "0.000367774762347336",
+        "token0Price": "0.0000000001127157277878947277330133840128107",
+        "token1Price": "8871876353.243016355478361557388913",
+        "volumeUSD": "0",
+        "txCount": "23"
+      },
+      {
+        "token0": {
+          "id": "0x36f4d7bfa207223e7324fb2bd2bac7aded147317",
+          "symbol": "Pizza Hut",
+          "name": "Pizza Hut Metaverse",
+          "derivedETH": "0.00000004006043998701721260900746173767286"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000024962282",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.000000000000006022268802878591526473130073907414",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "24962282",
+        "token1Price": "0.00000004006043998701721260900746173767286",
+        "volumeUSD": "1544884.082667389962767222314481371",
+        "txCount": "121"
+      },
+      {
+        "token0": {
+          "id": "0x2432c78801380ba2538f9bddf65c81d525e64db4",
+          "symbol": "WGRT",
+          "name": "WGRT",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000739214379",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.000000000000002585913122509125150946693304053912",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "739214379",
+        "token1Price": "0.00000000135278753824132525430758700109106",
+        "volumeUSD": "0",
+        "txCount": "6"
+      },
+      {
+        "token0": {
+          "id": "0x34c3f50e408abac32436d7f744f89379e5c2b972",
+          "symbol": "COCK",
+          "name": "CocktailToken",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "11595757.502067361946364787",
+        "reserve1": "0.071635636694727801",
+        "reserveUSD": "166.7676715972099533119137743028642",
+        "trackedReserveETH": "0.143271273389455602",
+        "token0Price": "161871353.9391320847537232155026898",
+        "token1Price": "0.000000006177745324697947969452317991291704",
+        "volumeUSD": "0",
+        "txCount": "434"
+      },
+      {
+        "token0": {
+          "id": "0x164a5597a5cdd38a118703bd90d7b7f46b1f1a60",
+          "symbol": "ER",
+          "name": "ElonRogan",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0",
+        "reserve1": "0",
+        "reserveUSD": "0",
+        "trackedReserveETH": "0",
+        "token0Price": "0",
+        "token1Price": "0",
+        "volumeUSD": "0",
+        "txCount": "0"
+      },
+      {
+        "token0": {
+          "id": "0x7680d48d12c8c52b3431aaa7ad477d8708d09de5",
+          "symbol": "CLTVTR       ",
+          "name": "Cultivator     ",
+          "derivedETH": "0.0000001156549231814217482837676811800873"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000008646411",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.00000000000000572956543157233162694496290914161",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "8646411",
+        "token1Price": "0.0000001156549231814217482837676811800873",
+        "volumeUSD": "0",
+        "txCount": "31"
+      },
+      {
+        "token0": {
+          "id": "0x171f9cfc136f2b2aaa148fcc6b660a2029bab048",
+          "symbol": "AUS",
+          "name": "Gold Standard",
+          "derivedETH": "0.01360312682037324030011926904739527"
+        },
+        "token1": {
+          "id": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "symbol": "USDT",
+          "name": "Tether USD",
+          "derivedETH": "0.0005698482744512324822625348542281651"
+        },
+        "reserve0": "0.0015",
+        "reserve1": "0.070645",
+        "reserveUSD": "0.1412064646600720766792386209674895",
+        "trackedReserveETH": "0.00004080938046111972090035780714218579",
+        "token0Price": "0.0212329251893269162714983367541935",
+        "token1Price": "47.09666666666666666666666666666667",
+        "volumeUSD": "0",
+        "txCount": "6"
+      },
+      {
+        "token0": {
+          "id": "0x1a5f9352af8af974bfc03399e3767df6370d82e4",
+          "symbol": "OWL",
+          "name": "OWL Token",
+          "derivedETH": "0.0001821341687693856471134548492033453"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "105.431351664287910609",
+        "reserve1": "0.017717790892426943",
+        "reserveUSD": "149.0116282362752860402290184457461",
+        "trackedReserveETH": "0.035435581784853886",
+        "token0Price": "5950.592390688620552997450302860342",
+        "token1Price": "0.0001680504955380210431168706540544974",
+        "volumeUSD": "0",
+        "txCount": "126"
+      },
+      {
+        "token0": {
+          "id": "0x1828e7a548bbd4a90ac74e0b411503512dd25268",
+          "symbol": "SAPI",
+          "name": "Systematic API",
+          "derivedETH": "0.002473288484368816778789077958053027"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000000020216",
+        "reserve1": "0.00000000000000005",
+        "reserveUSD": "0.00000000000006271267705147985607633671176654505",
+        "trackedReserveETH": "0.0000000000000001",
+        "token0Price": "404.32",
+        "token1Price": "0.002473288484368816778789077958053027",
+        "volumeUSD": "0",
+        "txCount": "9"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xf73278c88c627e52601eb877d600ad9db049c3f0",
+          "symbol": "KF",
+          "name": "Kingfisher",
+          "derivedETH": "0.0000000000001631833301951923680411724094646332"
+        },
+        "reserve0": "0.000000000000000013",
+        "reserve1": "0.000079665",
+        "reserveUSD": "0.00000000000005378221219471515790681170233729877",
+        "trackedReserveETH": "0.000000000000000026",
+        "token0Price": "0.0000000000001631833301951923680411724094646332",
+        "token1Price": "6128076923076.923076923076923076923",
+        "volumeUSD": "0",
+        "txCount": "120"
+      },
+      {
+        "token0": {
+          "id": "0xa06f6870b254a9ad05e27ac93168d9c8f6d40c81",
+          "symbol": "MEV",
+          "name": "I LOVE SMELL OF MEV SANDWICH IN THE MORNING",
+          "derivedETH": "0.0000007829584397830578755049103238550994"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000001277207",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.00000000000000368768879545420570143679077824654",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "1277207",
+        "token1Price": "0.0000007829584397830578755049103238550994",
+        "volumeUSD": "0",
+        "txCount": "5"
+      },
+      {
+        "token0": {
+          "id": "0xb8d9059ce0bfaa6d9e823383067a526434b2059b",
+          "symbol": "UNISTAKE",
+          "name": "UniStake",
+          "derivedETH": "0.0004815268779548240238136928734022063"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000000045688",
+        "reserve1": "0.000000000000000022",
+        "reserveUSD": "0.00000000000001545120068685391156727101592459504",
+        "trackedReserveETH": "0.00000000000000004400000000000000000000000000000001",
+        "token0Price": "2076.727272727272727272727272727273",
+        "token1Price": "0.0004815268779548240238136928734022063",
+        "volumeUSD": "3894.964770784926896059449692258391",
+        "txCount": "11"
+      },
+      {
+        "token0": {
+          "id": "0x1334c5629fe4ace62d4d5e9a0b9b44da7212e21e",
+          "symbol": "UGLYSHIB",
+          "name": "UglyShiba",
+          "derivedETH": "0.0000000002248623616921926184751831857532047"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.00000000444716489",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.000000000000005206853670385505352359197961042288",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "4447164890",
+        "token1Price": "0.0000000002248623616921926184751831857532047",
+        "volumeUSD": "0",
+        "txCount": "54"
+      },
+      {
+        "token0": {
+          "id": "0x181c514ef87e069d138a197dbd9f4e2a3d2fece9",
+          "symbol": "RFbtc",
+          "name": "RFbtc",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "192299.89572341",
+        "reserve1": "0.070843145402652943",
+        "reserveUSD": "317.200148513089682890031753919066",
+        "trackedReserveETH": "0.141686290805305886",
+        "token0Price": "2714446.043162402122406532889859185",
+        "token1Price": "0.0000003683992918256622620641455004443788",
+        "volumeUSD": "0",
+        "txCount": "2400"
+      },
+      {
+        "token0": {
+          "id": "0xbe579711fe8d7e566793a1553334c61f9cb56999",
+          "symbol": "CoFiX",
+          "name": "CoFiX.io",
+          "derivedETH": "0.3602633153800119688809096349491323"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000000001671",
+        "reserve1": "0.000000000000000602",
+        "reserveUSD": "0.0000000000004489928218244289616519497389759117",
+        "trackedReserveETH": "0.000000000000001204",
+        "token0Price": "2.77574750830564784053156146179402",
+        "token1Price": "0.3602633153800119688809096349491323",
+        "volumeUSD": "0",
+        "txCount": "70"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xc8807f0f5ba3fa45ffbdc66928d71c5289249014",
+          "symbol": "ISP",
+          "name": "Ispolink Token",
+          "derivedETH": "0.0000006562729139120430539563502379851147"
+        },
+        "reserve0": "37.008100981580664404",
+        "reserve1": "56391327.749571991898783245",
+        "reserveUSD": "129088.35360459427575077530820411",
+        "trackedReserveETH": "74.01620196316132880799999999999999",
+        "token0Price": "0.0000006562729139120430539563502379851147",
+        "token1Price": "1523756.319667376905323040361140524",
+        "volumeUSD": "16419755.64867974919241515542785206",
+        "txCount": "8680"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xd0652e2c3e7127c20625503a73fdacfe1e20e1cf",
+          "symbol": "BLACKPANTHER",
+          "name": "Black Panther",
+          "derivedETH": "0.000000000006851576688129437015023939243850091"
+        },
+        "reserve0": "0.000000000000000083",
+        "reserve1": "0.000012114",
+        "reserveUSD": "0.0000000000006613734184178443790534823803840813",
+        "trackedReserveETH": "0.000000000000000166",
+        "token0Price": "0.000000000006851576688129437015023939243850091",
+        "token1Price": "145951807228.9156626506024096385542",
+        "volumeUSD": "0",
+        "txCount": "29"
+      },
+      {
+        "token0": {
+          "id": "0x753481e27a753db9168cb855a6d16d7767f3679a",
+          "symbol": "WMS",
+          "name": "Watermelon Swap",
+          "derivedETH": "0.0000002326491432230002526569695401782744"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000004298318",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.000000000000005106189302915527573167642990129228",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "4298318",
+        "token1Price": "0.0000002326491432230002526569695401782744",
+        "volumeUSD": "0",
+        "txCount": "36"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xd0c3c546d7f6e8f7cd68d8e049e798ba8529677d",
+          "symbol": "FSHIBA",
+          "name": "Fluffy Shiba",
+          "derivedETH": "0.00000001750612841413925876566424299570611"
+        },
+        "reserve0": "0.000000000000000001",
+        "reserve1": "0.000000000057122853",
+        "reserveUSD": "0.00000000000000830264470570743792280085689492398",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "0.00000001750612841413925876566424299570611",
+        "token1Price": "57122853",
+        "volumeUSD": "0",
+        "txCount": "14"
+      },
+      {
+        "token0": {
+          "id": "0x38e40378428b34d8102f41f46d3d9fba4056cb76",
+          "symbol": "SNORLAX",
+          "name": " Snorlax Inu  ",
+          "derivedETH": "0.00000000007863763687485618090378117474715801"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000012716557106",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.000000000000009212756868263640488122983044944934",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "12716557106",
+        "token1Price": "0.00000000007863763687485618090378117474715801",
+        "volumeUSD": "0",
+        "txCount": "26"
+      },
+      {
+        "token0": {
+          "id": "0x8b97a9bba080f0be310c07bc308fbaeaa5f604d1",
+          "symbol": "SON",
+          "name": "SON TOKEN",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000000020074",
+        "reserve1": "0.00000000000000005",
+        "reserveUSD": "0.00000000000001909265594744087988925671570032313",
+        "trackedReserveETH": "0.0000000000000001",
+        "token0Price": "401.48",
+        "token1Price": "0.002490784098834313041745541496463087",
+        "volumeUSD": "0",
+        "txCount": "20"
+      },
+      {
+        "token0": {
+          "id": "0x48bcb97e63f91c8e064307e9ff35e86e4cab6f98",
+          "symbol": "5XCHAD",
+          "name": "5x Chadcoin",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000000056526",
+        "reserve1": "0.000000000000000018",
+        "reserveUSD": "0.000000000000006577719013861453720700084046618432",
+        "trackedReserveETH": "0.00000000000000003599999999999999999999999999999999",
+        "token0Price": "3140.333333333333333333333333333333",
+        "token1Price": "0.0003184375331705763719350387432332024",
+        "volumeUSD": "0",
+        "txCount": "9"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xd71ecff9342a5ced620049e616c5035f1db98620",
+          "symbol": "sEUR",
+          "name": "Synth sEUR",
+          "derivedETH": "0"
+        },
+        "reserve0": "0.000000000000030091",
+        "reserve1": "0.004045223246059365",
+        "reserveUSD": "0.00000000009976757732283580360917050868624993",
+        "trackedReserveETH": "0.00000000000006018200000000000000000000000000001",
+        "token0Price": "0.00000000000743865002489368284948103121763791",
+        "token1Price": "134432994784.4659532750656342427968",
+        "volumeUSD": "0",
+        "txCount": "24"
+      },
+      {
+        "token0": {
+          "id": "0x7ccc863ece2e15bc45ac0565d410da7a3340ad98",
+          "symbol": "DFY",
+          "name": "Dotify Token",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "150060018.549665370525066879",
+        "reserve1": "0.718586544787520405",
+        "reserveUSD": "1408.663686804850333547934059538306",
+        "trackedReserveETH": "1.43717308957504081",
+        "token0Price": "208826646.7528093945208950221298605",
+        "token1Price": "0.000000004788660908699606662053893978124639",
+        "volumeUSD": "647548.4300800782951047689519597857",
+        "txCount": "1291"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xebd04f04f260f5032ec09d7fd29df3bf31f7acd4",
+          "symbol": "SPHE",
+          "name": "SPHERA",
+          "derivedETH": "0.0000000009085845017299388347635854673015383"
+        },
+        "reserve0": "0.924626625880318528",
+        "reserve1": "1017656171.902377374684721409",
+        "reserveUSD": "6445.129190290503372238383595746928",
+        "trackedReserveETH": "1.849253251760637056",
+        "token0Price": "0.0000000009085845017299388347635854673015383",
+        "token1Price": "1100613094.429859485712627523883625",
+        "volumeUSD": "0",
+        "txCount": "67"
+      },
+      {
+        "token0": {
+          "id": "0xb6c7fa953f4e87e1c3f1d359492b6b6489c7b288",
+          "symbol": "NWC",
+          "name": "New World Crypto",
+          "derivedETH": "0.0000001002082427492572314526818180861649"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000009979219",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.000000000000000487033184371305221879297788796445",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "9979219",
+        "token1Price": "0.0000001002082427492572314526818180861649",
+        "volumeUSD": "0",
+        "txCount": "27"
+      },
+      {
+        "token0": {
+          "id": "0x8247e7ce52393c662220f26b17d2c18f2ba69220",
+          "symbol": "GRASSYBRUN",
+          "name": "GrassyBurn",
+          "derivedETH": "0.00000001300359712230215827338129496402878"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000278",
+        "reserve1": "0.000000000000003615",
+        "reserveUSD": "0.00000000002175049946917942400655546696271994",
+        "trackedReserveETH": "0.000000000000007230000000000000000000000000000001",
+        "token0Price": "76901798.0636237897648686030428769",
+        "token1Price": "0.00000001300359712230215827338129496402878",
+        "volumeUSD": "0",
+        "txCount": "41"
+      },
+      {
+        "token0": {
+          "id": "0x8c4189bb68e2620d618fa5fb5f334fd02423fcdf",
+          "symbol": "DOKI",
+          "name": "Doki Inu",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000049955922183",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.000000000000004770845240913412691991001115265231",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "49955922183",
+        "token1Price": "0.00000000002001764668334558327134385111226804",
+        "volumeUSD": "0",
+        "txCount": "18"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xeeb1329f03a0bb67fd53be758ad3c27fc2a4c8d2",
+          "symbol": "Breast",
+          "name": "Breast",
+          "derivedETH": "0"
+        },
+        "reserve0": "0.000000000000000707",
+        "reserve1": "0.000001428",
+        "reserveUSD": "0.000000000001818405090830926276984646509099078",
+        "trackedReserveETH": "0.000000000000001414",
+        "token0Price": "0.0000000004950980392156862745098039215686275",
+        "token1Price": "2019801980.19801980198019801980198",
+        "volumeUSD": "0",
+        "txCount": "22"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xf7e5c0f2cde163b94d460a8a734bf547160a7b67",
+          "symbol": "YFTT",
+          "name": "YFTT.Finance",
+          "derivedETH": "0"
+        },
+        "reserve0": "0.000053493728930158",
+        "reserve1": "7500000",
+        "reserveUSD": "0.01958723856595111683765031398225896",
+        "trackedReserveETH": "0.000106987457860316",
+        "token0Price": "0.000000000007132497190687733333333333333333333",
+        "token1Price": "140203349999.9987357527442460114",
+        "volumeUSD": "0",
+        "txCount": "2"
+      },
+      {
+        "token0": {
+          "id": "0x6f3afe811f3a6ea2666eb2f3b30d137d7ca7ebec",
+          "symbol": "SPACEAPE",
+          "name": "SPACEAPE",
+          "derivedETH": "0.000000000004007263164485630204746102310437668"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000015971",
+        "reserve1": "0.000000000000000064",
+        "reserveUSD": "0.0000000000003965840953305155491013792531683636",
+        "trackedReserveETH": "0.000000000000000128",
+        "token0Price": "249546875000",
+        "token1Price": "0.000000000004007263164485630204746102310437668",
+        "volumeUSD": "0",
+        "txCount": "2"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xd86ea1dc3333aff42263f740ee359ec0ed6d40c3",
+          "symbol": "BBB",
+          "name": "BLOCKCHAIN BILLIONAIRE BOYS",
+          "derivedETH": "0"
+        },
+        "reserve0": "0.000220880327625403",
+        "reserve1": "0.01",
+        "reserveUSD": "0.5692768418947053324443532797587281",
+        "trackedReserveETH": "0.0004417606552508059999999999999999999",
+        "token0Price": "0.0220880327625403",
+        "token1Price": "45.27338449515193590137384137190767",
+        "volumeUSD": "0",
+        "txCount": "1"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xcd4c6470aaa93cff64a1f55feb764f0ccf3eab13",
+          "symbol": "RRH",
+          "name": "RedRightHand",
+          "derivedETH": "0"
+        },
+        "reserve0": "0.739745489312108266",
+        "reserve1": "7011436.219571412",
+        "reserveUSD": "2598.013995716515748148319621172172",
+        "trackedReserveETH": "1.479490978624216532",
+        "token0Price": "0.0000001055055577981606002551069423180371",
+        "token1Price": "9478173.670367857627982956680923223",
+        "volumeUSD": "0",
+        "txCount": "126"
+      },
+      {
+        "token0": {
+          "id": "0x1c0dfff97c682cf469b2a6e1ceaf858a89b4d4d4",
+          "symbol": "MYSTERIOsoon",
+          "name": "MYSTERIOsoon",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0",
+        "reserve1": "0",
+        "reserveUSD": "0",
+        "trackedReserveETH": "0",
+        "token0Price": "0",
+        "token1Price": "0",
+        "volumeUSD": "0",
+        "txCount": "0"
+      },
+      {
+        "token0": {
+          "id": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "symbol": "USDT",
+          "name": "Tether USD",
+          "derivedETH": "0.0005698482744512324822625348542281651"
+        },
+        "token1": {
+          "id": "0xe5caef4af8780e59df925470b050fb23c43ca68c",
+          "symbol": "FRM",
+          "name": "Ferrum Network Token",
+          "derivedETH": "0.0000242751134398106961056524310737687"
+        },
+        "reserve0": "0.00053",
+        "reserve1": "0.002763",
+        "reserveUSD": "0.001069061708921517624090333426496769",
+        "trackedReserveETH": "0.0000004210665769949173578363659157637068",
+        "token0Price": "0.1918204849800941006152732537097358",
+        "token1Price": "5.213207547169811320754716981132075",
+        "volumeUSD": "0",
+        "txCount": "6462"
+      },
+      {
+        "token0": {
+          "id": "0x6ed3eb1cda5dd3e9c41dfbcd1ed52639ee373dd7",
+          "symbol": "BABYSHIBEVER",
+          "name": "Baby Shiba Forever",
+          "derivedETH": "0.000000003316107668352079494475833853760507"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000301558363",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.000000000000004007213420790171005495719958476456",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "301558363",
+        "token1Price": "0.000000003316107668352079494475833853760507",
+        "volumeUSD": "0",
+        "txCount": "5"
+      },
+      {
+        "token0": {
+          "id": "0x7f10275b9943643ea7c78ba3273cb0db0d5e7090",
+          "symbol": "BTC2",
+          "name": "BTC 2.0",
+          "derivedETH": "0.000000003259250279417569671918675908348722"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "832220211.93162051",
+        "reserve1": "2.712413958275083197",
+        "reserveUSD": "9327.213118249953900718033955792997",
+        "trackedReserveETH": "5.424827916550166394",
+        "token0Price": "306819027.1594302683162029698908558",
+        "token1Price": "0.000000003259250279417569671918675908348722",
+        "volumeUSD": "0",
+        "txCount": "294"
+      },
+      {
+        "token0": {
+          "id": "0xa9c6f8bfec48a6d64de01ff7ac46ee1299af9c04",
+          "symbol": "SHINJI",
+          "name": "Shinji Inu",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000001916305524",
+        "reserve1": "0.000000000062808922",
+        "reserveUSD": "0.0000001965169808279057463465003627724352",
+        "trackedReserveETH": "0.000000000125617844",
+        "token0Price": "30.51008460231175437145697230721457",
+        "token1Price": "0.03277604808490861502103565402027198",
+        "volumeUSD": "0",
+        "txCount": "14"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xde7a726771af7449a7ada5735b48e80c479b7e3d",
+          "symbol": "vMAX",
+          "name": "V4P0RM4X",
+          "derivedETH": "0.0000000000149722289302100941801497222893021"
+        },
+        "reserve0": "0.000000000000000124",
+        "reserve1": "0.000008282",
+        "reserveUSD": "0.0000000000006663928685349374769999824637518417",
+        "trackedReserveETH": "0.000000000000000248",
+        "token0Price": "0.0000000000149722289302100941801497222893021",
+        "token1Price": "66790322580.64516129032258064516129",
+        "volumeUSD": "0",
+        "txCount": "173"
+      },
+      {
+        "token0": {
+          "id": "0x1069aa1ae2af40463ae988e4550a35832aa72b3a",
+          "symbol": "WinWin🚀",
+          "name": "Auto Win🚀",
+          "derivedETH": "0.0000000001019256041374618086468550799905486"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000009811077486",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.00000000000000562651339141474868285612808024609",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "9811077486",
+        "token1Price": "0.0000000001019256041374618086468550799905486",
+        "volumeUSD": "0",
+        "txCount": "19"
+      },
+      {
+        "token0": {
+          "id": "0x843928c74a30eb83d8432e397a027e0768a52303",
+          "symbol": "ND",
+          "name": "NICE DAY WAGMI",
+          "derivedETH": "0.000000003620817843866171003717472118959108"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000538",
+        "reserve1": "0.000000000000001948",
+        "reserveUSD": "0.00000000001131992355533766887022926970608482",
+        "trackedReserveETH": "0.000000000000003895999999999999999999999999999999",
+        "token0Price": "276180698.1519507186858316221765914",
+        "token1Price": "0.000000003620817843866171003717472118959108",
+        "volumeUSD": "0",
+        "txCount": "181"
+      },
+      {
+        "token0": {
+          "id": "0x57ab1ec28d129707052df4df418d58a2d46d5f51",
+          "symbol": "sUSD",
+          "name": "Synth sUSD",
+          "derivedETH": "0.000566601266376279212389339172969753"
+        },
+        "token1": {
+          "id": "0xf5238462e7235c7b62811567e63dd17d12c2eaa0",
+          "symbol": "CGT",
+          "name": "CACHE Gold",
+          "derivedETH": "0.03214179811994248873748634988718736"
+        },
+        "reserve0": "0.000000000791867586",
+        "reserve1": "0",
+        "reserveUSD": "0.0000000007879909603171291134291841878267977",
+        "trackedReserveETH": "0.000000000004048346451540729320619934628322431",
+        "token0Price": "0",
+        "token1Price": "0",
+        "volumeUSD": "0",
+        "txCount": "2"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xec3e5d7e1f60e53e39c683d362edc206bf2b9878",
+          "symbol": "ECOON",
+          "name": "Ethereum Raccoon 🦝",
+          "derivedETH": "0.0000000001200407251700733272947118628838332"
+        },
+        "reserve0": "0.000000000000000001",
+        "reserve1": "0.000000008330506156",
+        "reserveUSD": "0.000000000000004664265270285098755833497915908478",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "0.0000000001200407251700733272947118628838332",
+        "token1Price": "8330506156",
+        "volumeUSD": "0",
+        "txCount": "4"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xdc460fb2afe2090cf83f69523e97744b93f2ab8f",
+          "symbol": "$PokemonInu",
+          "name": "PokemonInu",
+          "derivedETH": "0.000000000006841450535403493902124982296109438"
+        },
+        "reserve0": "0.03750454292711139",
+        "reserve1": "5481957770.947978281",
+        "reserveUSD": "239.4010386674605509620184911393701",
+        "trackedReserveETH": "0.07500908585422277999999999999999997",
+        "token0Price": "0.000000000006841450535403493902124982296109438",
+        "token1Price": "146167833096.9650386661097800063581",
+        "volumeUSD": "0",
+        "txCount": "193"
+      },
+      {
+        "token0": {
+          "id": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "symbol": "USDC",
+          "name": "USD//C",
+          "derivedETH": "0.0005704799642292971753121751257002743"
+        },
+        "token1": {
+          "id": "0xe336ac63cf871a66e7fbe74d1dc5c6774fbed281",
+          "symbol": "DGT",
+          "name": "DGT",
+          "derivedETH": "0"
+        },
+        "reserve0": "0.000001",
+        "reserve1": "0.000000140968211369",
+        "reserveUSD": "0.0000009991948502158373759798111774433184",
+        "trackedReserveETH": "0.00000000110176478891768812064172103849706",
+        "token0Price": "7.093797887400220887738431272455595",
+        "token1Price": "0.140968211369",
+        "volumeUSD": "0",
+        "txCount": "4"
+      },
+      {
+        "token0": {
+          "id": "0xa3863eb27f33def32a372455b088cab2aeed1426",
+          "symbol": "RDFI",
+          "name": "rawdefi.com",
+          "derivedETH": "0.001416219439475253428741800834824091"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000000026832",
+        "reserve1": "0.000000000000000038",
+        "reserveUSD": "0.00000000000002851125156755938682342597916374795",
+        "trackedReserveETH": "0.00000000000000007599999999999999999999999999999998",
+        "token0Price": "706.1052631578947368421052631578947",
+        "token1Price": "0.001416219439475253428741800834824091",
+        "volumeUSD": "0",
+        "txCount": "27"
+      },
+      {
+        "token0": {
+          "id": "0x7de54fb5a009eeb58839c723a7e7107fd0431788",
+          "symbol": "NEEK",
+          "name": "Neek.Finance",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "1",
+        "reserve1": "0.00015",
+        "reserveUSD": "0.05056639773788184329014616253867636",
+        "trackedReserveETH": "0.0002999999999999999999999999999999999",
+        "token0Price": "6666.666666666666666666666666666667",
+        "token1Price": "0.00015",
+        "volumeUSD": "0",
+        "txCount": "1"
+      },
+      {
+        "token0": {
+          "id": "0x52513434d198060d8fcf0b9b1e377803ba9d639e",
+          "symbol": "TATSUMAKI",
+          "name": "Tatsumaki Inu",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "2050.437478227",
+        "reserve1": "0.013433193722781148",
+        "reserveUSD": "38.53601667046088065659403612814152",
+        "trackedReserveETH": "0.026866387445562296",
+        "token0Price": "152639.6120343068087809882107002304",
+        "token1Price": "0.00000655137933510498625939140589543894",
+        "volumeUSD": "0",
+        "txCount": "146"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xf8013a3d67dde686c3dbd9e9cf395c4cd13fab96",
+          "symbol": "VIKGE",
+          "name": "VIKGE",
+          "derivedETH": "0"
+        },
+        "reserve0": "0.000000000000000001",
+        "reserve1": "4817579384.724971570568",
+        "reserveUSD": "0.000000000000002526612080328994188741099162897372",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "0.0000000000000000000000000002075731233761679902477501671093751",
+        "token1Price": "4817579384724971570568000000",
+        "volumeUSD": "0",
+        "txCount": "210"
+      },
+      {
+        "token0": {
+          "id": "0x044ac47a7270878a17b56c6baadd485fb6200e72",
+          "symbol": "XBAN",
+          "name": "xBAN",
+          "derivedETH": "0.01551060925673160441742151631716094"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000000008059",
+        "reserve1": "0.000000000000000125",
+        "reserveUSD": "0.0000000000001029574320073607548672237016715031",
+        "trackedReserveETH": "0.0000000000000002499999999999999999999999999999999",
+        "token0Price": "64.472",
+        "token1Price": "0.01551060925673160441742151631716094",
+        "volumeUSD": "0",
+        "txCount": "28"
+      },
+      {
+        "token0": {
+          "id": "0x47fdccfc71197b4187be2802a9de94803d1835f8",
+          "symbol": "LDOGE",
+          "name": "LiteDoge",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "9",
+        "reserve1": "0.000000000000121715",
+        "reserveUSD": "0.000000000423740516916029264911974119301012",
+        "trackedReserveETH": "0.00000000000024343",
+        "token0Price": "73943228032699.33861890481863369346",
+        "token1Price": "0.00000000000001352388888888888888888888888888889",
+        "volumeUSD": "0",
+        "txCount": "10"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xeb3f55e45ac9440eef3e31bbfecef8bf580b0836",
+          "symbol": "COON",
+          "name": "Racoon Token",
+          "derivedETH": "0"
+        },
+        "reserve0": "0.000000000000000001",
+        "reserve1": "3350036470.333526948",
+        "reserveUSD": "0.000000000000001678171407529225954726146137114058",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "0.0000000000000000000000000002985042129706847044810665947896824",
+        "token1Price": "3350036470333526948000000000",
+        "volumeUSD": "0",
+        "txCount": "39"
+      },
+      {
+        "token0": {
+          "id": "0x1f1f05c89e0cee93a5c82fac3c41196cb459bc5f",
+          "symbol": "PAYPAL",
+          "name": "PayPal",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000007546077051",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.000000000000002641608867441052674064373574092667",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "7546077051",
+        "token1Price": "0.0000000001325191875515610872868623721133536",
+        "volumeUSD": "0",
+        "txCount": "16"
+      },
+      {
+        "token0": {
+          "id": "0x3565544696a721cbc62be6919f517a937ee7dd57",
+          "symbol": "BOF",
+          "name": "Blue Origin Finance",
+          "derivedETH": "0.000000251210520696606773891690584001658"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000003980725",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.000000000000003807494539151339558355700563219902",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "3980725",
+        "token1Price": "0.000000251210520696606773891690584001658",
+        "volumeUSD": "0",
+        "txCount": "93"
+      },
+      {
+        "token0": {
+          "id": "0x24f006c841d7601c9aef0b052c8dcbc04079d412",
+          "symbol": "ANON",
+          "name": "EverAnon",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000000024902",
+        "reserve1": "0.000000000000000041",
+        "reserveUSD": "0.00000000000008215214113380796299098148420202272",
+        "trackedReserveETH": "0.00000000000000008199999999999999999999999999999998",
+        "token0Price": "607.3658536585365853658536585365854",
+        "token1Price": "0.001646454100072283350734880732471287",
+        "volumeUSD": "0",
+        "txCount": "31"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xc09af317dd14c1dfd658acfdfaaf66f520d9aa66",
+          "symbol": "$TR",
+          "name": "TraceRoute",
+          "derivedETH": "0.00000000000007729634560054966290204835315841457"
+        },
+        "reserve0": "0.000000000000000009",
+        "reserve1": "0.000116435",
+        "reserveUSD": "0.00000000000007032724187772373967871375206660748",
+        "trackedReserveETH": "0.000000000000000018",
+        "token0Price": "0.00000000000007729634560054966290204835315841457",
+        "token1Price": "12937222222222.22222222222222222222",
+        "volumeUSD": "0",
+        "txCount": "24"
+      },
+      {
+        "token0": {
+          "id": "0x657c9bd6dd653ba3de3eb95b88ddfdeea1f4ea76",
+          "symbol": "Ape DAO",
+          "name": "Bored Ape DAO",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "41031020763.9740948",
+        "reserve1": "0.00018391913",
+        "reserveUSD": "0.5324686773482034775123302769924983",
+        "trackedReserveETH": "0.0003678382600000000000000000000000001",
+        "token0Price": "223092729744720.3822680109458977976",
+        "token1Price": "0.000000000000004482441006232143138761777964584841",
+        "volumeUSD": "0",
+        "txCount": "55"
+      },
+      {
+        "token0": {
+          "id": "0x7b804b703dd32a549afe677c90a1f4516642617e",
+          "symbol": "JWT",
+          "name": "JW.Finance",
+          "derivedETH": "0.029856199387"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000001",
+        "reserve1": "0.000000029856199387",
+        "reserveUSD": "0.000022727272273905162859147715713882",
+        "trackedReserveETH": "0.00000005971239877400000000000000000000001",
+        "token0Price": "33.49388135568991603211120396045605",
+        "token1Price": "0.029856199387",
+        "volumeUSD": "107312.4029638497956126890599762717",
+        "txCount": "27"
+      },
+      {
+        "token0": {
+          "id": "0xa9b4ee66d3b2e75c0d3b291dea3a017d09a93b87",
+          "symbol": "TITTER",
+          "name": "TITTER",
+          "derivedETH": "0.000000007713494392876540836850241055547763"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "671105.237280766646041186",
+        "reserve1": "0.005176566484795274",
+        "reserveUSD": "33.64629606873992111064561251901489",
+        "trackedReserveETH": "0.010353132969590548",
+        "token0Price": "129642928.232826111218501921442108",
+        "token1Price": "0.000000007713494392876540836850241055547763",
+        "volumeUSD": "0",
+        "txCount": "17"
+      },
+      {
+        "token0": {
+          "id": "0x23d66c1d2c681f2cb0db28b73b7dbf8f3b2a1a4c",
+          "symbol": "YAHOO",
+          "name": "YAHOO INU",
+          "derivedETH": "0.000000002688480329315611871117167325286545"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000371957343",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.000000000000004279165463695830440641590974223978",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "371957343",
+        "token1Price": "0.000000002688480329315611871117167325286545",
+        "volumeUSD": "0",
+        "txCount": "37"
+      },
+      {
+        "token0": {
+          "id": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+          "symbol": "WBTC",
+          "name": "Wrapped BTC",
+          "derivedETH": "16.3841332189100209968136743687316"
+        },
+        "token1": {
+          "id": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "symbol": "USDC",
+          "name": "USD//C",
+          "derivedETH": "0.0005704799642292971753121751257002743"
+        },
+        "reserve0": "9.79341067",
+        "reserve1": "280105.486883",
+        "reserveUSD": "561060.4196829121739816910027202452",
+        "trackedReserveETH": "318.7259182403687577543574954521541",
+        "token0Price": "0.00003496329464652973925371186853145897",
+        "token1Price": "28601.4235817806259726673955560775",
+        "volumeUSD": "432643102.2821637321771690554460001",
+        "txCount": "74361"
+      },
+      {
+        "token0": {
+          "id": "0x60baae0f88c9980d5b2aa4fbbd3c41841f464c90",
+          "symbol": "THINKofMARS",
+          "name": "ThinkOfMars",
+          "derivedETH": "0.000000000000003380279785757867178666378216124949"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000591667",
+        "reserve1": "0.000000000000000002",
+        "reserveUSD": "0.00000000000001019608202185199807791316598332129",
+        "trackedReserveETH": "0.000000000000000003999999999999999999999999999999999",
+        "token0Price": "295833500000000",
+        "token1Price": "0.000000000000003380279785757867178666378216124949",
+        "volumeUSD": "0",
+        "txCount": "39"
+      },
+      {
+        "token0": {
+          "id": "0x6f022e991ea21d26f85f6716c088e2864101dfec",
+          "symbol": "STEEL",
+          "name": "Hands Of Steel",
+          "derivedETH": "0.000003770454967587360360880643653426211"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "2580022",
+        "reserve1": "9.727856766384676653",
+        "reserveUSD": "40597.00362099954849323131469917106",
+        "trackedReserveETH": "19.455713532769353306",
+        "token0Price": "265219.9823619376742040622661952316",
+        "token1Price": "0.000003770454967587360360880643653426211",
+        "volumeUSD": "0",
+        "txCount": "3562"
+      },
+      {
+        "token0": {
+          "id": "0x697deba076ff3e37e372ef515c6e494770da4b46",
+          "symbol": "Goblin",
+          "name": "Goblin Mode",
+          "derivedETH": "0.000000000000000006032845344107608795524795446608981"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "1000000977057.102410503176758388",
+        "reserve1": "0.000006032851238542",
+        "reserveUSD": "0.03975792903182021439425757001800391",
+        "trackedReserveETH": "0.000012065702477084",
+        "token0Price": "165759263326171360.4648296618608023",
+        "token1Price": "0.000000000000000006032845344107608795524795446608981",
+        "volumeUSD": "0",
+        "txCount": "20"
+      },
+      {
+        "token0": {
+          "id": "0x943c8316a95d239ebf25536d0f0becf0f8a04e53",
+          "symbol": "$AMY",
+          "name": "Amy Rose",
+          "derivedETH": "0.000000000004915310528063766190634340750581202"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000015055",
+        "reserve1": "0.000000000000000074",
+        "reserveUSD": "0.0000000000006222856021336807018866554090239973",
+        "trackedReserveETH": "0.000000000000000148",
+        "token0Price": "203445945945.9459459459459459459459",
+        "token1Price": "0.000000000004915310528063766190634340750581202",
+        "volumeUSD": "0",
+        "txCount": "183"
+      },
+      {
+        "token0": {
+          "id": "0x8733fdeca1311f92db96f7f5aeb00dcaf7e61510",
+          "symbol": "MST",
+          "name": "Master Token",
+          "derivedETH": "0.0002478698683191324554608830364058869"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.00000000000006455",
+        "reserve1": "0.000000000000000016",
+        "reserveUSD": "0.0000000000000112169150324297000145036874247389",
+        "trackedReserveETH": "0.00000000000000003199999999999999999999999999999999",
+        "token0Price": "4034.375",
+        "token1Price": "0.0002478698683191324554608830364058869",
+        "volumeUSD": "0",
+        "txCount": "5"
+      },
+      {
+        "token0": {
+          "id": "0x6e08e6d8d38ada3e37148379184c6aa98c895a42",
+          "symbol": "CDT",
+          "name": "CoolDogToken",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "1218.930708631",
+        "reserve1": "0.000000000000041143",
+        "reserveUSD": "0.0000000001245818600826431868025966318268284",
+        "trackedReserveETH": "0.00000000000008228600000000000000000000000000003",
+        "token0Price": "29626685186568796.63612279124030819",
+        "token1Price": "0.00000000000000003375335423800122482091182753105654",
+        "volumeUSD": "0",
+        "txCount": "22"
+      },
+      {
+        "token0": {
+          "id": "0xbd0b21d6308f9572612ebda7c6178f023ff88a18",
+          "symbol": "ONYX",
+          "name": "ProjectOnyx",
+          "derivedETH": "0.00003372335"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.00000002",
+        "reserve1": "0.000000000000674467",
+        "reserveUSD": "0.000000002304002754619463507352879297575863",
+        "trackedReserveETH": "0.000000000001348934",
+        "token0Price": "29653.04455221678747811234648989498",
+        "token1Price": "0.00003372335",
+        "volumeUSD": "0",
+        "txCount": "110"
+      },
+      {
+        "token0": {
+          "id": "0x5885135585f89f92e5f2d40474447cb27d21c116",
+          "symbol": "SHABUCKS",
+          "name": "SHABUCKS",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "280",
+        "reserve1": "0.035798170874206366",
+        "reserveUSD": "110.21147709976466443702018680835",
+        "trackedReserveETH": "0.07159634174841273200000000000000003",
+        "token0Price": "7821.628679965551744291342390912841",
+        "token1Price": "0.0001278506102650227357142857142857143",
+        "volumeUSD": "0",
+        "txCount": "4"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xeca01b831a723443cfc84db0553789e554d8cf21",
+          "symbol": "Daikoku",
+          "name": "Daikoku",
+          "derivedETH": "0"
+        },
+        "reserve0": "0.000000000000000001",
+        "reserve1": "0.000000000003654784",
+        "reserveUSD": "0.000000000000002147981505716802686373575833894434",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "0.0000002736139810177564529121283227681855",
+        "token1Price": "3654784",
+        "volumeUSD": "0",
+        "txCount": "4"
+      },
+      {
+        "token0": {
+          "id": "0x2d80f5f5328fdcb6eceb7cacf5dd8aedaec94e20",
+          "symbol": "AGA",
+          "name": "AGA Token",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xf2032813aa3c8feef7973e44a92e68ab11ee8021",
+          "symbol": "AGAc",
+          "name": "AGA Carbon Credit",
+          "derivedETH": "0"
+        },
+        "reserve0": "0.0001",
+        "reserve1": "0.000000019689436718",
+        "reserveUSD": "0.00007411978016498851175833481070349084",
+        "trackedReserveETH": "0",
+        "token0Price": "5078.865456246415713231883224055166",
+        "token1Price": "0.00019689436718",
+        "volumeUSD": "0",
+        "txCount": "9"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xc1a77f16bfb22c9c48dd388f556ba792f3744407",
+          "symbol": "PEL",
+          "name": "Pel Inu",
+          "derivedETH": "0"
+        },
+        "reserve0": "0.000000000000000001",
+        "reserve1": "0.000000001509230857",
+        "reserveUSD": "0.000000000000002372902908075267583020431167534368",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "0.0000000006625891561664512137655028080306471",
+        "token1Price": "1509230857",
+        "volumeUSD": "0",
+        "txCount": "2"
+      },
+      {
+        "token0": {
+          "id": "0x87c3e478b87bad07cb03ce40b7e065f13ace91c5",
+          "symbol": "BLASTOISETAMA",
+          "name": "Sacred Blastoisetama",
+          "derivedETH": "0.00000000000000406589885102404671113459715294791"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "111118683909.74858540728751326",
+        "reserve1": "0.000451797329235951",
+        "reserveUSD": "2.77418277839032705911371266945613",
+        "trackedReserveETH": "0.0009035946584719019999999999999999999",
+        "token0Price": "245948076093466.4377021095975043924",
+        "token1Price": "0.00000000000000406589885102404671113459715294791",
+        "volumeUSD": "0",
+        "txCount": "11"
+      },
+      {
+        "token0": {
+          "id": "0x5a43ef4d404b72ef39bf8c1ef2a1b8a01fd6b243",
+          "symbol": "Rentfuse",
+          "name": "Rentfuse  INU",
+          "derivedETH": "0.000000002511561975554464979533281461206665"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.0000000003981586",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.00000000000000424419867749724613853378399670924",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "398158600",
+        "token1Price": "0.000000002511561975554464979533281461206665",
+        "volumeUSD": "0",
+        "txCount": "30"
+      },
+      {
+        "token0": {
+          "id": "0x9b18373f80f09c5c56101401ff63c71009eed144",
+          "symbol": "MND",
+          "name": "MEME NFT DEFI",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000014401363",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.00000000000000213246082556299762596356046539386",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "14401363",
+        "token1Price": "0.00000006943787195698073855925998115595031",
+        "volumeUSD": "0",
+        "txCount": "144"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xf461832914a53144950154b3109d017bae06c859",
+          "symbol": "ZNC",
+          "name": "Zinance",
+          "derivedETH": "0"
+        },
+        "reserve0": "0.000000000000000003",
+        "reserve1": "0.00000000000039475",
+        "reserveUSD": "0.000000000000003670157125308652483493809683389793",
+        "trackedReserveETH": "0.000000000000000006",
+        "token0Price": "0.000007599746675110829639012032932235592",
+        "token1Price": "131583.3333333333333333333333333333",
+        "volumeUSD": "0",
+        "txCount": "446"
+      },
+      {
+        "token0": {
+          "id": "0x2b6cdfde3791b8306e0c8dbb1dfb57b5d3702fed",
+          "symbol": "NFT",
+          "name": "NFT MOON",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000001603869",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.000000000000001934506515032551895325652361564135",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "1603869",
+        "token1Price": "0.0000006234923176394082060317893793071629",
+        "volumeUSD": "0",
+        "txCount": "5"
+      },
+      {
+        "token0": {
+          "id": "0xb4a81261b16b92af0b9f7c4a83f1e885132d81e4",
+          "symbol": "xSHIB",
+          "name": "xShib Staked Shiba Inu",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "2830.486145147340731072",
+        "reserve1": "0.000000000000019141",
+        "reserveUSD": "0.00000000005851469764735103354983298613432575",
+        "trackedReserveETH": "0.000000000000038282",
+        "token0Price": "147875562674225000.3172248053915678",
+        "token1Price": "0.000000000000000006762442569385414450772497580654813",
+        "volumeUSD": "0",
+        "txCount": "20"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xc87a8672dbc7d3e238d6a9217391239212c16ec2",
+          "symbol": "STEW",
+          "name": "Stewie griffin",
+          "derivedETH": "0.000000000005084598122840474617302514473939188"
+        },
+        "reserve0": "0.025195258710978439",
+        "reserve1": "4955211425.225340468654384767",
+        "reserveUSD": "143.4448122630271310899883361442365",
+        "trackedReserveETH": "0.050390517421956878",
+        "token0Price": "0.000000000005084598122840474617302514473939188",
+        "token1Price": "196672377214.6139849883246177686107",
+        "volumeUSD": "0",
+        "txCount": "136"
+      },
+      {
+        "token0": {
+          "id": "0x432c61cabe7e74ea16fb47c692b05a7aab596246",
+          "symbol": "BULL",
+          "name": "BullBank",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "11172.539587405298128766",
+        "reserve1": "0.032294015199492242",
+        "reserveUSD": "58.23640092583555615217607226675954",
+        "trackedReserveETH": "0.06458803039898448400000000000000001",
+        "token0Price": "345963.1612355518954356794059885941",
+        "token1Price": "0.00000289048116114056919422185372394454",
+        "volumeUSD": "0",
+        "txCount": "128"
+      },
+      {
+        "token0": {
+          "id": "0x27002ec8c45d8648e2f09f4a4eef5a3ea70a396c",
+          "symbol": "ECATE",
+          "name": "Ethereum Cate",
+          "derivedETH": "0.0000000004032583237068783282719077256303049"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000002479800022",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.00000000000000492529679319349479045468063952786",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "2479800022",
+        "token1Price": "0.0000000004032583237068783282719077256303049",
+        "volumeUSD": "0",
+        "txCount": "5"
+      },
+      {
+        "token0": {
+          "id": "0x0973bddebaab0181873b5e7a30a0f26d08388a62",
+          "symbol": "ELONLIFE",
+          "name": "ElonLife",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0",
+        "reserve1": "0",
+        "reserveUSD": "0",
+        "trackedReserveETH": "0",
+        "token0Price": "0",
+        "token1Price": "0",
+        "volumeUSD": "0",
+        "txCount": "0"
+      },
+      {
+        "token0": {
+          "id": "0x04b5e13000c6e9a3255dc057091f3e3eeee7b0f0",
+          "symbol": "iFUND",
+          "name": "UNIFUND",
+          "derivedETH": "0.000001168709588964616910909728968885981"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "2290721.494087224678967092",
+        "reserve1": "2.677188175787093482",
+        "reserveUSD": "12368.25259935112752945843947444393",
+        "trackedReserveETH": "5.354376351574186963999999999999999",
+        "token0Price": "855644.5582738136904556602835585079",
+        "token1Price": "0.000001168709588964616910909728968885981",
+        "volumeUSD": "19297874.12287175031185063233445222",
+        "txCount": "7217"
+      },
+      {
+        "token0": {
+          "id": "0xbb90ddac798456195e048fcd563c92eeb66a71c9",
+          "symbol": "DSC",
+          "name": "DSC",
+          "derivedETH": "0.0004641546056795645385881260812692519"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000000047398",
+        "reserve1": "0.000000000000000022",
+        "reserveUSD": "0.00000000000002033074213737066202952034560664695",
+        "trackedReserveETH": "0.00000000000000004400000000000000000000000000000002",
+        "token0Price": "2154.454545454545454545454545454545",
+        "token1Price": "0.0004641546056795645385881260812692519",
+        "volumeUSD": "0",
+        "txCount": "47"
+      },
+      {
+        "token0": {
+          "id": "0x2749b77839af57986e7cd042e0247d62a8156401",
+          "symbol": "XBTC",
+          "name": "xBTC Token @ XBTC.Fi",
+          "derivedETH": "0.002012432359912347390546039980322884"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000000022361",
+        "reserve1": "0.000000000000000045",
+        "reserveUSD": "0.00000000000003058133196794259211561016979314508",
+        "trackedReserveETH": "0.00000000000000009",
+        "token0Price": "496.9111111111111111111111111111111",
+        "token1Price": "0.002012432359912347390546039980322884",
+        "volumeUSD": "2032.103306994844617629191351765367",
+        "txCount": "6"
+      },
+      {
+        "token0": {
+          "id": "0x68d57c9a1c35f63e2c83ee8e49a64e9d70528d25",
+          "symbol": "SRN",
+          "name": "SIRIN",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "26768.009887999884107732",
+        "reserve1": "0.036643320523124592",
+        "reserveUSD": "63.9673308602340587081643542600741",
+        "trackedReserveETH": "0.07328664104624918400000000000000001",
+        "token0Price": "730501.7532760801278349756454115108",
+        "token1Price": "0.000001368922108010420899598250053838507",
+        "volumeUSD": "0",
+        "txCount": "776"
+      },
+      {
+        "token0": {
+          "id": "0x4731ba414838651b4093ff1faba8078a737f81c6",
+          "symbol": "yENOKI",
+          "name": "tg.me/whyENOKIwhy",
+          "derivedETH": "0.000000000227299414"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "1",
+        "reserve1": "0.000000000227299414",
+        "reserveUSD": "0.0000001798578191161471004564274491686035",
+        "trackedReserveETH": "0.0000000004545988280000000000000000000000001",
+        "token0Price": "4399483405.61933872825558626385196",
+        "token1Price": "0.000000000227299414",
+        "volumeUSD": "0",
+        "txCount": "20"
+      },
+      {
+        "token0": {
+          "id": "0x23370a0d7c13566d66d9c514a3f5ea27f23422c6",
+          "symbol": "LION",
+          "name": "Lazy Lions",
+          "derivedETH": "0.0000002586875693121006025609551986759335"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000003865667",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.000000000000005939392739165250318139252618263024",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "3865667",
+        "token1Price": "0.0000002586875693121006025609551986759335",
+        "volumeUSD": "0",
+        "txCount": "80"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xe306ec4e455cde6d89acccc01d209435beb10af3",
+          "symbol": "GFG",
+          "name": "GoodFuckingGame",
+          "derivedETH": "0.1195869066232117542572734904238436"
+        },
+        "reserve0": "0.032676778946755693",
+        "reserve1": "0.273247129384423326",
+        "reserveUSD": "25.32634035064197095708679691586766",
+        "trackedReserveETH": "0.06535355789351138599999999999999998",
+        "token0Price": "0.1195869066232117542572734904238436",
+        "token1Price": "8.362119468068091476473068519924052",
+        "volumeUSD": "0",
+        "txCount": "589"
+      },
+      {
+        "token0": {
+          "id": "0xa8a4fc5926bb22fd8e85e35268f316911ac09419",
+          "symbol": "MBULL",
+          "name": "https://megabull.net/",
+          "derivedETH": "0.000000000006064847212502915791929087940284581"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000012861",
+        "reserve1": "0.000000000000000078",
+        "reserveUSD": "0.0000000000003349501234895715583539668998506057",
+        "trackedReserveETH": "0.000000000000000156",
+        "token0Price": "164884615384.6153846153846153846154",
+        "token1Price": "0.000000000006064847212502915791929087940284581",
+        "volumeUSD": "0",
+        "txCount": "5"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xca3fe04c7ee111f0bbb02c328c699226acf9fd33",
+          "symbol": "SEEN",
+          "name": "seen.haus",
+          "derivedETH": "0.0004631781325364573107638562366091696"
+        },
+        "reserve0": "5.030794674309680189",
+        "reserve1": "10861.468452234627588523",
+        "reserveUSD": "18061.56535714274194151432394210762",
+        "trackedReserveETH": "10.061589348619360378",
+        "token0Price": "0.0004631781325364573107638562366091696",
+        "token1Price": "2158.9965711977751692881197141053",
+        "volumeUSD": "0",
+        "txCount": "8919"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xe8bbae53ad91a97ef1fd9846b2d931ab761b643e",
+          "symbol": "RCX",
+          "name": "RecycleSWAP",
+          "derivedETH": "0"
+        },
+        "reserve0": "0.851892655725480949",
+        "reserve1": "8046445161.983599251738773615",
+        "reserveUSD": "1660.953187174524789022669288839273",
+        "trackedReserveETH": "1.703785311450961898",
+        "token0Price": "0.000000000105871927115137819890923191649606",
+        "token1Price": "9445374493.962692987649159078293312",
+        "volumeUSD": "0",
+        "txCount": "22"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xecf0ec511cef4484e599da61ae4ce1029858ac54",
+          "symbol": "FLM",
+          "name": "Flamingo",
+          "derivedETH": "0.005031535681383317978881723478137623"
+        },
+        "reserve0": "0.000000000000000071",
+        "reserve1": "0.000000000000014111",
+        "reserveUSD": "0.00000000000005141063894639925031975420294052562",
+        "trackedReserveETH": "0.000000000000000142",
+        "token0Price": "0.005031535681383317978881723478137623",
+        "token1Price": "198.7464788732394366197183098591549",
+        "volumeUSD": "0",
+        "txCount": "7"
+      },
+      {
+        "token0": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "token1": {
+          "id": "0xcacb14e28d4ce1f468b5f860ad505062cf6b756b",
+          "symbol": "Friday",
+          "name": "Friday",
+          "derivedETH": "0.00000000000344632768361581920903954802259887"
+        },
+        "reserve0": "0.000000000000000061",
+        "reserve1": "0.0000177",
+        "reserveUSD": "0.0000000000005698116788348959029760092772045282",
+        "trackedReserveETH": "0.000000000000000122",
+        "token0Price": "0.00000000000344632768361581920903954802259887",
+        "token1Price": "290163934426.2295081967213114754098",
+        "volumeUSD": "0",
+        "txCount": "27"
+      },
+      {
+        "token0": {
+          "id": "0x330c8ea75d043af51798e6cbc8c19b821a601d3a",
+          "symbol": "ESQ",
+          "name": "ESQToken",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000001983331",
+        "reserve1": "0.000000000000000001",
+        "reserveUSD": "0.000000000000003104749743702517684151077093858082",
+        "trackedReserveETH": "0.000000000000000002",
+        "token0Price": "1983331",
+        "token1Price": "0.0000005042022738514146151096312214148823",
+        "volumeUSD": "0",
+        "txCount": "3"
+      },
+      {
+        "token0": {
+          "id": "0x045eb7e34e94b28c7a3641bc5e1a1f61f225af9f",
+          "symbol": "ZPAE",
+          "name": "ZPAY",
+          "derivedETH": "0"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000000024283",
+        "reserve1": "0.001678853316675304",
+        "reserveUSD": "4.774268607678803811632170716547106",
+        "trackedReserveETH": "0.003357706633350608",
+        "token0Price": "0.00000000001446403909073398556867786334320202",
+        "token1Price": "69136981290.42144710291150187373883",
+        "volumeUSD": "0",
+        "txCount": "421"
+      },
+      {
+        "token0": {
+          "id": "0x0719766e4b439ce49f20c00600c86d50ce0c607e",
+          "symbol": "e.xper",
+          "name": "ExpertChain",
+          "derivedETH": "0.002790501763807718633180645500974043"
+        },
+        "token1": {
+          "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "symbol": "WETH",
+          "name": "Wrapped Ether",
+          "derivedETH": "1"
+        },
+        "reserve0": "0.000000000000018993",
+        "reserve1": "0.000000000000000053",
+        "reserveUSD": "0.00000000000003864318680803332772250385886349685",
+        "trackedReserveETH": "0.000000000000000106",
+        "token0Price": "358.3584905660377358490566037735849",
+        "token1Price": "0.002790501763807718633180645500974043",
+        "volumeUSD": "0",
+        "txCount": "11"
+      }
+    ]
+  }
+}
