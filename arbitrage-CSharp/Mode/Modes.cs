@@ -232,11 +232,27 @@ namespace arbitrage_CSharp
             this.poolTokenA = poolTokenA;
             this.poolTokenB = poolTokenB;
         }
+
+        public PoolToken GetToken(string addr, string poolAddress="")
+        {
+            if (poolTokenA.tokenAddress == addr )
+            {
+                return poolTokenA;
+            }
+            else if(poolTokenB.tokenAddress == addr)
+            {
+                return poolTokenB;
+            }
+            else
+            {
+                throw new Exception($"没有找到 token{addr}      pool address: {poolAddress}");
+            }
+        }
     }
 
     public class PoolToken
     {
-        public PoolToken(string tokenSymbol, BigInteger tokenReverse ,string tokenAddress)
+        public PoolToken(string tokenSymbol, decimal tokenReverse ,string tokenAddress)
         {
             this.tokenSymbol = tokenSymbol;
             this.tokenReverse = tokenReverse;
@@ -250,7 +266,7 @@ namespace arbitrage_CSharp
         /// <summary>
         /// 池子中数量
         /// </summary>
-        public BigInteger tokenReverse { get; set; }
+        public decimal tokenReverse { get; set; }
         /// <summary>
         /// 币种地址
         /// </summary>
@@ -290,8 +306,6 @@ namespace arbitrage_CSharp
         /// <returns></returns>
         public decimal GetProfit(decimal maxBalance)
         {
-
-
             return 0;
         }
 
@@ -308,6 +322,90 @@ namespace arbitrage_CSharp
                 sb.AppendLine();
             }
             return sb.ToString();
+        }
+    }
+    /// <summary>
+    /// 恒定参数做市
+    /// </summary>
+    public class CFMM
+    {
+        /// <summary>
+        /// 起始数量币0 入币
+        /// </summary>
+        public decimal R0;
+        /// <summary>
+        /// 起始数量币1 出币
+        /// </summary>
+        public decimal R1;
+        /// <summary>
+        /// 入币0数量  已知
+        /// </summary>
+        public decimal DeltaA;
+        /// <summary>
+        /// 出币1 数量  求解
+        /// </summary>
+        private decimal DeltaB;
+
+        public CFMM(decimal r0, decimal r1, decimal deltaA)
+        {
+            R0 = r0;
+            R1 = r1;
+            DeltaA = deltaA;
+        }
+
+        public CFMM()
+        {
+
+        }
+
+
+
+        /// <summary>
+        /// 求解 detaB
+        /// </summary>
+        /// <param name="cfmm"></param>
+        /// <param name="fee"></param>
+        /// <returns></returns>
+        public static decimal GetDeltaB(CFMM cfmm,decimal fee)
+        {
+            decimal r = 1 - fee;
+            decimal deltaB = cfmm.R1 * r * cfmm.DeltaA / (cfmm.R0 + r * cfmm.DeltaA);
+            return deltaB;
+        }
+
+        /// <summary>
+        /// 获取  最优兑换数量
+        /// </summary>
+        /// <param name="amountStart"></param>
+        /// <param name="amountEnd"></param>
+        /// <returns></returns>
+        public static decimal GetBestChangeAmount(CFMM cFMM, decimal fee)
+        {
+            decimal amountStart = cFMM.R0;
+            decimal amountEnd = cFMM.R1;
+            decimal r = 1 - fee;
+            double db = (double)(amountStart * amountEnd * r);
+            decimal de = (decimal) Math.Sqrt(db);
+            decimal bestAmount = ((de - amountStart) / r);
+            //decimal bestAmount = ((Math.Sqrt((amountStart * amountEnd * r)) - amountStart) / r);
+            return bestAmount;
+        }
+        /// <summary>
+        /// 通过 池 A-B 和 B-C ，返回虚拟池  A-C 的CFMM
+        /// </summary>
+        /// <param name="A_B">c1 池交易对 A-B</param>
+        /// <param name="B_C">c2 池交易对 B-C</param>
+        /// <returns>返回 虚拟交易池 A-C 的参数 </returns>
+        public static CFMM GetVisualCFMM(CFMM A_B, CFMM B_C, decimal fee)
+        {
+            decimal r = 1 - fee;
+            CFMM A_C = new CFMM();
+            var E0 = (A_B.R0 * B_C.R0) / (B_C.R0 + A_B.R1 * r);
+            var E1 = (r * A_B.R1 * B_C.R1) / (B_C.R0 + A_B.R1 * r);
+
+            A_C.R0 = E0;
+            A_C.R1 = E1;
+            return A_C;
         }
     }
 }

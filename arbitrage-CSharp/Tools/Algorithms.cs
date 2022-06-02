@@ -9,7 +9,7 @@ namespace Tools
 {
     public class Algorithms
     {
-        public List<T> DFS<T>(Graph<T> graph, T start)
+        public static List<T> DFS<T>(Graph<T> graph, T start)
         {
             var visited = new List<T>();
 
@@ -51,7 +51,7 @@ namespace Tools
         /// <param name="graph"></param>
         /// <param name="start"></param>
         /// <returns></returns>
-        public Dictionary<int, List<List<T>>> DFSAllPaths<T>(Graph<T> graph, T start,int maxHops=10)
+        public static Dictionary<int, List<List<T>>> DFSAllPaths<T>(Graph<T> graph, T start,int maxHops=10)
         {
             Dictionary<int, List<List<T>>> allRings = new Dictionary<int, List<List<T>>>();
             var edgeListDic = new Dictionary<string, List<T>>();
@@ -87,7 +87,7 @@ namespace Tools
             return allRings;
         }
 
-        public void GetAllEdgeList<T>(Graph<T> graph, T start, int maxHops,List<T> edgeList = null,  Dictionary<string, List<T>> edgeListDic=null )
+        public static void GetAllEdgeList<T>(Graph<T> graph, T start, int maxHops,List<T> edgeList = null,  Dictionary<string, List<T>> edgeListDic=null )
         {
             if (edgeList==null)
             {
@@ -142,11 +142,10 @@ namespace Tools
             };
 
             var graph = new Graph<int>(vertices, edges);
-            var algorithms = new Algorithms();
 
-            Logger.Debug(string.Join(", ", algorithms.DFS(graph, 1)));
+            Logger.Debug(string.Join(", ", Algorithms.DFS(graph, 1)));
 
-            algorithms.DFSAllPaths(graph, 1);
+            Algorithms.DFSAllPaths(graph, 1);
 
             StringBuilder sb = new StringBuilder();
             foreach (var edge in edges)
@@ -177,7 +176,10 @@ namespace Tools
                 AddEdge(edge);
             }
         }
-
+        /// <summary>
+        /// 所有节点对应相邻的 节点集合
+        /// Dictionary<T 某个节点 , HashSet<T> 这个节点相邻的节点>
+        /// </summary>
         public Dictionary<T, HashSet<T>> AdjacencyList { get; } = new Dictionary<T, HashSet<T>>();
 
         public void AddVertex(T vertex)
