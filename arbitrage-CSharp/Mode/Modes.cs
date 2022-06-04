@@ -223,30 +223,34 @@ namespace arbitrage_CSharp
     /// </summary>
     public class PoolPairs
     {
-        public PoolToken poolTokenA;
+        public PoolToken poolToken0;
 
-        public PoolToken poolTokenB;
+        public PoolToken poolToken1;
 
         public PoolPairs(PoolToken poolTokenA, PoolToken poolTokenB)
         {
-            this.poolTokenA = poolTokenA;
-            this.poolTokenB = poolTokenB;
+            this.poolToken0 = poolTokenA;
+            this.poolToken1 = poolTokenB;
         }
 
         public PoolToken GetToken(string addr, string poolAddress="")
         {
-            if (poolTokenA.tokenAddress == addr )
+            if (poolToken0.tokenAddress == addr )
             {
-                return poolTokenA;
+                return poolToken0;
             }
-            else if(poolTokenB.tokenAddress == addr)
+            else if(poolToken1.tokenAddress == addr)
             {
-                return poolTokenB;
+                return poolToken1;
             }
             else
             {
                 throw new Exception($"没有找到 token{addr}      pool address: {poolAddress}");
             }
+        }
+        public override string ToString()
+        {
+            return $" poolToken0 :{poolToken0.ToString()} poolToken1 :{poolToken1.ToString()}   ";
         }
     }
 
@@ -271,6 +275,11 @@ namespace arbitrage_CSharp
         /// 币种地址
         /// </summary>
         public string tokenAddress { get; set; }
+
+        public override string ToString()
+        {
+            return $" tokenReverse {tokenReverse}  tokenAddress {tokenAddress}   ";
+        }
     }
 
     public class PathDataAll
@@ -340,17 +349,22 @@ namespace arbitrage_CSharp
         /// <summary>
         /// 入币0数量  已知
         /// </summary>
-        public decimal DeltaA;
+        //private decimal DeltaA;
         /// <summary>
         /// 出币1 数量  求解
         /// </summary>
-        private decimal DeltaB;
+        //private decimal DeltaB;
 
-        public CFMM(decimal r0, decimal r1, decimal deltaA)
+        public CFMM(decimal r0, decimal r1)
         {
             R0 = r0;
             R1 = r1;
-            DeltaA = deltaA;
+            //DeltaA = deltaA;
+        }
+        public CFMM(PoolPairs poolPairs)
+        {
+            R0 = poolPairs.poolToken0.tokenReverse;
+            R1 = poolPairs.poolToken1.tokenReverse;
         }
 
         public CFMM()
@@ -366,10 +380,10 @@ namespace arbitrage_CSharp
         /// <param name="cfmm"></param>
         /// <param name="fee"></param>
         /// <returns></returns>
-        public static decimal GetDeltaB(CFMM cfmm,decimal fee)
+        public static decimal GetDeltaB(CFMM cfmm,decimal fee, decimal DeltaA)
         {
             decimal r = 1 - fee;
-            decimal deltaB = cfmm.R1 * r * cfmm.DeltaA / (cfmm.R0 + r * cfmm.DeltaA);
+            decimal deltaB = cfmm.R1 * r * DeltaA / (cfmm.R0 + r * DeltaA);
             return deltaB;
         }
 
@@ -379,10 +393,10 @@ namespace arbitrage_CSharp
         /// <param name="amountStart"></param>
         /// <param name="amountEnd"></param>
         /// <returns></returns>
-        public static decimal GetBestChangeAmount(CFMM cFMM, decimal fee)
+        public static decimal GetBestChangeAmount(decimal r0,decimal r1, decimal fee)
         {
-            decimal amountStart = cFMM.R0;
-            decimal amountEnd = cFMM.R1;
+            decimal amountStart = r0;
+            decimal amountEnd = r1;
             decimal r = 1 - fee;
             double db = (double)(amountStart * amountEnd * r);
             decimal de = (decimal) Math.Sqrt(db);
@@ -396,16 +410,35 @@ namespace arbitrage_CSharp
         /// <param name="A_B">c1 池交易对 A-B</param>
         /// <param name="B_C">c2 池交易对 B-C</param>
         /// <returns>返回 虚拟交易池 A-C 的参数 </returns>
-        public static CFMM GetVisualCFMM(CFMM A_B, CFMM B_C, decimal fee)
+        public static CFMM GetVisualCFMM(decimal fee ,params PoolPairs [] poolPairsPaths)
         {
-            decimal r = 1 - fee;
-            CFMM A_C = new CFMM();
-            var E0 = (A_B.R0 * B_C.R0) / (B_C.R0 + A_B.R1 * r);
-            var E1 = (r * A_B.R1 * B_C.R1) / (B_C.R0 + A_B.R1 * r);
+            CFMM A_B = null;
+            CFMM B_C = null;
+            for (int i = 0; i < poolPairsPaths.Length-1; i++)
+            {
+               
+                if (i==0)
+                {
+                    A_B = new CFMM(poolPairsPaths[i]);
+                    B_C = new CFMM(poolPairsPaths[i + 1]);
+                    
+                }
+                else
+                {
+                    B_C = new CFMM(poolPairsPaths[i + 1]);
+                }
+                decimal r = 1 - fee;
+                CFMM A_C = new CFMM();
+                var E0 = (A_B.R0 * B_C.R0) / (B_C.R0 + A_B.R1 * r);
+                var E1 = (r * A_B.R1 * B_C.R1) / (B_C.R0 + A_B.R1 * r);
 
-            A_C.R0 = E0;
-            A_C.R1 = E1;
-            return A_C;
+                A_C.R0 = E0;
+                A_C.R1 = E1;
+                A_B = A_C;
+
+            }
+            return A_B;
+           
         }
     }
 }

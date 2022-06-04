@@ -14,6 +14,7 @@ using Nethereum.Uniswap.Contracts.UniswapV2Factory;
 
 using Nethereum.Client;
 using Nethereum.RPC.Eth.DTOs;
+using arbitrage_CSharp.Mode;
 
 namespace arbitrage_CSharp
 {
@@ -37,6 +38,7 @@ namespace arbitrage_CSharp
         Dictionary<string, HashSet<string>> adjacencyList;
         /// <summary>
         /// 所有池子里面的数据 ，测试用，正式情况通过redis获取
+        /// key 是
         /// </summary>
         Dictionary<string, PoolPairs> poolPairsDic;
 
@@ -78,6 +80,7 @@ namespace arbitrage_CSharp
             //1 拉取 redis 获取 全路径，并且监听更新
             //RedisDB.Instance.StringGet<T>(DBKey);
             poolPairsDic = GetPoolDatasByFile();
+            PoolDataHelper.Init(poolPairsDic);
             //获取所有路径,和 每个token 的可以兑换tokens;
             var (tokensSwapPathsDic, adjacencyList) = GetAllPaths(poolPairsDic);
             //RedisDB.Init(config.RedisConfig);
@@ -92,6 +95,9 @@ namespace arbitrage_CSharp
 
 
         }
+
+       
+
         /// <summary>
         /// 监听tx消息
         /// </summary>
@@ -104,24 +110,28 @@ namespace arbitrage_CSharp
             string adressFrom = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";//usdc
             decimal amountFrom = 1000;
             string addressTo = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";//weth
-            //需要计算出能兑换多少
+            //test下需要计算出能兑换多少，实际上通过服务器传送
             decimal changeAmountTo = 0;
 
             var poolPair = poolPairsDic[poolId];
             var token0 = poolPair.GetToken(adressFrom, poolId);
             var token1 = poolPair.GetToken(addressTo, poolId);
 
-            CFMM cFMM = new CFMM(token0.tokenReverse,token1.tokenReverse,amountFrom);
+            CFMM cFMM = new CFMM(token0.tokenReverse,token1.tokenReverse);
             //test ______________________实际上会收到 值
-            changeAmountTo = CFMM.GetDeltaB(cFMM, config.uniswapV2_fee);
+            changeAmountTo = CFMM.GetDeltaB(cFMM, config.uniswapV2_fee, amountFrom);
             //test______________________________
             //根据tx 修改池子里面的数量
             token0.tokenReverse += amountFrom;
             token1.tokenReverse -= changeAmountTo;
             //获取 两个token的路径
             
-            
-            
+            var tokenPaths = GetRandomPath(token0.tokenAddress, 3);
+            GetPathsWithAmount(tokenPaths, token0,  token1);
+
+
+
+
             //4 根据盈利比例计算出所有可兑换的路径，以及最大兑换数量
 
             //5 签名后发给 ray
@@ -136,6 +146,34 @@ namespace arbitrage_CSharp
             await bridge.import_wallets("0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80");
             bridge.swap(swapArr);
         }
+
+        /// <summary>
+        /// 获取 路径对应的盈利 数量 和路径 
+        /// </summary>
+        /// <param name="tokenPaths"></param>
+        /// <param name="token0"> 表示我们拥有要兑换的</param>
+        /// <param name="token1"></param>
+        private void GetPathsWithAmount(List<List<string>> tokenPaths, PoolToken token0, PoolToken token1)
+        {
+            List<string> backPaths = new List<string>();
+            //循环计算 所有路径的 最大盈利
+            foreach (var path in tokenPaths)
+            {
+                //把 所有路径合成 一个CFMM
+                List<PoolPairs> cFMMPaths = new List<PoolPairs>();
+               
+                for (int i = 0; i < path.Count-1; i++)
+                {
+                    var _poolPair = PoolDataHelper.GetPoolPair(path[i],path[i+1]);
+                    //t0表示我们其实拥有的token，t1是要兑换的
+                    Logger.Debug(_poolPair.ToString());
+                    cFMMPaths.Add(_poolPair);
+                }
+                CFMM endCFMM = CFMM.GetVisualCFMM(config.uniswapV2_fee, cFMMPaths.ToArray());
+                decimal bestAmountT0 = CFMM.GetBestChangeAmount( endCFMM.R0,endCFMM.R1, config.uniswapV2_fee);
+                Logger.Debug($"路径最近兑换数量 {string.Join("-->", path.ToArray()) } {bestAmountT0}");
+            }
+        }
         /// <summary>
         /// 返回 最大利益交换数量
         /// 如果返回0 表示不能获利
@@ -144,7 +182,7 @@ namespace arbitrage_CSharp
         /// <returns></returns>
         private  decimal GetSwapAmount(string tokenAddress, List<string> path)
         {
-            return 0;
+            return 0m;
         }
         /// <summary>
         /// 根据 token 返回 一定数量的随机路径
@@ -180,13 +218,13 @@ namespace arbitrage_CSharp
             //获取有多少种类
             foreach (var item in poolPairsDic)
             {
-                if (!allTokens.Contains(item.Value.poolTokenA.tokenAddress))
+                if (!allTokens.Contains(item.Value.poolToken0.tokenAddress))
                 {
-                    allTokens.Add(item.Value.poolTokenA.tokenAddress);
+                    allTokens.Add(item.Value.poolToken0.tokenAddress);
                 }
-                if (!allTokens.Contains(item.Value.poolTokenB.tokenAddress))
+                if (!allTokens.Contains(item.Value.poolToken1.tokenAddress))
                 {
-                    allTokens.Add(item.Value.poolTokenB.tokenAddress);
+                    allTokens.Add(item.Value.poolToken1.tokenAddress);
                 }
                 
             }
@@ -197,7 +235,7 @@ namespace arbitrage_CSharp
             // 构成图，把相同的 地址能连接的放到一起
             foreach (var poolPair in poolPairsDic)
             {
-                edges.Add(new Tuple<string, string>(poolPair.Value.poolTokenA.tokenAddress, poolPair.Value.poolTokenB.tokenAddress));
+                edges.Add(new Tuple<string, string>(poolPair.Value.poolToken0.tokenAddress, poolPair.Value.poolToken1.tokenAddress));
             }
 
             var graph = new Graph<string>(vertices, edges);
@@ -281,11 +319,11 @@ namespace arbitrage_CSharp
                 string symbol = await pairContract.GetFunction("symbol")
                 .CallAsync<string>();
                 var symbolP = symbol.Split('-');
-                PoolToken t0 = new PoolToken(symbolP[0], reserveData.Reserve0, addressT0);
-                PoolToken t1 = new PoolToken(symbolP[1], reserveData.Reserve1, addressT1);
+                PoolToken t0 = new PoolToken(symbolP[0], (decimal)(reserveData.Reserve0), addressT0);
+                PoolToken t1 = new PoolToken(symbolP[1], (decimal)(reserveData.Reserve1), addressT1);
 
 
-                allPoolDic.Add(pairAddress, new PoolPairs(pairAddress, t0, t1));
+                allPoolDic.Add(pairAddress, new PoolPairs( t0, t1));
                 Logger.Debug($"address {pairAddress} addressT0 {addressT0} {reserveData.Reserve0}  addressT1 {addressT1} {reserveData.Reserve1} symbol {symbol}");
                 //string strs = JsonConvert.SerializeObject(allPoolDic, Formatting.Indented);
 
@@ -309,11 +347,7 @@ namespace arbitrage_CSharp
             Dictionary<string, PoolPairs> allPoolDic = JsonConvert.DeserializeObject<Dictionary<string, PoolPairs>>(File.ReadAllText(config.pairsDataPath));
             return allPoolDic;
         }
-
-        
         #endregion
-
-
     }
 
 
@@ -333,6 +367,10 @@ namespace arbitrage_CSharp
         public string uniswapV3_pairAbi;
 
         public decimal uniswapV2_fee = 0.003m;
+        /// <summary>
+        /// 当前各种币的数量的字典
+        /// </summary>
+        public Dictionary<string, decimal> CurrTokenAmountDic = new Dictionary<string, decimal>() { { "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2", 1 } };
 
         public Dictionary<string, string> allPaths = new Dictionary<string, string>() { {"BNB-USDT", "exchangeName:USDT&231-BNB&232,exchangeName:USDT&233-BNB&234" } };
 
