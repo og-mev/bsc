@@ -33,6 +33,9 @@
     <None Update="appsettings.test.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="tokenAbi.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="uniswapV3_pairAbi.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

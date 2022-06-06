@@ -20,7 +20,7 @@ namespace arbitrage_CSharp.Mode
             pairsTokenDic.Clear();
             foreach (var poolPair in poolPairsDic)
             {
-                pairsTokenDic.Add(poolPair.Value.poolToken0 + "_" + poolPair.Value.poolToken1,poolPair.Value);
+                pairsTokenDic.Add(poolPair.Value.poolToken0.tokenAddress + "_" + poolPair.Value.poolToken1.tokenAddress,poolPair.Value);
             }
         }
         /// <summary>
@@ -36,11 +36,11 @@ namespace arbitrage_CSharp.Mode
             {
                 throw new Exception("请先调用 init 方法");
             }
-            if (pairsTokenDic.TryGetValue(token0Address+""+token1address,out PoolPairs poolPairs))
+            if (pairsTokenDic.TryGetValue(token0Address+"_"+token1address,out PoolPairs poolPairs))
             {
                 return poolPairs;
             }
-            else if (pairsTokenDic.TryGetValue(token1address + "" + token0Address, out  poolPairs))
+            else if (pairsTokenDic.TryGetValue(token1address + "_" + token0Address, out  poolPairs))
             {
                 return new PoolPairs(poolPairs.poolToken1, poolPairs.poolToken0);
             }

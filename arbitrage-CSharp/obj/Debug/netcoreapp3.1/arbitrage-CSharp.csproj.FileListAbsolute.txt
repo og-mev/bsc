@@ -80,3 +80,4 @@ D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\Nethereum.Uniswap.dll
 D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\Nethereum.Uniswap.pdb
 D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\uniswapV3_pairAbi.json
 D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\uniswapV3_factoryAbi.json
+D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\tokenAbi.json

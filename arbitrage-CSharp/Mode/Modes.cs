@@ -23,6 +23,7 @@ using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.Contracts.Extensions;
 using Nethereum.Contracts.Standards.ENS.Registrar.ContractDefinition;
 using Nethereum.RPC.TransactionManagers;
+using arbitrage_CSharp.Tools;
 
 namespace arbitrage_CSharp
 {
@@ -256,7 +257,9 @@ namespace arbitrage_CSharp
 
     public class PoolToken
     {
-        public PoolToken(string tokenSymbol, decimal tokenReverse ,string tokenAddress)
+        private string _tokenAddress;
+
+        public PoolToken(string tokenSymbol, BigDecimal tokenReverse, string tokenAddress)
         {
             this.tokenSymbol = tokenSymbol;
             this.tokenReverse = tokenReverse;
@@ -270,11 +273,11 @@ namespace arbitrage_CSharp
         /// <summary>
         /// 池子中数量
         /// </summary>
-        public decimal tokenReverse { get; set; }
+        public BigDecimal tokenReverse { get; set; }
         /// <summary>
         /// 币种地址
         /// </summary>
-        public string tokenAddress { get; set; }
+        public string tokenAddress { get => _tokenAddress; set => _tokenAddress = value.ToLower(); }
 
         public override string ToString()
         {
@@ -341,11 +344,11 @@ namespace arbitrage_CSharp
         /// <summary>
         /// 起始数量币0 入币
         /// </summary>
-        public decimal R0;
+        public BigDecimal R0;
         /// <summary>
         /// 起始数量币1 出币
         /// </summary>
-        public decimal R1;
+        public BigDecimal R1;
         /// <summary>
         /// 入币0数量  已知
         /// </summary>
@@ -355,7 +358,7 @@ namespace arbitrage_CSharp
         /// </summary>
         //private decimal DeltaB;
 
-        public CFMM(decimal r0, decimal r1)
+        public CFMM(BigDecimal r0, BigDecimal r1)
         {
             R0 = r0;
             R1 = r1;
@@ -380,10 +383,10 @@ namespace arbitrage_CSharp
         /// <param name="cfmm"></param>
         /// <param name="fee"></param>
         /// <returns></returns>
-        public static decimal GetDeltaB(CFMM cfmm,decimal fee, decimal DeltaA)
+        public static BigDecimal GetDeltaB(CFMM cfmm, BigDecimal fee, decimal DeltaA)
         {
-            decimal r = 1 - fee;
-            decimal deltaB = cfmm.R1 * r * DeltaA / (cfmm.R0 + r * DeltaA);
+            BigDecimal r = 1 - fee;
+            BigDecimal deltaB = cfmm.R1 * r * DeltaA / (cfmm.R0 + r * DeltaA);
             return deltaB;
         }
 
@@ -393,14 +396,32 @@ namespace arbitrage_CSharp
         /// <param name="amountStart"></param>
         /// <param name="amountEnd"></param>
         /// <returns></returns>
-        public static decimal GetBestChangeAmount(decimal r0,decimal r1, decimal fee)
+//         public static BigDecimal GetBestChangeAmount(BigDecimal r0, BigDecimal r1, BigDecimal fee)
+//         {
+//             BigDecimal amountStart = r0;
+//             BigDecimal amountEnd = r1;
+//             BigDecimal r = 1 - fee;
+//             double db = (double)(amountStart * amountEnd * r);
+//             BigDecimal de = (decimal) Math.Sqrt(db);
+//             BigDecimal bestAmount = ((de - amountStart) / r);
+//             //decimal bestAmount = ((Math.Sqrt((amountStart * amountEnd * r)) - amountStart) / r);
+//             return bestAmount;
+//         }
+
+        /// <summary>
+        /// 获取  最优兑换数量
+        /// </summary>
+        /// <param name="amountStart"></param>
+        /// <param name="amountEnd"></param>
+        /// <returns></returns>
+        public static BigDecimal GetBestChangeAmount(BigDecimal r0, BigDecimal r1, BigDecimal fee)
         {
-            decimal amountStart = r0;
-            decimal amountEnd = r1;
-            decimal r = 1 - fee;
-            double db = (double)(amountStart * amountEnd * r);
-            decimal de = (decimal) Math.Sqrt(db);
-            decimal bestAmount = ((de - amountStart) / r);
+            BigDecimal amountStart = r0;
+            BigDecimal amountEnd = r1;
+            BigDecimal r = 1 - fee;
+            var db = (amountStart * amountEnd * r);
+            BigDecimal de =db.Sqrt2(0.000001m);
+            BigDecimal bestAmount = ((de - amountStart) / r);
             //decimal bestAmount = ((Math.Sqrt((amountStart * amountEnd * r)) - amountStart) / r);
             return bestAmount;
         }
@@ -440,5 +461,7 @@ namespace arbitrage_CSharp
             return A_B;
            
         }
+
+
     }
 }
