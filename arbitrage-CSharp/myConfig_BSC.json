@@ -5,7 +5,7 @@
   "uniswapV3_factoryAbi": "./uniswapV3_factoryAbi.json",
   "unswapV2_FactoryAddress": "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73",
   "uniswapV3_pairAbi": "./uniswapV3_pairAbi.json",
-  "uniswapV2_fee": 0.0,
+  "uniswapV2_fee": 0.0025,
   "CurrTokenAmountDic": {
     "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": 1.0
   },

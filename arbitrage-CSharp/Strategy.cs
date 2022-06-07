@@ -121,7 +121,7 @@ namespace arbitrage_CSharp
             //解析tx,获取到的tx是什么样子的,有可能同一个 区块中有多笔 tx改变？
             string poolId = config.testConfig.poolId;
             string adressFrom = config.testConfig.adressFrom;//DAI
-            decimal amountFrom = 0;
+            decimal amountFrom = 1000;
             string addressTo = config.testConfig.adressTo;//USDC
             //test下需要计算出能兑换多少，实际上通过服务器传送
             BigDecimal changeAmountTo = 0;
@@ -200,28 +200,18 @@ namespace arbitrage_CSharp
                         {
                             bestProfit = profit;
                             backPath = path;
+                            bestAmountT0ALL = bestAmountT0;
                             Logger.Debug($" bestProfit {bestProfit} ");
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-
                     Logger.Error(ex);
                 }
             }
             return (backPath, bestAmountT0ALL);
 
-        }
-        /// <summary>
-        /// 返回 最大利益交换数量
-        /// 如果返回0 表示不能获利
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private  decimal GetSwapAmount(string tokenAddress, List<string> path)
-        {
-            return 0m;
         }
         /// <summary>
         /// 根据 token 返回 一定数量的随机路径
@@ -238,7 +228,6 @@ namespace arbitrage_CSharp
             }
             return paths;
         }
-
 
 
         /// <summary>
@@ -357,9 +346,9 @@ namespace arbitrage_CSharp
                 string addressT1 = await pairContract.GetFunction("token1")
                 .CallAsync<string>();
 
-                string symbol = await pairContract.GetFunction("symbol")
-                .CallAsync<string>();
-                var symbolP = symbol.Split('-');
+//                 string symbol = await pairContract.GetFunction("symbol")
+//                 .CallAsync<string>();
+//                 var symbolP = symbol.Split('-');
                 Logger.Debug($"addressT0 {addressT0} addressT1 {addressT1} ");
 
                 //var ss = reserveData.Reserve0 / reserveData.Reserve1;
@@ -372,15 +361,19 @@ namespace arbitrage_CSharp
                     var token1Contract = web3.Eth.GetContract(tokenAbiStr, addressT1);
                     int dec1 = await token1Contract.GetFunction("decimals")
                         .CallAsync<int>();
+                    string symbol0 = await token0Contract.GetFunction("symbol")
+                                    .CallAsync<string>();
+                    string symbol1 = await token1Contract.GetFunction("symbol")
+                .   CallAsync<string>();
                     BigDecimal r0 = new BigDecimal(reserveData.Reserve0, -dec0);
                     BigDecimal r1 = new BigDecimal(reserveData.Reserve1, -dec1);
 
-                    PoolToken t0 = new PoolToken(symbolP[0], r0, addressT0);
-                    PoolToken t1 = new PoolToken(symbolP[1], r1, addressT1);
+                    PoolToken t0 = new PoolToken(symbol0, r0, addressT0);
+                    PoolToken t1 = new PoolToken(symbol1, r1, addressT1);
 
 
                     allPoolDic.Add(pairAddress, new PoolPairs(t0, t1));
-                    Logger.Debug($"address {pairAddress} addressT0 {addressT0} {reserveData.Reserve0}  addressT1 {addressT1} {reserveData.Reserve1} symbol {symbol}");
+                    Logger.Debug($"address {pairAddress} addressT0 {addressT0} {reserveData.Reserve0}  addressT1 {addressT1} {reserveData.Reserve1} symbol {symbol0} {symbol1}");
                 }
                 catch (Exception)
                 {
@@ -461,7 +454,6 @@ namespace arbitrage_CSharp
 
     public class TestConfig
     {
-
         public string poolId = "0xae461ca67b15dc8dc81ce7615e0320da1a9ab8d5";
 
         public string adressFrom = "0x6b175474e89094c44da98b954eedeac495271d0f";
