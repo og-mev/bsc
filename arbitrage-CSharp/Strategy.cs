@@ -119,13 +119,12 @@ namespace arbitrage_CSharp
         {
             //3 根据 tx 的交易对 获取所有对应路径
             //解析tx,获取到的tx是什么样子的,有可能同一个 区块中有多笔 tx改变？
-            string poolId = "0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc";
-            string adressFrom = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";//usdc
-            decimal amountFrom = 10000000000;
-            string addressTo = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2";//weth
+            string poolId = "0xae461ca67b15dc8dc81ce7615e0320da1a9ab8d5";
+            string adressFrom = "0x6b175474e89094c44da98b954eedeac495271d0f";//DAI
+            decimal amountFrom = 0;
+            string addressTo = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";//USDC
             //test下需要计算出能兑换多少，实际上通过服务器传送
             BigDecimal changeAmountTo = 0;
-
             var poolPair = poolPairsDic[poolId];
             var token0 = poolPair.GetToken(adressFrom, poolId);
             var token1 = poolPair.GetToken(addressTo, poolId);
@@ -166,9 +165,11 @@ namespace arbitrage_CSharp
         /// <param name="tokenPaths"></param>
         /// <param name="token0"> 表示我们拥有要兑换的</param>
         /// <param name="token1"></param>
-        private void GetPathsWithAmount(List<List<string>> tokenPaths, PoolToken token0, PoolToken token1)
+        private (List<string> backPath, BigDecimal bestAmountT0ALL) GetPathsWithAmount(List<List<string>> tokenPaths, PoolToken token0, PoolToken token1)
         {
-            List<string> backPaths = new List<string>();
+            List<string> backPath = new List<string>();
+            BigDecimal bestAmountT0ALL = 0;
+            BigDecimal bestProfit = 0;
             //循环计算 所有路径的 最大盈利
             foreach (var path in tokenPaths)
             {
@@ -191,14 +192,28 @@ namespace arbitrage_CSharp
                     CFMM endCFMM = CFMM.GetVisualCFMM(config.uniswapV2_fee, cFMMPaths.ToArray());
                     BigDecimal bestAmountT0 = CFMM.GetBestChangeAmount(endCFMM.R0, endCFMM.R1, config.uniswapV2_fee);
                     Logger.Debug($" bestAmountT0 {bestAmountT0} 路径最近兑换数量 {string.Join("-->", path.ToArray()) }");
+                    //计算利润
+                    if (bestAmountT0> 0)
+                    {
+                        //test 测试
+                        //bestAmountT0 = 10;
+                        BigDecimal profit = CFMM.GetDeltaB(endCFMM, config.uniswapV2_fee,(decimal) bestAmountT0) - bestAmountT0;
+                        if (profit>bestProfit)
+                        {
+                            bestProfit = profit;
+                            backPath = path;
+                            Logger.Debug($" bestProfit {bestProfit} ");
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
 
                     Logger.Error(ex);
                 }
-                
             }
+            return (backPath, bestAmountT0ALL);
+
         }
         /// <summary>
         /// 返回 最大利益交换数量
@@ -407,7 +422,7 @@ namespace arbitrage_CSharp
                 pool.Value.poolToken0.tokenReverse = new BigDecimal(s, de);
 
                 var v1 = item["poolToken1"]["tokenReverse"];
-                BigInteger s1 = BigInteger.Parse(v["Mantissa"].ToString());
+                BigInteger s1 = BigInteger.Parse(v1["Mantissa"].ToString());
                 int de1 = int.Parse(v["Exponent"].ToString());
                 pool.Value.poolToken1.tokenReverse = new BigDecimal(s1, de1);
             }
@@ -433,7 +448,7 @@ namespace arbitrage_CSharp
 
         public string uniswapV3_pairAbi;
 
-        public decimal uniswapV2_fee = 0.003m;
+        public decimal uniswapV2_fee = 0.0m;
         /// <summary>
         /// 当前各种币的数量的字典
         /// </summary>

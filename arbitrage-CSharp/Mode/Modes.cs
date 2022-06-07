@@ -461,7 +461,36 @@ namespace arbitrage_CSharp
             return A_B;
            
         }
+        public static CFMM GetVisualCFMM(decimal fee, params CFMM[] cfmms)
+        {
+            CFMM A_B = null;
+            CFMM B_C = null;
+            for (int i = 0; i < cfmms.Length - 1; i++)
+            {
 
+                if (i == 0)
+                {
+                    A_B = cfmms[i];
+                    B_C =  (cfmms[i + 1]);
+
+                }
+                else
+                {
+                    B_C =  (cfmms[i + 1]);
+                }
+                decimal r = 1 - fee;
+                CFMM A_C = new CFMM();
+                var E0 = (A_B.R0 * B_C.R0) / (B_C.R0 + A_B.R1 * r);
+                var E1 = (r * A_B.R1 * B_C.R1) / (B_C.R0 + A_B.R1 * r);
+
+                A_C.R0 = E0;
+                A_C.R1 = E1;
+                A_B = A_C;
+
+            }
+            return A_B;
+
+        }
 
     }
 }
