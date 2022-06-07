@@ -46,7 +46,6 @@ namespace arbitrage_CSharp
 
         public Strategy(string ConfigPath)
         {
-            
             Config config = null;
             if (File.Exists(ConfigPath))
             {
@@ -69,7 +68,8 @@ namespace arbitrage_CSharp
             {
                 this.config = config;
             }
-
+            //string str = JsonConvert.SerializeObject(config,Formatting.Indented);
+            //Logger.Debug(str);
             _ethereumClientIntegrationFixture = new EthereumClientIntegrationFixture();
         }
 
@@ -81,8 +81,8 @@ namespace arbitrage_CSharp
 
             //1 拉取 redis 获取 全路径，并且监听更新
             //RedisDB.Instance.StringGet<T>(DBKey);
-            //poolPairsDic = await GetPoolDatasByContractAsync();//GetPoolDatasByFile();
-            poolPairsDic = GetPoolDatasByFile();
+            poolPairsDic = await GetPoolDatasByContractAsync();//GetPoolDatasByFile();
+            //poolPairsDic = GetPoolDatasByFile();
             PoolDataHelper.Init(poolPairsDic);
             //获取所有路径,和 每个token 的可以兑换tokens;
             var (tokensSwapPathsDic, adjacencyList) = GetAllPaths(poolPairsDic);
@@ -119,10 +119,10 @@ namespace arbitrage_CSharp
         {
             //3 根据 tx 的交易对 获取所有对应路径
             //解析tx,获取到的tx是什么样子的,有可能同一个 区块中有多笔 tx改变？
-            string poolId = "0xae461ca67b15dc8dc81ce7615e0320da1a9ab8d5";
-            string adressFrom = "0x6b175474e89094c44da98b954eedeac495271d0f";//DAI
+            string poolId = config.testConfig.poolId;
+            string adressFrom = config.testConfig.adressFrom;//DAI
             decimal amountFrom = 0;
-            string addressTo = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";//USDC
+            string addressTo = config.testConfig.adressTo;//USDC
             //test下需要计算出能兑换多少，实际上通过服务器传送
             BigDecimal changeAmountTo = 0;
             var poolPair = poolPairsDic[poolId];
@@ -139,9 +139,7 @@ namespace arbitrage_CSharp
             //获取 两个token的路径
             
             var tokenPaths = GetRandomPath(token0.tokenAddress, 3);
-            GetPathsWithAmount(tokenPaths, token0,  token1);
-
-
+            var (bestPath,bestAmount) = GetPathsWithAmount(tokenPaths, token0,  token1);
 
 
             //4 根据盈利比例计算出所有可兑换的路径，以及最大兑换数量
@@ -332,7 +330,7 @@ namespace arbitrage_CSharp
 
 
             string pairAbiStr = File.ReadAllText(config.uniswapV3_pairAbi);
-            var factoryContract = web3.Eth.GetContract(factoryAbiStr, config.unswapV2_address);
+            var factoryContract = web3.Eth.GetContract(factoryAbiStr, config.unswapV2_FactoryAddress);
             Logger.Debug($"contract {factoryContract.ToString()}");
             int count = await factoryContract.GetFunction("allPairsLength")
                 .CallAsync<int>();
@@ -444,7 +442,7 @@ namespace arbitrage_CSharp
 
         public string uniswapV3_factoryAbi;
 
-        public string unswapV2_address = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f";
+        public string unswapV2_FactoryAddress = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f";
 
         public string uniswapV3_pairAbi;
 
@@ -457,6 +455,18 @@ namespace arbitrage_CSharp
         public Dictionary<string, string> allPaths = new Dictionary<string, string>() { {"BNB-USDT", "exchangeName:USDT&231-BNB&232,exchangeName:USDT&233-BNB&234" } };
 
         public List<PoolPairs> testPoolPairs = new List<PoolPairs>() ;
+
+        public TestConfig testConfig = new TestConfig();
+    }
+
+    public class TestConfig
+    {
+
+        public string poolId = "0xae461ca67b15dc8dc81ce7615e0320da1a9ab8d5";
+
+        public string adressFrom = "0x6b175474e89094c44da98b954eedeac495271d0f";
+
+        public string adressTo= "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
     }
     //https://mainnet.infura.io/v3/f7d3ed56ffc1466bbfa4d23738fc0a87
     //npx hardhat node --fork https://mainnet.infura.io/v3/f7d3ed56ffc1466bbfa4d23738fc0a87

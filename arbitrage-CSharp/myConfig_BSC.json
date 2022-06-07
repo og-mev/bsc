@@ -1,0 +1,21 @@
+{
+  "RedisConfig": "localhost,password=l3h2p1w0*",
+  "pairsDataPath": "./allPairs.json",
+  "tokenAbi": "./tokenAbi.json",
+  "uniswapV3_factoryAbi": "./uniswapV3_factoryAbi.json",
+  "unswapV2_FactoryAddress": "0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73",
+  "uniswapV3_pairAbi": "./uniswapV3_pairAbi.json",
+  "uniswapV2_fee": 0.0,
+  "CurrTokenAmountDic": {
+    "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": 1.0
+  },
+  "allPaths": {
+    "BNB-USDT": "exchangeName:USDT&231-BNB&232,exchangeName:USDT&233-BNB&234"
+  },
+  "testPoolPairs": [],
+  "testConfig": {
+    "poolId": "0x804678fa97d91b974ec2af3c843270886528a9e6",
+    "adressFrom": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82",
+    "adressTo": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+  }
+}

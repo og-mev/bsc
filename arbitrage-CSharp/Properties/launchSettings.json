@@ -2,7 +2,7 @@
   "profiles": {
     "arbitrage-CSharp": {
       "commandName": "Project",
-      "commandLineArgs": "-c ./myConfig.json"
+      "commandLineArgs": "-c ./myConfig_BSC.json"
     }
   }
 }

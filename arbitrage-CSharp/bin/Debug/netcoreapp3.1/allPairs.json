@@ -1,57 +1,1802 @@
 {
-  "0xae461ca67b15dc8dc81ce7615e0320da1a9ab8d5": {
+  "0x804678fa97d91b974ec2af3c843270886528a9e6": {
     "poolToken0": {
-      "tokenSymbol": "UNI",
+      "tokenSymbol": "Cake",
       "tokenReverse": {
-        "Mantissa": 50,
-        "Exponent": 0
+        "Mantissa": 1051660599497195546972163,
+        "Exponent": -18
       },
-      "tokenAddress": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "tokenAddress": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
     },
     "poolToken1": {
-      "tokenSymbol": "V2",
+      "tokenSymbol": "LP",
       "tokenReverse": {
-        "Mantissa": 200,
-        "Exponent": 0
+        "Mantissa": 8061732746349025873426376,
+        "Exponent": -18
       },
-      "tokenAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
     }
   },
-
-  "0xa478c2975ab1ea89e8196811f51a7b7ade33eb11": {
+  "0x0ed7e52944161450477ee417de9cd3a859b14fd0": {
     "poolToken0": {
-      "tokenSymbol": "UNI",
+      "tokenSymbol": "Cake",
       "tokenReverse": {
-        "Mantissa": 100,
-        "Exponent": 0
+        "Mantissa": 14323613164711488110460177,
+        "Exponent": -18
       },
-      "tokenAddress": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      "tokenAddress": "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
     },
     "poolToken1": {
-      "tokenSymbol": "V2",
+      "tokenSymbol": "LP",
       "tokenReverse": {
-        "Mantissa": 100,
-        "Exponent": 0
+        "Mantissa": 285617020890024388276461,
+        "Exponent": -18
       },
-      "tokenAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
     }
   },
-  "0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc": {
+  "0x58f876857a02d6762e0101bb5c46a8c1ed44dc16": {
     "poolToken0": {
-      "tokenSymbol": "UNI",
+      "tokenSymbol": "Cake",
       "tokenReverse": {
-        "Mantissa": 100,
-        "Exponent": 0
+        "Mantissa": 472991841194993601969367,
+        "Exponent": -18
       },
-      "tokenAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
     },
     "poolToken1": {
-      "tokenSymbol": "V2",
+      "tokenSymbol": "LP",
       "tokenReverse": {
-        "Mantissa": 100,
-        "Exponent": 0
+        "Mantissa": 181493928598125797680311616,
+        "Exponent": -18
       },
-      "tokenAddress": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    }
+  },
+  "0x28415ff2c35b65b9e5c7de82126b4015ab9d031f": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 5815875524256775876738569,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 16222497012900784290859,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x168b273278f3a8d302de5e879aa30690b7e6c28f": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 27023405910709255765611,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xad6caeb32cd2c308980a548bd0bc5aa4306c6c18"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 248174658470413140322,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xdd5bad8f8b360d76d12fda230f8baf42fe0022cf": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 505516926669736244728656,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x7083609fce4d1d8dc0c979aab8c869ea2c873402"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 26965192138294673301095,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xb6e34b5c65eda51bb1bd4ea5f79d385fb94b9504": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 11023023077145006843654,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x56b6fb708fc5732dec1afc8d8556423a2edccbd6"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 70341635005804452238,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x824eb9fadfb377394430d2744fa7c42916de3ece": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 14321701815290726004613,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 318030894350970430545148,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xf8a0bf9cf54bb92f17374d9e9a321e6a111a51bd"
+    }
+  },
+  "0x7efaef62fddcca950418312c6c91aef321375a00": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 145780946333833305489217887,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x55d398326f99059ff775485246999027b3197955"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 145813966278803210625694072,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    }
+  },
+  "0x3dcb1787a95d2ea0eb7d00887704eebf0d79bb13": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 2038196945868372886327388,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x4b0f1812e5df2a09796481ff14017e6005508003"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 309235214356599413705,
+        "Exponent": -17
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x7eb5d86fd78f3852a3e0e064f2842d45a3db6ea2": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 5589620270377683714808,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 265250902369281817984699,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xcf6bb5389c92bdda8a3747ddb454cb7a64626c63"
+    }
+  },
+  "0x74e4716e431f45807dcf19f284c7aa99f18a4fbc": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 16741596179268943258607,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x2170ed0880ac9a755fd29b2688956bd959f933f8"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 121634038827948396877559,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x61eb789d75a95caa3ff50ed7e47b96c132fec082": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 1130728712156063692678,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 113884424946524525319875,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xacf47cbeaab5c8a6ee99263cfe43995f89fb3206": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 1396603687761924868764929,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xa1faa113cbe53436df28ff0aee54275c13b40975"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 1424226067735289264118,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x16b9a82891338f9ba80e2d6970fdda79d1eb0dae": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 96147795035922349264725936,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x55d398326f99059ff775485246999027b3197955"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 250827454128381456915479,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x03f18135c44c64ebfdcbad8297fe5bdafdbbdd86": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 5892042417574680212357331,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x1d2f0da169ceb9fc7b3144628db156f3f6c60dbe"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 9653132282432216388913,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x468b2dc8dc75990ee3e9dc0648965ad6294e7914": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 5874690969022425555236,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x0eb3a705fc54725037cc9e008bdede697f62f335"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 440550773122332050714,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x04eb8d58a47d2b45c9c2f673ceb6ff26e32385e3": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 128325046499612466,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x7f70642d88cf1c4a3a7abb072b53b929b653eda5"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 762782541110398401,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xce383277847f8217392eea98c5a8b4a7d27811b0": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 252713715676190387,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x88f1a5ae2a3bf98aeaf342d26b30a79438c9142e"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 16295427185976769289,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x014608e87af97a054c9a49f81e1473076d51d9a3": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 9723807690285944573811,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 3320239281435847942636,
+        "Exponent": -16
+      },
+      "tokenAddress": "0xbf5140a22578168fd562dccf235e5d43a02ce9b1"
+    }
+  },
+  "0xd9bccbbbdfd9d67beb5d2273102ce0762421d1e3": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 3644470925955943248787,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 201871942889220397731,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x1bdcebca3b93af70b58c41272aea2231754b23ca": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 116341581186397187304264,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xa2b726b1145a4773f68593cf171187d8ebe4d495"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 1298335579670771962585,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xd8e2f8b6db204c405543953ef6359912fe3a88d6": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 564520786008083737698777,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x47bead2563dcbf3bf2c9407fea4dc236faba485a"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 2066942430986841362348,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x460b4193ec4c1a17372aa5fdcd44c520ba658646": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 57103868624,
+        "Exponent": -6
+      },
+      "tokenAddress": "0xa8c2b8eec3d368c0253ad3dae65a5f2bbb89c929"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 200667898062646358665,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x73566ca86248bd12f0979793e4671e99a40299a7": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 16507234994089177563,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 10674535297,
+        "Exponent": -6
+      },
+      "tokenAddress": "0xf79037f6f6be66832de4e7516be52826bc3cbcc4"
+    }
+  },
+  "0x44ea47f2765fd5d26b7ef0222736ad6fd6f61950": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 1876262296716851950403,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x728c5bac3c3e370e372fc4671f9ef6916b814d8b"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 26746472988557609516,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x356dd24bff8e23bde0430f00ad0c290e33438bd7": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 4181891273674,
+        "Exponent": -6
+      },
+      "tokenAddress": "0x63870a18b6e42b01ef1ad8a2302ef50b7132054f"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 9962635731639231566,
+        "Exponent": -17
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x133ee93fe93320e1182923e1a640912ede17c90c": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 4612910157222981585011803,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x4bd17003473389a42daf6a0a729f6fdb328bbbd7"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 4272176536536904443359063,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    }
+  },
+  "0x8645148de4e339964ba480ae3478653b5bc6e211": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 16301938868271,
+        "Exponent": -9
+      },
+      "tokenAddress": "0x233d91a0713155003fc4dce0afa871b508b3b715"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 20182904325988830885,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xd63b5cecb1f40d626307b92706df357709d05827": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 388406952230781530571,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 1434031577868474212302628,
+        "Exponent": -17
+      },
+      "tokenAddress": "0xf21768ccbc73ea5b6fd3c687208a7c2def2d966e"
+    }
+  },
+  "0x24eb18ba412701f278b172ef96697c4622b19da6": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 33888525352487295053313,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x72faa679e1008ad8382959ff48e392042a8b06f7"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 31167421402513444149,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x1b415c3ec8095afbf9d78882b3a6263c4ad141b5": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 888465995523182213,
+        "Exponent": -17
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 10646155882398791949004,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xdff8cb622790b7f92686c722b02cab55592f152c"
+    }
+  },
+  "0x47c42b0a056a9c6e9c65b9ef79020af518e767a5": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 16139293934825262546034,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x5ac52ee5b2a633895292ff6d8a89bb9190451587"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 96489927905900674831,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x66fdb2eccfb58cf098eaa419e5efde841368e489": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 8093908065597561055732563,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 8085400418054771154303475,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    }
+  },
+  "0x2354ef4df11afacb85a5c7f98b624072eccddbb1": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 60218261914324333887961005,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 60129565121269272704630185,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    }
+  },
+  "0x71b01ebddd797c8e9e0b003ea2f4fd207fbf46cc": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 10217933578521751023454,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x4338665cbb7b2485a8855a139b75d5e34ab0db94"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 3069772788517586414732,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xb2678c414ebc63c9cc6d1a0fc45f43e249b50fde": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 3914886751871872305338,
+        "Exponent": -17
+      },
+      "tokenAddress": "0x78650b139471520656b9e7aa7a5e9276814a38e9"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 155806435539826649192,
+        "Exponent": -17
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xc869a9943b702b03770b6a92d2b2d25cf3a3f571": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 2369931699404994528978577,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x948d2a81086a075b3130bac19e4c6dee1d2e3fe8"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 362979801001644772801,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xc6b668548aa4a56792e8002a920d3159728121d5": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 42991115072087655126996,
+        "Exponent": -17
+      },
+      "tokenAddress": "0x928e55dab735aa8260af3cedada18b5f70c72f1b"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 564154068926490590342,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x7653d2c31440f04d2c6520d482dc5dbd7650f70a": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 11938870315910945659839,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x541e619858737031a1244a5d0cd47e5ef480342c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 877743169837135252,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xec6b56a736859ae8ea4beda16279ecd8c60da7ea": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 1532925392158962319304,
+        "Exponent": -17
+      },
+      "tokenAddress": "0x23396cf899ca06c4472205fc903bdb4de249d6fc"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 16020585534179661794,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xf215a127a196e3988c09d052e16bcfd365cd7aa3"
+    }
+  },
+  "0x91417426c3feaa3ca795921eb9fdd9715ad92537": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 9847024270798742877534,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x23396cf899ca06c4472205fc903bdb4de249d6fc"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 22083860653458305382,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xa04f060077d90fe2647b61e4da4ad1f97d6649dc"
+    }
+  },
+  "0xa3bfbbad526c6b856b1fdf73f99bcd894761fbf3": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 3229579359164927985915,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x23396cf899ca06c4472205fc903bdb4de249d6fc"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 1149024489696595239,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x62d71b23bf15218c7d2d7e48dbbd9e9c650b173f"
+    }
+  },
+  "0xc05654c66756ebb82c518598c5f1ea1a0199a563": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 2063393976637298525626,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x23396cf899ca06c4472205fc903bdb4de249d6fc"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 708681690038240882,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x3947b992dc0147d2d89df0392213781b04b25075"
+    }
+  },
+  "0x05faf555522fa3f93959f86b41a3808666093210": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 9220801989148112648706727,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x23396cf899ca06c4472205fc903bdb4de249d6fc"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 9247187821515854631226973,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    }
+  },
+  "0xcd68856b6e72e99b5eeaae7d41bb4a3b484c700d": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 124902214290354253553,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 306895976061643394409,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbf7c81fff98bbe61b40ed186e4afd6ddd01337fe"
+    }
+  },
+  "0x4288706624e3dd839b069216eb03b8b9819c10d2": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 372182506639079903946424,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x190b589cf9fb8ddeabbfeae36a813ffb2a702454"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 10849573299289889645,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xf74ee1e10e097dc326a2ad004f9cc95cb71088d3": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 42666194878537202198,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 7705401543,
+        "Exponent": -6
+      },
+      "tokenAddress": "0xc7d8d35eba58a0935ff2d5a33df105dd9f071731"
+    }
+  },
+  "0x1f37d4226d23d09044b8005c127c0517bd7e94fd": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 4252624481240285706029,
+        "Exponent": -17
+      },
+      "tokenAddress": "0xb59490ab09a0f526cc7305822ac65f2ab12f9723"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 164829186012816806714,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xc5768c5371568cf1114cddd52caed163a42626ed": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 55129126803208484428712624,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x762539b45a1dcce3d36d080f74d1aed37844b878"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 1415859040180843389971183,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    }
+  },
+  "0x942b294e59a8c47a0f7f20df105b082710f7c305": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 20106555916702232867649,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 9072449761412847093310071,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xd41fdb03ba84762dd66a0af1a6c8540ff1ba5dfb"
+    }
+  },
+  "0x37908620def1491dd591b5a2d16022a33cdda415": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 14535672849553694927,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x2170ed0880ac9a755fd29b2688956bd959f933f8"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 312503343847018373204,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x52ce071bd9b1c4b00a0b92d298c512478cad67e8"
+    }
+  },
+  "0x856f9ad94ca8680b899214bb1eb3d235a3c33afe": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 8758118714433571964,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 4484045601858020044356923,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xe40255c5d7fa7ceec5120408c78c787cecb4cfdb"
+    }
+  },
+  "0x8e799cb0737525ceb8a6c6ad07f748535ff6377b": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 457413688613490483142162,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x44754455564474a89358b2c2265883df993b12f0"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 155743551446070339021,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x21dd71ab78ede3033c976948f769d506e4f489ee": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 732740176350052530184,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 597892003658499046883842,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xf859bf77cbe8699013d6dbc7c2b926aaf307f830"
+    }
+  },
+  "0x4fd6d315bef387fad2322fbc64368fc443f0886d": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 9239632175894989506997404,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x71de20e0c4616e7fcbfdd3f875d568492cbe4739"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 39053846731524456987,
+        "Exponent": -17
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xa9986fcbdb23c2e8b11ab40102990a08f8e58f06": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 1136716051481412062086299,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x67ee3cb086f8a16f34bee3ca72fad36f7db929e2"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 1461800249119770360572,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x16afc4f2ad82986bbe2a4525601f8199ab9c832d": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 381516503161670896973,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x2170ed0880ac9a755fd29b2688956bd959f933f8"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 241538771603759123569617,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x947950bcc74888a40ffa2593c5798f11fc9124c4"
+    }
+  },
+  "0xc7a9c2af263ebb86139cca9349e49b17129ba033": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 991139683678114897,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 4110319004368541712235,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xf35262a9d427f96d2437379ef090db986eae5d42"
+    }
+  },
+  "0xe094c686ad6cdda57b9564457f541fbf099b948a": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 6035807063828086698,
+        "Exponent": -17
+      },
+      "tokenAddress": "0x92d7756c60dcfd4c689290e8a9f4d263b3b32241"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 67553018007348775312,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xc13aa76aac067c86ae38028019f414d731b3d86a": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 16005217093468414123839688,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x9678e42cebeb63f23197d726b29b1cb20d0064e5"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 12476905028371145187837,
+        "Exponent": -16
+      },
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    }
+  },
+  "0xc20a92a1424b29b78dfaf92fd35d4cf8a06419b4": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 111398737543833259173616,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x4131b87f74415190425ccd873048c708f8005823"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 3509356522222362281,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xaa40f1ac20aafcfee8595da606d78c503c7e70a3": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 259941211662347,
+        "Exponent": -9
+      },
+      "tokenAddress": "0x26a5dfab467d4f58fb266648cae769503cec9580"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 7969782268973612061235,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    }
+  },
+  "0x13321acff4a27f3d2bca64b8beac6e5fdaaaf12c": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 608239010276860774076315,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x7a9f28eb62c791422aa23ceae1da9c847cbec9b0"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 19907687231816008094,
+        "Exponent": -17
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x6d0c831254221ba121fb53fb44df289a6558867d": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 3656553565181592917877,
+        "Exponent": -17
+      },
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 21276233923,
+        "Exponent": -4
+      },
+      "tokenAddress": "0xeca41281c24451168a37211f0bc2b8645af45092"
+    }
+  },
+  "0x69dee989c30b5ffe40867f5fc14f00e4bce7b681": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 39164158677870745712734,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x8443f091997f06a61670b735ed92734f5628692f"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 97418805507192852074,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x3578b1f9bce98d2f4d293b422d8850fdf48b1f21": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 5832377427545855151407,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x039cb485212f996a9dbb85a9a75d898f94d38da6"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 38934025052525944904574,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    }
+  },
+  "0x153ad7d25b0b810497483d0cee8af42fc533fec8": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 6587401900180533043783,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x81859801b01764d4f0fa5e64729f5a6c3b91435b"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 106329562073029929238,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xe834bf723f5bdff34a5d1129f3c31ea4787bc76a": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 8422853081814193920895064,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x8519ea49c997f50ceffa444d240fb655e89248aa"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 936262381521040643858563,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    }
+  },
+  "0xf3bc6fc080ffcc30d93df48bfa2aa14b869554bb": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 13226803104001794227362,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 4032660469491967646918989,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xe0e514c71282b6f4e823703a39374cf58dc3ea4f"
+    }
+  },
+  "0x853784b7bde87d858555715c0123374242db7943": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 5069864651716,
+        "Exponent": -8
+      },
+      "tokenAddress": "0x8cd6e29d3686d24d3c2018cee54621ea0f89313b"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 22095793573119289190796,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    }
+  },
+  "0x222c3cbb89647bf77822435bd4c234a04272a77a": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 80320716456891916224073,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x211ffbe424b90e25a15531ca322adf1559779e45"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 97463565022605535429,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xe60b4e87645093a42fa9dcc5d0c8df6e67f1f9d2": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 507855588527490660198032,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x658a109c5900bc6d2357c87549b651670e5b0539"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 23307136873737352286347,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    }
+  },
+  "0xcad7019d6d84a3294b0494aef02e73bd0f2572eb": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 437160988269,
+        "Exponent": -6
+      },
+      "tokenAddress": "0xac51066d7bec65dc4589368da368b212745d63e8"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 8504552305069228161966,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x5afef8567414f29f0f927a0f2787b188624c10e2": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 1404754913355717744449,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 1352748989429540027263323,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xc9849e6fdb743d08faee3e34dd2d1bc69ea11a51"
+    }
+  },
+  "0xe98585bbb2dc81854ff100a3d9d7b0f53e0dafed": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 1786729191902299976095143,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x96dd399f9c3afda1f194182f71600f1b65946501"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 82452001047502259054,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x1434bb50196a0c7ea825940b1dfd8aad25d79817": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 585879858642146436825443,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x1ffd0b47127fdd4097e54521c9e2c7f0d66aafc5"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 44414601808049361712738,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    }
+  },
+  "0x3f1a9f3d9aad8bd339ed4853f345d2ef89fbfe0c": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 2359747351766696268979,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 401237566024721544536,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xca3f508b8e4dd382ee878a314789373d80a5190a"
+    }
+  },
+  "0x678edb8b268e73db57b7694c163e1dc296b6e219": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 696548956750517962342138,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xb2bd0749dbe21f623d9baba856d3b0f0e1bfec9c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 970549857553408817973,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x8f6baf368e7a4f6e2c9c995f22702d5e654a0237": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 255703675827516009240036,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x7af173f350d916358af3e218bdf2178494beb748"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 48635065390397163936,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x89666d026696660e93bf6edf57b71a68615768b7": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 13836205238187635827045,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x23396cf899ca06c4472205fc903bdb4de249d6fc"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 11919695053761605208421,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x5b6dcf557e2abe2323c48445e8cc948910d8c2c9"
+    }
+  },
+  "0xa5bb44c6f5fd9b836e5a654c8abbccc96a15dee5": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 163175331381688985709125,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x857b222fc79e1cbbf8ca5f78cb133d1b7cf34bbd"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 8649137654430120393,
+        "Exponent": -17
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x81d776c90c89b8d51e9497d58338933127e2fa80": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 22517828760082762138,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x5986d5c77c65e5801a5caa4fae80089f870a71da"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 357137924019061342,
+        "Exponent": -17
+      },
+      "tokenAddress": "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c"
+    }
+  },
+  "0x5a58609da96469e9def3fe344bc39b00d18eb9a5": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 25988844495865389449912,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x1f7216fdb338247512ec99715587bb97bbf96eae"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 907865547681173817,
+        "Exponent": -17
+      },
+      "tokenAddress": "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c"
+    }
+  },
+  "0x6615ce60d71513aa4849269dd63821d324a23f8c": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 507871257426711734411,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 46276414300344624935475,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbcf39f0edda668c58371e519af37ca705f2bfcbd"
+    }
+  },
+  "0x6a97867a4b7eb7646ffb1f359ad582e9903aa1c2": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 2176632222580952175,
+        "Exponent": -12
+      },
+      "tokenAddress": "0xb86abcb37c3a4b64f74f59301aff131a1becc787"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 264581247650627473163,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xa4963b38b271c0d714593063497fc786fa4029ce": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 521248590142,
+        "Exponent": -8
+      },
+      "tokenAddress": "0x5d684adaf3fcfe9cfb5cede3abf02f0cdd1012e3"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 1435811789905315215,
+        "Exponent": -17
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x123d475e13aa54a43a7421d94caa4459da021c77": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 52795795710056,
+        "Exponent": -8
+      },
+      "tokenAddress": "0x250b211ee44459dad5cd3bca803dd6a7ecb5d46c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 19778452753702502546,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x24d3b0ed4c444a4f6882d527cbf67adc8c026582": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 9044548923152280483116182,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x42712df5009c20fee340b245b510c0395896cf6e"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 37855894462985816442,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x0362ba706dfe8ed12ec1470ab171d8dcb1c72b8d": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 19636362191297340692,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 615804276270477662,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xed28a457a5a76596ac48d87c0f577020f6ea1c4c"
+    }
+  },
+  "0x28ea5894d4dbbe90bb58ee3bab2869387d711c87": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 295877534408803444686,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 951884617329572318065164,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xc53708664b99df348dd27c3ac0759d2da9c40462"
+    }
+  },
+  "0xf1ec67fa1881796bff63db3e1a301ce9cb787fad": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 237363249485026557919556,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x3fda9383a84c05ec8f7630fe10adf1fac13241cc"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 2340761591583933125434,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xe482249cd295c0d1e9d2baaee71e66de21024c68": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 324154660257643096981164,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x42f6f551ae042cbe50c739158b4f0cac0edb9096"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 24582116179212037124,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x20c6de8983fb2d641c55004646aef40b4ea66e18": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 170478445606791262486472,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x7c17c8bed8d14bacce824d020f994f4880d6ab3b"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 2436545363588632941,
+        "Exponent": -17
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0x3c2c77353e2f6ac1578807b6b2336bf3a3cbb014": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 501366074376514199517,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 1065934590762155794773616,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xcd40f2670cf58720b694968698a5514e924f742d"
+    }
+  },
+  "0x3e42c1f7239231e3752b507764445dd8e6a570d5": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 808939207757,
+        "Exponent": -8
+      },
+      "tokenAddress": "0xe1d1f66215998786110ba0102ef558b22224c016"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 8681660457270260317442,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56"
+    }
+  },
+  "0x510b29a93ebf098f3fc24a16541aaa0114d07056": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 66842357092348678686112,
+        "Exponent": -17
+      },
+      "tokenAddress": "0x37dfacfaeda801437ff648a1559d73f4c40aacb7"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 197851964019581372603,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xffd4b200d3c77a0b691b5562d804b3bd54294e6e": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 1438471798025385159996757,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x9f589e3eabe42ebc94a44727b3f3531c0c877809"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 2850131359751793552321,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xb8b4383b49d451bbea63bc4421466e1086da6f18": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 58840420238940488101466052,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x96058f8c3e16576d9bd68766f3836d9a33158f89"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 19093912323510727612,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
+    }
+  },
+  "0xd02da76c813b9cd4516ed50442923e625f90228f": {
+    "poolToken0": {
+      "tokenSymbol": "Cake",
+      "tokenReverse": {
+        "Mantissa": 2692842334954690671229496,
+        "Exponent": -18
+      },
+      "tokenAddress": "0x04c747b40be4d535fc83d09939fb0f626f32800b"
+    },
+    "poolToken1": {
+      "tokenSymbol": "LP",
+      "tokenReverse": {
+        "Mantissa": 1605469109048213707021,
+        "Exponent": -18
+      },
+      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
     }
   }
 }

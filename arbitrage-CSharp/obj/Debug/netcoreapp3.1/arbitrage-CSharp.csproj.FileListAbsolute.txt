@@ -52,7 +52,6 @@ D:\_Work\_mev\bsc\arbitrage-CSharp\obj\Debug\netcoreapp3.1\arbitrage-CSharp.cspr
 D:\_Work\_mev\bsc\arbitrage-CSharp\obj\Debug\netcoreapp3.1\arbitrage-CSharp.dll
 D:\_Work\_mev\bsc\arbitrage-CSharp\obj\Debug\netcoreapp3.1\arbitrage-CSharp.pdb
 D:\_Work\_mev\bsc\arbitrage-CSharp\obj\Debug\netcoreapp3.1\arbitrage-CSharp.genruntimeconfig.cache
-D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\myConfig.json
 D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll
 D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\Microsoft.Win32.Registry.dll
 D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\NBitcoin.dll
@@ -81,3 +80,5 @@ D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\Nethereum.Uniswap.pdb
 D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\uniswapV3_pairAbi.json
 D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\uniswapV3_factoryAbi.json
 D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\tokenAbi.json
+D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\myConfig_BSC.json
+D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\myConfig_ETH.json
