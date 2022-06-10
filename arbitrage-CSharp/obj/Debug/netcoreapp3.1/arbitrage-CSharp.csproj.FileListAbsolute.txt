@@ -82,3 +82,4 @@ D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\uniswapV3_factoryAbi.
 D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\tokenAbi.json
 D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\myConfig_BSC.json
 D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\myConfig_ETH.json
+D:\_Work\_mev\bsc\arbitrage-CSharp\bin\Debug\netcoreapp3.1\wbnbAbi.json

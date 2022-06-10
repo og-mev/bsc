@@ -47,6 +47,10 @@ namespace Nethereum.Client
         public static string HttpUrl { get; set; } = "http://localhost:8545";
         public static System.Numerics.BigInteger ChainId { get; set; } = 444444444500;
 
+        public string DeployStr { get; set; }
+
+        public string flashswap { get; set; }
+
         public static Account GetAccount()
         {
             return new Account(AccountPrivateKey, ChainId);
@@ -124,6 +128,10 @@ namespace Nethereum.Client
             public string InfuraId { get; set; }
 
             public string HttpUrl { get; set; }
+
+            public string DeployStr { get; set; }
+
+            public string flashswap { get; set; }
         }
 
         public EthereumClientIntegrationFixture()
@@ -151,6 +159,8 @@ namespace Nethereum.Client
                     if (!string.IsNullOrEmpty(ethereumTestSettings.InfuraNetwork)) InfuraNetwork = (InfuraNetwork)Enum.Parse(typeof(InfuraNetwork), ethereumTestSettings.InfuraNetwork); ;
                     if (!string.IsNullOrEmpty(ethereumTestSettings.InfuraId)) InfuraId = ethereumTestSettings.InfuraId;
                     if (!string.IsNullOrEmpty(ethereumTestSettings.HttpUrl)) HttpUrl = ethereumTestSettings.HttpUrl;
+                    if (!string.IsNullOrEmpty(ethereumTestSettings.InfuraId)) DeployStr = ethereumTestSettings.DeployStr;
+                    if (!string.IsNullOrEmpty(ethereumTestSettings.HttpUrl)) flashswap = ethereumTestSettings.flashswap;
                 }
             }
 
@@ -275,6 +285,29 @@ namespace Nethereum.Client
                 };
                 _process = Process.Start(psi);
                 Thread.Sleep(10000);
+                //添加测试参数
+
+                var deployP = new ProcessStartInfo("npx")
+                {
+                    CreateNoWindow = false,
+                    WindowStyle = ProcessWindowStyle.Normal,
+                    UseShellExecute = true,
+                    WorkingDirectory = _exePath,
+                    Arguments = DeployStr
+
+                };
+                Process.Start(deployP);
+                var flashswapP = new ProcessStartInfo("npx")
+                {
+                    CreateNoWindow = false,
+                    WindowStyle = ProcessWindowStyle.Normal,
+                    UseShellExecute = true,
+                    WorkingDirectory = _exePath,
+                    Arguments = flashswap
+
+                };
+                Process.Start(flashswapP);
+
             }
 
 

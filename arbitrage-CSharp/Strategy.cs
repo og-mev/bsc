@@ -17,6 +17,9 @@ using Nethereum.RPC.Eth.DTOs;
 using arbitrage_CSharp.Mode;
 using System.Numerics;
 using Nethereum.Util;
+using WBNB;
+using Nethereum.Web3.Accounts;
+using static Nethereum.Util.UnitConversion;
 
 namespace arbitrage_CSharp
 {
@@ -73,6 +76,8 @@ namespace arbitrage_CSharp
             _ethereumClientIntegrationFixture = new EthereumClientIntegrationFixture();
         }
 
+       
+
         public async void StartAsync()
         {
 
@@ -81,11 +86,16 @@ namespace arbitrage_CSharp
 
             //1 拉取 redis 获取 全路径，并且监听更新
             //RedisDB.Instance.StringGet<T>(DBKey);
-            poolPairsDic = await GetPoolDatasByContractAsync();//GetPoolDatasByFile();
-            //poolPairsDic = GetPoolDatasByFile();
+            //poolPairsDic = await GetPoolDatasByContractAsync();//GetPoolDatasByFile();
+            poolPairsDic = GetPoolDatasByFile();
             PoolDataHelper.Init(poolPairsDic);
+            //test 兑换 wbnb
+            await TestGetBaseTokenAsync();
+
+
+
             //获取所有路径,和 每个token 的可以兑换tokens;
-            var (tokensSwapPathsDic, adjacencyList) = GetAllPaths(poolPairsDic);
+            var (tokensSwapPathsDic, adjacencyList) = GetAllPaths(poolPairsDic,4,false);
             this.tokensSwapPathsDic = tokensSwapPathsDic;
             //RedisDB.Init(config.RedisConfig);
             //2 监听 peending  tx
@@ -101,15 +111,12 @@ namespace arbitrage_CSharp
             }
             catch (Exception ex)
             {
-
                 Logger.Error(ex);
             }
-            
-
-
         }
 
-       
+
+
 
         /// <summary>
         /// 监听tx消息
@@ -121,11 +128,14 @@ namespace arbitrage_CSharp
             //解析tx,获取到的tx是什么样子的,有可能同一个 区块中有多笔 tx改变？
             string poolId = config.testConfig.poolId;
             string adressFrom = config.testConfig.adressFrom;//DAI
-            decimal amountFrom = 1000;
+            decimal amountFrom = 0;
             string addressTo = config.testConfig.adressTo;//USDC
             //test下需要计算出能兑换多少，实际上通过服务器传送
             BigDecimal changeAmountTo = 0;
-            var poolPair = poolPairsDic[poolId];
+           
+
+
+            var poolPair  = PoolDataHelper.GetPoolPair(adressFrom, addressTo);
             var token0 = poolPair.GetToken(adressFrom, poolId);
             var token1 = poolPair.GetToken(addressTo, poolId);
 
@@ -136,25 +146,45 @@ namespace arbitrage_CSharp
             //根据tx 修改池子里面的数量
             token0.tokenReverse += amountFrom;
             token1.tokenReverse -= changeAmountTo;
-            //获取 两个token的路径
-            
-            var tokenPaths = GetRandomPath(token0.tokenAddress, 3);
-            var (bestPath,bestAmount) = GetPathsWithAmount(tokenPaths, token0,  token1);
-
 
             //4 根据盈利比例计算出所有可兑换的路径，以及最大兑换数量
+            //获取 两个token的路径
+            
+            
+            var tokenPaths = GetRandomPath(token0.tokenAddress, 3);
+            var (bestPath, bestAmount,amountOut) = GetPathsWithAmount(tokenPaths, token0,  true);
+            //TestAllTokens(token0, token1);
+
+            //还原币为 实际值 到 bigintger 
+            //BigInteger bestAmount_BI = token0.tokenReverse
+
 
             //5 签名后发给 ray
-            var flashswapAddr = JObject.Parse(File.ReadAllText("../contract/deploy.json"))["address"].ToString();
-            var bridge = new SwapBridge("BSC", flashswapAddr);
+            var flashswapAddr = JObject.Parse(File.ReadAllText(config.contractPath+ "deploy.json"))["address"].ToString();
+            var swapAbi = JObject.Parse(File.ReadAllText(config.contractPath + "artifacts/contracts/flashswap.sol/Flashswap.json"))["abi"].ToString();
+            var bridge = new SwapBridge("BSC", flashswapAddr.ToLower(),swapAbi: swapAbi);
 
             //根据算法来交换 币
-            var swapArr = new List<(string symbol, decimal amountIn, decimal amountOutMin, string[] path)>();
-            (string symbol, decimal amountIn, decimal amountOutMin, string[] path) swap = ("pancakeswap", 2.0m, 1.0m, new string[] { "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56" });
-
+            var swapArr = new List<(string symbol, BigInteger amountIn, BigInteger amountOutMin, string[] path)>();
+            
+            var v0 = token0.tokenReverse_bigInteger((double)bestAmount); 
+            var v1 = token0.tokenReverse_bigInteger((double)amountOut); 
+            (string symbol, BigInteger amountIn, BigInteger amountOutMin, string[] path) swap = ("pancakeswap", v0, v1, bestPath.ToArray());
             swapArr.Add(swap);
-            await bridge.import_wallets("0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80");
-            bridge.swap(swapArr);
+            await bridge.import_wallets(config.privateKeys.ToArray());
+            
+
+            try
+            {
+                await bridge.swap(swapArr);
+            }
+            catch (Exception ex)
+            {
+
+                Logger.Error(ex) ;
+            }
+           
+            Logger.Debug("完成了！！！！！！！！！！！");
         }
 
         /// <summary>
@@ -162,8 +192,7 @@ namespace arbitrage_CSharp
         /// </summary>
         /// <param name="tokenPaths"></param>
         /// <param name="token0"> 表示我们拥有要兑换的</param>
-        /// <param name="token1"></param>
-        private (List<string> backPath, BigDecimal bestAmountT0ALL) GetPathsWithAmount(List<List<string>> tokenPaths, PoolToken token0, PoolToken token1)
+        private (List<string> backPath, BigDecimal bestAmountT0ALL,BigDecimal bestProfit) GetPathsWithAmount(List<List<string>> tokenPaths, PoolToken token0, bool islog = true)
         {
             List<string> backPath = new List<string>();
             BigDecimal bestAmountT0ALL = 0;
@@ -177,11 +206,16 @@ namespace arbitrage_CSharp
                 for (int i = 0; i < path.Count-1; i++)
                 {
                     var _poolPair = PoolDataHelper.GetPoolPair(path[i],path[i+1]);
-                    Logger.Debug($"path[i]_path[+1]  {path[i]}_{path[i + 1]}");
+                    if (islog)
+                    {
+                        Logger.Debug($"path[i]_path[+1]  {path[i]}_{path[i + 1]}");
+                    }
+                    
                     //t0表示我们其实拥有的token，t1是要兑换的
                     if (_poolPair!=null)
                     {
-                        Logger.Debug(_poolPair.ToString());
+                        if (islog)
+                            Logger.Debug(_poolPair.ToString());
                         cFMMPaths.Add(_poolPair);
                     }
                 }
@@ -189,7 +223,8 @@ namespace arbitrage_CSharp
                 {
                     CFMM endCFMM = CFMM.GetVisualCFMM(config.uniswapV2_fee, cFMMPaths.ToArray());
                     BigDecimal bestAmountT0 = CFMM.GetBestChangeAmount(endCFMM.R0, endCFMM.R1, config.uniswapV2_fee);
-                    Logger.Debug($" bestAmountT0 {bestAmountT0} 路径最近兑换数量 {string.Join("-->", path.ToArray()) }");
+                    if (islog)
+                        Logger.Debug($" bestAmountT0 {bestAmountT0} 路径最近兑换数量 {string.Join("-->", path.ToArray()) }");
                     //计算利润
                     if (bestAmountT0> 0)
                     {
@@ -201,7 +236,8 @@ namespace arbitrage_CSharp
                             bestProfit = profit;
                             backPath = path;
                             bestAmountT0ALL = bestAmountT0;
-                            Logger.Debug($" bestProfit {bestProfit} ");
+                            //if (islog)
+                                Logger.Debug($" bestProfit {bestProfit} ");
                         }
                     }
                 }
@@ -210,7 +246,7 @@ namespace arbitrage_CSharp
                     Logger.Error(ex);
                 }
             }
-            return (backPath, bestAmountT0ALL);
+            return (backPath, bestAmountT0ALL, bestProfit);
 
         }
         /// <summary>
@@ -328,64 +364,28 @@ namespace arbitrage_CSharp
             //存放所有的 池里面的数据
             Dictionary<string, PoolPairs> allPoolDic = new Dictionary<string, PoolPairs>();
             //先只要100个
-            for (int i = 0; i < 100; i++)
+            var allPairs = factoryContract.GetFunction("allPairs");
+            List<Task<(string pairAddress, PoolPairs pairs)>> tasks = new List<Task<(string pairAddress, PoolPairs pairs)>>();
+            for (int i = 0; i < 500; i++)
             {
-                
-                var allPairs = factoryContract.GetFunction("allPairs");
-                string pairAddress = (await allPairs.CallAsync<string>(i)).ToLower();
-                symbolAddressList.Add(pairAddress);
-                Logger.Debug($"pairAddress {pairAddress}");
-
-                //获取每个交易对的 数量和地址
-                var pairContract = web3.Eth.GetContract(pairAbiStr, pairAddress);
-                var reserveData = await pairContract.GetFunction("getReserves")
-                .CallAsync< ReservesDto > ();
-
-                string addressT0 = await pairContract.GetFunction("token0")
-                .CallAsync<string>();
-                string addressT1 = await pairContract.GetFunction("token1")
-                .CallAsync<string>();
-
-//                 string symbol = await pairContract.GetFunction("symbol")
-//                 .CallAsync<string>();
-//                 var symbolP = symbol.Split('-');
-                Logger.Debug($"addressT0 {addressT0} addressT1 {addressT1} ");
-
-                //var ss = reserveData.Reserve0 / reserveData.Reserve1;
-
-                try
+                if (i % 10 == 0)
                 {
-                    var token0Contract = web3.Eth.GetContract(tokenAbiStr, addressT0);
-                    int dec0 = await token0Contract.GetFunction("decimals")
-                        .CallAsync<int>();
-                    var token1Contract = web3.Eth.GetContract(tokenAbiStr, addressT1);
-                    int dec1 = await token1Contract.GetFunction("decimals")
-                        .CallAsync<int>();
-                    string symbol0 = await token0Contract.GetFunction("symbol")
-                                    .CallAsync<string>();
-                    string symbol1 = await token1Contract.GetFunction("symbol")
-                .   CallAsync<string>();
-                    BigDecimal r0 = new BigDecimal(reserveData.Reserve0, -dec0);
-                    BigDecimal r1 = new BigDecimal(reserveData.Reserve1, -dec1);
-
-                    PoolToken t0 = new PoolToken(symbol0, r0, addressT0);
-                    PoolToken t1 = new PoolToken(symbol1, r1, addressT1);
-
-
-                    allPoolDic.Add(pairAddress, new PoolPairs(t0, t1));
-                    Logger.Debug($"address {pairAddress} addressT0 {addressT0} {reserveData.Reserve0}  addressT1 {addressT1} {reserveData.Reserve1} symbol {symbol0} {symbol1}");
+                    await Task.Delay(5000);
                 }
-                catch (Exception)
+                if (i % 12 == 0)
                 {
-
-                    Logger.Error($"这个不是erc20 ！！！！！！！！！！！！pairAddress {pairAddress}");
+                    await Task.WhenAll(tasks.ToArray());
+                    tasks.Clear();
                 }
-                
+                tasks.Add( GetPoolData(web3, symbolAddressList, tokenAbiStr, pairAbiStr, allPoolDic, allPairs, i));
+
                 //string strs = JsonConvert.SerializeObject(allPoolDic, Formatting.Indented);
 
                 //Logger.Debug(strs);
                 //File.WriteAllText("./allPairs.json", strs);
             }
+            await Task.WhenAll(tasks.ToArray());
+
 
             string str = JsonConvert.SerializeObject(allPoolDic, Formatting.Indented);
             Logger.Debug(str);
@@ -394,6 +394,65 @@ namespace arbitrage_CSharp
             return allPoolDic;
 
         }
+
+        private static async Task<(string pairAddress, PoolPairs pairs)> GetPoolData(Web3 web3, List<string> symbolAddressList, string tokenAbiStr, string pairAbiStr, Dictionary<string, PoolPairs> allPoolDic, Function allPairs, int i)
+        {
+            
+            try
+            {
+                string pairAddress = (await allPairs.CallAsync<string>(i)).ToLower();
+                symbolAddressList.Add(pairAddress);
+                Logger.Debug($"pairAddress {pairAddress}");
+
+                //获取每个交易对的 数量和地址
+                var pairContract = web3.Eth.GetContract(pairAbiStr, pairAddress);
+                var reserveData = await pairContract.GetFunction("getReserves")
+                .CallAsync<ReservesDto>();
+
+                string addressT0 = await pairContract.GetFunction("token0")
+                .CallAsync<string>();
+                string addressT1 = await pairContract.GetFunction("token1")
+                .CallAsync<string>();
+
+                //                 string symbol = await pairContract.GetFunction("symbol")
+                //                 .CallAsync<string>();
+                //                 var symbolP = symbol.Split('-');
+                Logger.Debug($"addressT0 {addressT0} addressT1 {addressT1} ");
+
+                //var ss = reserveData.Reserve0 / reserveData.Reserve1;
+
+
+
+                var token0Contract = web3.Eth.GetContract(tokenAbiStr, addressT0);
+                int dec0 = await token0Contract.GetFunction("decimals")
+                    .CallAsync<int>();
+                var token1Contract = web3.Eth.GetContract(tokenAbiStr, addressT1);
+                int dec1 = await token1Contract.GetFunction("decimals")
+                    .CallAsync<int>();
+                string symbol0 = await token0Contract.GetFunction("symbol")
+                                .CallAsync<string>();
+                string symbol1 = await token1Contract.GetFunction("symbol")
+            .CallAsync<string>();
+                BigDecimal r0 = new BigDecimal(reserveData.Reserve0, -dec0);
+                BigDecimal r1 = new BigDecimal(reserveData.Reserve1, -dec1);
+
+                PoolToken t0 = new PoolToken(symbol0, r0, addressT0, dec0);
+                PoolToken t1 = new PoolToken(symbol1, r1, addressT1, dec1);
+
+
+                allPoolDic.Add(pairAddress, new PoolPairs(t0, t1));
+                Logger.Debug($"address {pairAddress} addressT0 {addressT0} {reserveData.Reserve0}  addressT1 {addressT1} {reserveData.Reserve1} symbol {symbol0} {symbol1}");
+                return (pairAddress, new PoolPairs(t0, t1));
+            }
+            catch (Exception)
+            {
+
+                Logger.Error($"这个不是erc20 ！！！！！！！！！！！！idx {i}");
+            }
+            return (null,null);
+
+        }
+
         /// <summary>
         /// 通过存档获取所有交易对
         /// </summary>
@@ -420,14 +479,72 @@ namespace arbitrage_CSharp
             return allPoolDic;
         }
         #endregion
+
+        #region test
+        private void TestAllTokens(PoolToken token0, PoolToken token1)
+        {
+            foreach (var item in tokensSwapPathsDic)
+            {
+                var tokenPaths = GetRandomPath(item.Key, 3);
+                var (bestPath, bestAmountIn, amountOut) = GetPathsWithAmount(tokenPaths, token0,  false);
+                if (bestAmountIn > 0)
+                {
+                    Logger.Debug($"{item.Key}  {bestAmountIn}  {string.Join("->", bestPath)}");
+                }
+            }
+        }
+        /// <summary>
+        /// 添加默认token
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="contractAddress"></param>
+        /// <returns></returns>
+        private async Task TestGetBaseTokenAsync(string url = "http://127.0.0.1:8545/",string contractAddress= "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c")
+        {
+            var account = new Account(config.privateKeys[0]);
+            var address = account.Address;
+            var web3 = new Web3(account, url);
+            string wnnbAbi = File.ReadAllText(config.wbnbAbi);
+            var contractHandler = web3.Eth.GetContractHandler(contractAddress);
+
+            BigInteger amount = UnitConversion.Convert.ToWei(100);
+            //质押
+            DepositFunction deposit = new DepositFunction()
+            {
+                AmountToSend = amount,
+                Gas = 30000000,
+                GasPrice = 5000000000,
+                FromAddress = account.Address,
+            };
+
+            var depositFunctionTxnReceipt = await contractHandler.SendRequestAndWaitForReceiptAsync<DepositFunction>(deposit);
+            //转账
+            var transferFunction = new TransferFunction()
+            {
+                AmountToSend = 0,
+                Gas = 30000000,
+                GasPrice = 5000000000,
+                FromAddress = account.Address,
+            };
+            transferFunction.Dst = address;
+            transferFunction.Wad = amount;
+            var transferFunctionTxnReceipt = await contractHandler.SendRequestAndWaitForReceiptAsync(transferFunction);
+
+            Logger.Debug($"change {amount} to bnb");
+        }
+        #endregion
     }
 
 
 
     public class Config
     {
+        
+        public List<string> privateKeys = new List<string> { "0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e" };//真实测试  0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
         public string RedisConfig= "localhost,password=l3h2p1w0*";
+
+        public string contractPath = "D://_Work//_mev//bsc//contract//";
 
         public string pairsDataPath = "./allPairs.json";
 
@@ -438,6 +555,8 @@ namespace arbitrage_CSharp
         public string unswapV2_FactoryAddress = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f";
 
         public string uniswapV3_pairAbi;
+
+        public string wbnbAbi = "./wbnbAbi.json";
 
         public decimal uniswapV2_fee = 0.0m;
         /// <summary>
@@ -454,11 +573,11 @@ namespace arbitrage_CSharp
 
     public class TestConfig
     {
-        public string poolId = "0xae461ca67b15dc8dc81ce7615e0320da1a9ab8d5";
+        public string poolId = "0x74e4716e431f45807dcf19f284c7aa99f18a4fbc";//"0xae461ca67b15dc8dc81ce7615e0320da1a9ab8d5";
 
-        public string adressFrom = "0x6b175474e89094c44da98b954eedeac495271d0f";
+        public string adressFrom = "0x2170ed0880ac9a755fd29b2688956bd959f933f8";//"0x6b175474e89094c44da98b954eedeac495271d0f";
 
-        public string adressTo= "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
+        public string adressTo = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";//"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
     }
     //https://mainnet.infura.io/v3/f7d3ed56ffc1466bbfa4d23738fc0a87
     //npx hardhat node --fork https://mainnet.infura.io/v3/f7d3ed56ffc1466bbfa4d23738fc0a87

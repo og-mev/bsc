@@ -1992,7 +1992,7 @@
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
-          "Nethereum.Web3": "3.8.0"
+          "Nethereum.Web3": "4.5.0"
         },
         "compile": {
           "bin/placeholder/Nethereum.Uniswap.dll": {}

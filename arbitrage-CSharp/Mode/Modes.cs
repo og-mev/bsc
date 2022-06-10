@@ -24,6 +24,8 @@ using Nethereum.Contracts.Extensions;
 using Nethereum.Contracts.Standards.ENS.Registrar.ContractDefinition;
 using Nethereum.RPC.TransactionManagers;
 using arbitrage_CSharp.Tools;
+using Nethereum.RPC.NonceServices;
+using Nethereum.RPC.Eth.DTOs;
 
 namespace arbitrage_CSharp
 {
@@ -81,16 +83,17 @@ namespace arbitrage_CSharp
 
     public class SwapBridge
     {
-       
+
 
         public string symbol { get; set; }
-        public string address { get; set; }
+        public string contractAdrees { get; set; }
 
 
         public ClientBase provider { get; set; }
 
         public Contract contract { get; set; }
 
+        public Web3 web3{ get; set; }
         public string bridgeAbi
         {
             get { return _bridgeAbi; }
@@ -107,15 +110,16 @@ namespace arbitrage_CSharp
 
         public List<(Account,BigInteger)> wallets { get; set; }
 
-        public SwapBridge(string symbol, string address= "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",string rpcUrl = "http://127.0.0.1:8545/", string swapAbi = null)
+        public SwapBridge(string symbol ,string contractAdrees = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",string rpcUrl = "http://127.0.0.1:8545/", string swapAbi = null)
         {
-            this._bridgeAbi = JObject.Parse(File.ReadAllText("../../contract/artifacts/contracts/flashswap.sol/Flashswap.json"))["abi"].ToString();
+            //this._bridgeAbi = JObject.Parse(File.ReadAllText("../../contract/artifacts/contracts/flashswap.sol/Flashswap.json"))["abi"].ToString();
 
             this.symbol = symbol;
-            this.address = address;
+            this.contractAdrees = contractAdrees ;
             this.bridgeAbi = swapAbi;
             this.provider = init_provider(rpcUrl);
-            this.contract = attach_swap_contract(rpcUrl);//使用自己的高速通道创建
+            
+            this.contract = attach_swap_contract(rpcUrl,contractAdrees);//使用自己的高速通道创建
             this.wallets = new List<(Account, BigInteger)>();
         }
 
@@ -146,11 +150,11 @@ namespace arbitrage_CSharp
             return provider;
         }
 
-        private Contract attach_swap_contract(string url)
+        private Contract attach_swap_contract(string url ,string contractAdrees)
         {
             var web3 = new Web3( url);
             //var abi = @"[{""constant"":false,""inputs"":[{""name"":""_spender"",""type"":""address""},{""name"":""_value"",""type"":""uint256""}],""name"":""approve"",""outputs"":[{""name"":""success"",""type"":""bool""}],""type"":""function""},{""constant"":true,""inputs"":[],""name"":""totalSupply"",""outputs"":[{""name"":""supply"",""type"":""uint256""}],""type"":""function""},{""constant"":false,""inputs"":[{""name"":""_from"",""type"":""address""},{""name"":""_to"",""type"":""address""},{""name"":""_value"",""type"":""uint256""}],""name"":""transferFrom"",""outputs"":[{""name"":""success"",""type"":""bool""}],""type"":""function""},{""constant"":true,""inputs"":[{""name"":""_owner"",""type"":""address""}],""name"":""balanceOf"",""outputs"":[{""name"":""balance"",""type"":""uint256""}],""type"":""function""},{""constant"":false,""inputs"":[{""name"":""_to"",""type"":""address""},{""name"":""_value"",""type"":""uint256""}],""name"":""transfer"",""outputs"":[{""name"":""success"",""type"":""bool""}],""type"":""function""},{""constant"":true,""inputs"":[{""name"":""_owner"",""type"":""address""},{""name"":""_spender"",""type"":""address""}],""name"":""allowance"",""outputs"":[{""name"":""remaining"",""type"":""uint256""}],""type"":""function""},{""inputs"":[{""name"":""_initialAmount"",""type"":""uint256""}],""type"":""constructor""},{""anonymous"":false,""inputs"":[{""indexed"":true,""name"":""_from"",""type"":""address""},{""indexed"":true,""name"":""_to"",""type"":""address""},{""indexed"":false,""name"":""_value"",""type"":""uint256""}],""name"":""Transfer"",""type"":""event""},{""anonymous"":false,""inputs"":[{""indexed"":true,""name"":""_owner"",""type"":""address""},{""indexed"":true,""name"":""_spender"",""type"":""address""},{""indexed"":false,""name"":""_value"",""type"":""uint256""}],""name"":""Approval"",""type"":""event""}]";
-            var contract = web3.Eth.GetContract(bridgeAbi, address);
+            var contract = web3.Eth.GetContract(bridgeAbi, contractAdrees);
             Logger.Debug($"contract {contract.ToString()}");
             return contract;
         }
@@ -167,36 +171,42 @@ namespace arbitrage_CSharp
         {
             var account = new Account(privateKey);
             var address = account.Address;
-            var web3 = new Web3(account,provider);
-            var nonce = await web3.Eth.Transactions.GetTransactionCount.SendRequestAsync(account.PublicKey);
+            web3 = new Web3(account,provider);
+            var balance = await web3.Eth.GetBalance.SendRequestAsync(account.Address);
+            Logger.Debug($"balacne {balance}");
+            var amountInEther = Web3.Convert.FromWei(balance.Value);
+
+            account.NonceService = new InMemoryNonceService(account.Address, web3.Client);
+            var nonce  = await web3.Eth.Transactions.GetTransactionCount.SendRequestAsync(account.Address, BlockParameter.CreatePending());
             wallets.Add((account,nonce));
-            
             Logger.Debug($"nonce {nonce} address{address}");
             return ;
         }
 
-        private (Account,BigInteger) get_random_wallet()
+        private (Account account,BigInteger noce) get_random_wallet()
         {
             int idx = new Random().Next(0, wallets.Count);
             return wallets[idx];
         }
 
-        public void swap(List<(string symbol, decimal amountIn, decimal amountOutMin, string[] path)> arrs)//(string symbols, decimal amountIns, decimal amountOutMins,List<string> paths)
+        public async Task swap(List<(string symbol, BigInteger amountIn, BigInteger amountOutMin, string[] path)> arrs)//(string symbols, decimal amountIns, decimal amountOutMins,List<string> paths)
         {
-            List<string> symbols = new List<string>();
-            List<decimal> amountIns = new List<decimal>();
-            List<decimal> amountOutMins = new List<decimal>();
+            List<byte> symbols = new List<byte>();
+            List<uint> amountIns = new List<uint>();
+            List<uint> amountOutMins = new List<uint>();
+            List<byte> pathSlices = new List<byte>();
             List<string> paths = new List<string>();
-            List<int> pathSlices = new List<int>();
+
 
             foreach (var item in arrs)
             {
-                symbols.Add(item.symbol);
+                //symbols.Add(item.symbol);
+                symbols.Add(1);
                 //symbols.Add(Constants.exchanges[symbol]);
-                amountIns.Add(item.amountIn);
-                amountOutMins.Add(item.amountOutMin);
-                paths.AddRange(paths);
-                pathSlices.Add(item.path.Length);
+                amountIns.Add( (uint) item.amountIn);
+                amountOutMins.Add( (uint)item.amountOutMin);
+                paths.AddRange(item.path);
+                pathSlices.Add((byte)item.path.Length);
                 Logger.Debug($"item.symbol {item.symbol} item.amountIn {item.amountIn} item.amountOutMin {item.amountOutMin} ");
                 string pathStr = "";
                 foreach (var path in paths)
@@ -206,17 +216,69 @@ namespace arbitrage_CSharp
                 }
                 Logger.Debug($"pathStr {pathStr}");
             }
-            var wallet = get_random_wallet();
-            wallet.Item2 += 1;
-            var transactionInput = EtherTransferTransactionInputBuilder.CreateTransactionInput("", "", 0m, 5m, 1500000, wallet.Item2);
-            var multiSwap = this.contract.GetFunction("multiSwap");
             
-            //CallAsync<string>(symbols, amountIns, amountOutMins, pathSlices, paths, overrides);
-            var task = multiSwap.SendTransactionAsync(transactionInput, symbols, amountIns, amountOutMins, pathSlices, paths);
-            Task.WaitAll(task);
-            Logger.Debug($"tx:{task.Result}");
-        }
+            var wallet = get_random_wallet();
+            wallet.noce += 1;
 
+
+            var transferHandler = web3.Eth.GetContractTransactionHandler<MultiSwapFunctionBase>();
+            var transfer = new MultiSwapFunctionBase()
+            {
+                AmountToSend = 0,
+                Nonce = wallet.noce,
+                Gas= 1500000,
+                GasPrice = 5,
+                FromAddress = wallet.account.Address,
+                
+
+                symbols = symbols,
+                amountIns = amountIns,
+                amountOutMins = amountOutMins,
+                pathSlices = pathSlices,
+                paths = paths,
+            };
+            ///******************
+            var contractHandler = web3.Eth.GetContractHandler(contract.Address);
+            //var signTx = await contractHandler.SignTransactionAsync<MultiSwapFunctionBase>(transfer);
+            //var back = await contractHandler.SignTransactionAsync(transfer);
+
+            ///******************
+
+            //var transactionReceipt = await transferHandler.SendRequestAndWaitForReceiptAsync(contract.Address, transfer);
+            web3.Eth.TransactionManager.UseLegacyAsDefault = true;
+            var signedTransaction1 = await transferHandler.SignTransactionAsync(contract.Address, transfer);
+            var multiSwap = this.contract.GetFunction("multiSwap");
+            //CallAsync<string>(symbols, amountIns, amountOutMins, pathSlices, paths, overrides);
+            var v = await multiSwap.CallAsync<object>(symbols.ToArray(), amountIns.ToArray(), amountOutMins.ToArray(), pathSlices, paths);
+            var task = await multiSwap.SendTransactionAsync(signedTransaction1, symbols.ToArray(), amountIns.ToArray(), amountOutMins.ToArray(), pathSlices, paths);
+            
+            Logger.Debug($"tx:{task}");
+        }
+        [Function("multiSwap")]
+        class MultiSwapFunctionBase : FunctionMessage
+        {
+            [Parameter("uint8[]", "symbols", 1)]
+            public virtual List< byte> symbols { get; set; }
+            [Parameter("uint[]", "amountIns", 2)]
+            public virtual List<uint> amountIns { get; set; }
+            [Parameter("uint[]", "amountOutMins", 3)]
+            public virtual List<uint> amountOutMins { get; set; }
+            [Parameter("uint8[]", "pathSlices", 4)]
+            public virtual List<byte> pathSlices { get; set; }
+            [Parameter("address[]", "paths", 5)]
+            public virtual List<string> paths { get; set; }
+            // 
+            //             [Parameter("tuple[]", "symbols", 1)]
+            //             public virtual byte[] symbols { get; set; }
+            //             [Parameter("tuple[]", "amountIns", 2)]
+            //             public virtual uint[] amountIns { get; set; }
+            //             [Parameter("tuple[]", "amountOutMins", 3)]
+            //             public virtual uint[] amountOutMins { get; set; }
+            //             [Parameter("tuple[]", "pathSlices", 4)]
+            //             public virtual byte[] pathSlices { get; set; }
+            //             [Parameter("tuple[]", "paths", 5)]
+            //             public virtual string[] paths { get; set; }
+        }
 
     }
     /// <summary>
@@ -259,11 +321,12 @@ namespace arbitrage_CSharp
     {
         private string _tokenAddress;
 
-        public PoolToken(string tokenSymbol, BigDecimal tokenReverse, string tokenAddress)
+        public PoolToken(string tokenSymbol, BigDecimal tokenReverse, string tokenAddress,int decimalNum)
         {
             this.tokenSymbol = tokenSymbol;
             this.tokenReverse = tokenReverse;
             this.tokenAddress = tokenAddress;
+            this.decimalNum = decimalNum;
         }
 
         /// <summary>
@@ -278,10 +341,19 @@ namespace arbitrage_CSharp
         /// 币种地址
         /// </summary>
         public string tokenAddress { get => _tokenAddress; set => _tokenAddress = value.ToLower(); }
+        /// <summary>
+        /// 小数点数位
+        /// </summary>
+        public int decimalNum { get; set; }
 
         public override string ToString()
         {
             return $" tokenReverse {tokenReverse}  tokenAddress {tokenAddress}   ";
+        }
+
+        public  BigInteger tokenReverse_bigInteger( double reverse)
+        {
+            return (BigInteger)(reverse * Math.Pow(10, decimalNum));
         }
     }
 
