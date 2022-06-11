@@ -1,5 +1,6 @@
 # bsc
 ## 套利策略逻辑
+![image](https://github.com/og-mev/bsc/blob/master/images/mev-arbitrage.jpg)
 token的reverse部分通过参考三明治逻辑的分部署数据库形式  
 reverse 的数据结构为：  
 ```
@@ -38,3 +39,13 @@ path cache的数据结构为：
 
 ## 优化部分
 合约优化参考：https://github.com/libevm/subway/blob/master/contracts/src/Sandwich.sol  
+
+
+
+
+## 参考
+What is MEV (Miner Extractable Value)?  
+https://www.youtube.com/watch?v=XbMtIg5OgCc  
+
+去中心化交易所套利  
+https://learnblockchain.cn/article/3862
