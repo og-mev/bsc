@@ -11,7 +11,9 @@ namespace arbitrage_CSharp.Mode
         /// </summary>
         private static Dictionary<string, PoolPairs> pairsTokenDic = new Dictionary<string, PoolPairs>();
 
-        private static Dictionary<string, PoolPairs> poolPairsDic;
+        private static Dictionary<string, string> pairsTokenAddressDic = new Dictionary<string, string>();
+
+        private static Dictionary<string, PoolPairs> poolPairsDic = new Dictionary<string, PoolPairs>();
 
 
         public static void Init(Dictionary<string, PoolPairs> poolPairs)
@@ -20,7 +22,9 @@ namespace arbitrage_CSharp.Mode
             pairsTokenDic.Clear();
             foreach (var poolPair in poolPairsDic)
             {
-                pairsTokenDic.Add(poolPair.Value.poolToken0.tokenAddress + "_" + poolPair.Value.poolToken1.tokenAddress,poolPair.Value);
+                string key = poolPair.Value.poolToken0.tokenAddress + "_" + poolPair.Value.poolToken1.tokenAddress;
+                pairsTokenDic.Add(key, poolPair.Value);
+                pairsTokenAddressDic.Add(key, poolPair.Key);
             }
         }
         /// <summary>
@@ -30,7 +34,7 @@ namespace arbitrage_CSharp.Mode
         /// <param name="token0Address"></param>
         /// <param name="token1address"></param>
         /// <returns> isReverse  表示 token0 和 token1 在 池子里面是否相反 </returns>
-        public static  PoolPairs GetPoolPair(string token0Address,string token1address)
+        public static  (PoolPairs pairs, string poolAddress) GetPoolPair(string token0Address,string token1address)
         {
             if (poolPairsDic == null)
             {
@@ -38,13 +42,13 @@ namespace arbitrage_CSharp.Mode
             }
             if (pairsTokenDic.TryGetValue(token0Address+"_"+token1address,out PoolPairs poolPairs))
             {
-                return poolPairs;
+                return (poolPairs, pairsTokenAddressDic[token0Address + "_" + token1address]);
             }
             else if (pairsTokenDic.TryGetValue(token1address + "_" + token0Address, out  poolPairs))
             {
-                return new PoolPairs(poolPairs.poolToken1, poolPairs.poolToken0);
+                return (new PoolPairs(poolPairs.poolToken1, poolPairs.poolToken0), pairsTokenAddressDic[token1address + "_" + token0Address]);
             }
-            return null;
+            return (null,null);
         }
 
         public static PoolPairs GetPoolPair(string poollAddress)

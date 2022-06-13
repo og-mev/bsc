@@ -124,6 +124,8 @@ namespace arbitrage_CSharp
         /// <param name="tx"></param>
         private async void OnTxChangeAsync(TransactionReceipt tx)
         {
+
+
             //3 根据 tx 的交易对 获取所有对应路径
             //解析tx,获取到的tx是什么样子的,有可能同一个 区块中有多笔 tx改变？
             string poolId = config.testConfig.poolId;
@@ -132,57 +134,88 @@ namespace arbitrage_CSharp
             string addressTo = config.testConfig.adressTo;//USDC
             //test下需要计算出能兑换多少，实际上通过服务器传送
             BigDecimal changeAmountTo = 0;
-           
+            
 
 
-            var poolPair  = PoolDataHelper.GetPoolPair(adressFrom, addressTo);
+            var (poolPair,addr)  = PoolDataHelper.GetPoolPair(adressFrom, addressTo);
             var token0 = poolPair.GetToken(adressFrom, poolId);
             var token1 = poolPair.GetToken(addressTo, poolId);
-
-            CFMM cFMM = new CFMM(token0.tokenReverse,token1.tokenReverse);
-            //test ______________________实际上会收到 值
-            changeAmountTo = CFMM.GetDeltaB(cFMM, config.uniswapV2_fee, amountFrom);
-            //test______________________________
-            //根据tx 修改池子里面的数量
-            token0.tokenReverse += amountFrom;
-            token1.tokenReverse -= changeAmountTo;
-
-            //4 根据盈利比例计算出所有可兑换的路径，以及最大兑换数量
-            //获取 两个token的路径
-            
-            
-            var tokenPaths = GetRandomPath(token0.tokenAddress, 3);
-            var (bestPath, bestAmount,amountOut) = GetPathsWithAmount(tokenPaths, token0,  true);
-            //TestAllTokens(token0, token1);
-
-            //还原币为 实际值 到 bigintger 
-            //BigInteger bestAmount_BI = token0.tokenReverse
-
-
-            //5 签名后发给 ray
-            var flashswapAddr = JObject.Parse(File.ReadAllText(config.contractPath+ "deploy.json"))["address"].ToString();
-            var swapAbi = JObject.Parse(File.ReadAllText(config.contractPath + "artifacts/contracts/flashswap.sol/Flashswap.json"))["abi"].ToString();
-            var bridge = new SwapBridge("BSC", flashswapAddr.ToLower(),swapAbi: swapAbi);
-
-            //根据算法来交换 币
-            var swapArr = new List<(string symbol, BigInteger amountIn, BigInteger amountOutMin, string[] path)>();
-            
-            var v0 = token0.tokenReverse_bigInteger((double)bestAmount); 
-            var v1 = token0.tokenReverse_bigInteger((double)amountOut); 
-            (string symbol, BigInteger amountIn, BigInteger amountOutMin, string[] path) swap = ("pancakeswap", v0, v1, bestPath.ToArray());
-            swapArr.Add(swap);
-            await bridge.import_wallets(config.privateKeys.ToArray());
-            
-
-            try
+            if (config.CurrTokenAmountDic.TryGetValue(token0.tokenAddress,out decimal balance))//有token 才进行计算
             {
-                await bridge.swap(swapArr);
-            }
-            catch (Exception ex)
-            {
+                CFMM cFMM = new CFMM(token0.tokenReverse, token1.tokenReverse);
+                //test ______________________实际上会收到 值
+                changeAmountTo = CFMM.GetDeltaB(cFMM, config.uniswapV2_fee, amountFrom);
+                //test______________________________
+                //根据tx 修改池子里面的数量
+                token0.tokenReverse += amountFrom;
+                token1.tokenReverse -= changeAmountTo;
 
-                Logger.Error(ex) ;
+                //4 根据盈利比例计算出所有可兑换的路径，以及最大兑换数量
+                //获取 两个token的路径
+
+
+                var tokenPaths = GetRandomPath(token0.tokenAddress, 3);
+                var (bestPath, bestAmount, amountOut) = GetPathsWithAmount(tokenPaths, token0, true);
+
+                if (bestAmount<0)
+                {
+                    Logger.Debug("没有好的路径！！");
+                }
+                //如果超过最大现金，设置为最大现金
+                if (bestAmount > balance)
+                {
+                    Logger.Debug($"超过最大现金 balance {balance} bestAmount{bestAmount}");
+                    amountOut = (amountOut / bestAmount) * balance;
+                    bestAmount = balance;
+                    
+                }
+//                 else if (bestAmount < 1 )
+//                 {
+//                     Logger.Debug($"小于1了 balance {balance} bestAmount{bestAmount}");
+//                     amountOut = 1;
+//                     bestAmount = 5;
+//                 }
+                //由bigdecimal转换为bignumber
+                var bestAmount_0 = bestAmount.Mantissa * BigDecimal.Pow(10, token0.decimalNum + bestAmount.Exponent);
+                var bestAmount_int = (BigInteger)((decimal)(bestAmount_0));
+                var amountOut_0 = amountOut.Mantissa * BigDecimal.Pow(10, token0.decimalNum + amountOut.Exponent);
+                var amountOut_int = (BigInteger)((decimal)(amountOut_0));
+
+                TestAllTokens(token0, token1);
+
+                //还原币为 实际值 到 bigintger 
+                //BigInteger bestAmount_BI = token0.tokenReverse
+
+
+
+                //5 签名后发给 ray
+                var flashswapAddr = JObject.Parse(File.ReadAllText(config.contractPath + "deploy.json"))["address"].ToString();
+                var swapAbi = JObject.Parse(File.ReadAllText(config.contractPath + "artifacts/contracts/flashswap.sol/Flashswap.json"))["abi"].ToString();
+                var bridge = new SwapBridge("BSC", flashswapAddr.ToLower(), swapAbi: swapAbi);
+
+                //根据算法来交换 币
+                var swapArr = new List<(string symbol, BigInteger amountIn, BigInteger amountOutMin, string[] path)>();
+
+
+                var v0 = bestAmount_int;
+                var v1 = amountOut_int;
+
+                (string symbol, BigInteger amountIn, BigInteger amountOutMin, string[] path) swap = ("pancakeswap", v0, v1, bestPath.ToArray());
+                swapArr.Add(swap);
+                await bridge.import_wallets(config.privateKeys.ToArray());
+
+
+                try
+                {
+                    await bridge.swap(swapArr);
+                }
+                catch (Exception ex)
+                {
+
+                    Logger.Error(ex);
+                }
             }
+           
            
             Logger.Debug("完成了！！！！！！！！！！！");
         }
@@ -192,20 +225,23 @@ namespace arbitrage_CSharp
         /// </summary>
         /// <param name="tokenPaths"></param>
         /// <param name="token0"> 表示我们拥有要兑换的</param>
-        private (List<string> backPath, BigDecimal bestAmountT0ALL,BigDecimal bestProfit) GetPathsWithAmount(List<List<string>> tokenPaths, PoolToken token0, bool islog = true)
+        private (List<string> backPath, BigDecimal bestAmountT0ALL,BigDecimal bestAmountOut) GetPathsWithAmount(List<List<string>> tokenPaths, PoolToken token0, bool islog = true)
         {
             List<string> backPath = new List<string>();
             BigDecimal bestAmountT0ALL = 0;
             BigDecimal bestProfit = 0;
+            BigDecimal bestAmountOut = 0;
+
+            List<string> bestPairPaths = new List<string>();
             //循环计算 所有路径的 最大盈利
             foreach (var path in tokenPaths)
             {
                 //把 所有路径合成 一个CFMM
                 List<PoolPairs> cFMMPaths = new List<PoolPairs>();
-               
+                List<string> pairPaths = new List<string>();
                 for (int i = 0; i < path.Count-1; i++)
                 {
-                    var _poolPair = PoolDataHelper.GetPoolPair(path[i],path[i+1]);
+                    var (_poolPair,addr) = PoolDataHelper.GetPoolPair(path[i],path[i+1]);
                     if (islog)
                     {
                         Logger.Debug($"path[i]_path[+1]  {path[i]}_{path[i + 1]}");
@@ -217,6 +253,7 @@ namespace arbitrage_CSharp
                         if (islog)
                             Logger.Debug(_poolPair.ToString());
                         cFMMPaths.Add(_poolPair);
+                        pairPaths.Add(addr);
                     }
                 }
                 try
@@ -230,14 +267,18 @@ namespace arbitrage_CSharp
                     {
                         //test 测试
                         //bestAmountT0 = 10;
-                        BigDecimal profit = CFMM.GetDeltaB(endCFMM, config.uniswapV2_fee,(decimal) bestAmountT0) - bestAmountT0;
+                        BigDecimal amountOut = CFMM.GetDeltaB(endCFMM, config.uniswapV2_fee, (decimal)bestAmountT0);
+                        BigDecimal profit = amountOut - bestAmountT0;
                         if (profit>bestProfit)
                         {
                             bestProfit = profit;
                             backPath = path;
                             bestAmountT0ALL = bestAmountT0;
+                            bestAmountOut = amountOut;
+                            bestPairPaths = pairPaths;
                             //if (islog)
-                                Logger.Debug($" bestProfit {bestProfit} ");
+                            
+                                Logger.Debug($"有利润 bestProfit {bestProfit} bestAmountT0ALL {bestAmountT0ALL} amountOut{amountOut}");
                         }
                     }
                 }
@@ -246,7 +287,10 @@ namespace arbitrage_CSharp
                     Logger.Error(ex);
                 }
             }
-            return (backPath, bestAmountT0ALL, bestProfit);
+            Logger.Debug("path pairAddr: " + string.Join(" ", bestPairPaths));
+            Logger.Debug("backPath : " + string.Join(" ", backPath));
+            Logger.Debug($" bestProfit {bestProfit} ");
+            return (backPath, bestAmountT0ALL, bestAmountOut);
 
         }
         /// <summary>
@@ -366,7 +410,7 @@ namespace arbitrage_CSharp
             //先只要100个
             var allPairs = factoryContract.GetFunction("allPairs");
             List<Task<(string pairAddress, PoolPairs pairs)>> tasks = new List<Task<(string pairAddress, PoolPairs pairs)>>();
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i <1000; i++)
             {
                 if (i % 10 == 0)
                 {
@@ -473,7 +517,7 @@ namespace arbitrage_CSharp
 
                 var v1 = item["poolToken1"]["tokenReverse"];
                 BigInteger s1 = BigInteger.Parse(v1["Mantissa"].ToString());
-                int de1 = int.Parse(v["Exponent"].ToString());
+                int de1 = int.Parse(v1["Exponent"].ToString());
                 pool.Value.poolToken1.tokenReverse = new BigDecimal(s1, de1);
             }
             return allPoolDic;
@@ -485,11 +529,11 @@ namespace arbitrage_CSharp
         {
             foreach (var item in tokensSwapPathsDic)
             {
-                var tokenPaths = GetRandomPath(item.Key, 3);
+                var tokenPaths = GetRandomPath(item.Key, 4);
                 var (bestPath, bestAmountIn, amountOut) = GetPathsWithAmount(tokenPaths, token0,  false);
                 if (bestAmountIn > 0)
                 {
-                    Logger.Debug($"{item.Key}  {bestAmountIn}  {string.Join("->", bestPath)}");
+                    Logger.Debug($"有利润！！ {item.Key}  {bestAmountIn}  {string.Join("->", bestPath)}");
                 }
             }
         }
@@ -507,7 +551,7 @@ namespace arbitrage_CSharp
             string wnnbAbi = File.ReadAllText(config.wbnbAbi);
             var contractHandler = web3.Eth.GetContractHandler(contractAddress);
 
-            BigInteger amount = UnitConversion.Convert.ToWei(100);
+            BigInteger amount = UnitConversion.Convert.ToWei(1);
             //质押
             DepositFunction deposit = new DepositFunction()
             {
@@ -540,7 +584,7 @@ namespace arbitrage_CSharp
     public class Config
     {
         
-        public List<string> privateKeys = new List<string> { "0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e" };//真实测试  0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+        public List<string> privateKeys = new List<string> { "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80" };//真实测试  0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
         public string RedisConfig= "localhost,password=l3h2p1w0*";
 
@@ -562,7 +606,7 @@ namespace arbitrage_CSharp
         /// <summary>
         /// 当前各种币的数量的字典
         /// </summary>
-        public Dictionary<string, decimal> CurrTokenAmountDic = new Dictionary<string, decimal>() { { "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2", 1 } };
+        public Dictionary<string, decimal> CurrTokenAmountDic = new Dictionary<string, decimal>() { { "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82", 100 } };
 
         public Dictionary<string, string> allPaths = new Dictionary<string, string>() { {"BNB-USDT", "exchangeName:USDT&231-BNB&232,exchangeName:USDT&233-BNB&234" } };
 

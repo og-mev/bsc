@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject1", "..\TestProj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nethereum.Uniswap", "..\..\Nethereum.Uniswap-V2-and-V3\Nethereum.Uniswap\Nethereum.Uniswap.csproj", "{1E34AFDC-8C59-431D-A999-7E8E8F893538}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nethereum.Contracts", "..\..\Nethereum-4.5.0\Nethereum-4.5.0\src\Nethereum.Contracts\Nethereum.Contracts.csproj", "{C35CAB8D-2784-4A2B-9339-D199C0A6D01B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{1E34AFDC-8C59-431D-A999-7E8E8F893538}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E34AFDC-8C59-431D-A999-7E8E8F893538}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E34AFDC-8C59-431D-A999-7E8E8F893538}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C35CAB8D-2784-4A2B-9339-D199C0A6D01B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C35CAB8D-2784-4A2B-9339-D199C0A6D01B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C35CAB8D-2784-4A2B-9339-D199C0A6D01B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C35CAB8D-2784-4A2B-9339-D199C0A6D01B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -159,8 +159,8 @@ namespace Nethereum.Client
                     if (!string.IsNullOrEmpty(ethereumTestSettings.InfuraNetwork)) InfuraNetwork = (InfuraNetwork)Enum.Parse(typeof(InfuraNetwork), ethereumTestSettings.InfuraNetwork); ;
                     if (!string.IsNullOrEmpty(ethereumTestSettings.InfuraId)) InfuraId = ethereumTestSettings.InfuraId;
                     if (!string.IsNullOrEmpty(ethereumTestSettings.HttpUrl)) HttpUrl = ethereumTestSettings.HttpUrl;
-                    if (!string.IsNullOrEmpty(ethereumTestSettings.InfuraId)) DeployStr = ethereumTestSettings.DeployStr;
-                    if (!string.IsNullOrEmpty(ethereumTestSettings.HttpUrl)) flashswap = ethereumTestSettings.flashswap;
+                    if (!string.IsNullOrEmpty(ethereumTestSettings.DeployStr)) DeployStr = ethereumTestSettings.DeployStr;
+                    if (!string.IsNullOrEmpty(ethereumTestSettings.flashswap)) flashswap = ethereumTestSettings.flashswap;
                 }
             }
 
@@ -273,40 +273,76 @@ namespace Nethereum.Client
                 var location = typeof(EthereumClientIntegrationFixture).GetTypeInfo().Assembly.Location;
                 var dirPath = Path.GetDirectoryName(location);
                 _exePath = Path.GetFullPath(Path.Combine(dirPath, HardhatClientPath));
-
-                var psi = new ProcessStartInfo("npx")
+                string path = "./hardhatPro.txt";
+                if (!File.Exists(path))
                 {
-                    CreateNoWindow = false,
-                    WindowStyle = ProcessWindowStyle.Normal,
-                    UseShellExecute = true,
-                    WorkingDirectory = _exePath,
-                    Arguments = "hardhat node " + HardhatParams
-
-                };
-                _process = Process.Start(psi);
-                Thread.Sleep(10000);
-                //添加测试参数
-
-                var deployP = new ProcessStartInfo("npx")
+                    openPro();
+                    
+                }
+                else
                 {
-                    CreateNoWindow = false,
-                    WindowStyle = ProcessWindowStyle.Normal,
-                    UseShellExecute = true,
-                    WorkingDirectory = _exePath,
-                    Arguments = DeployStr
+                    string id = File.ReadAllText(path);
 
-                };
-                Process.Start(deployP);
-                var flashswapP = new ProcessStartInfo("npx")
+                    var prs = Process.GetProcesses();
+                    int pId = int.Parse(id);
+                    bool isOpen = false;
+                    foreach (var item in prs)
+                    {
+                        if (item.Id == pId)
+                        {
+                            isOpen = true;
+                            break;
+                        }
+                        
+                    }
+                    if (!isOpen)
+                    {
+                        openPro();
+                    }
+                   
+                    
+                }
+                void openPro()
                 {
-                    CreateNoWindow = false,
-                    WindowStyle = ProcessWindowStyle.Normal,
-                    UseShellExecute = true,
-                    WorkingDirectory = _exePath,
-                    Arguments = flashswap
+                    var psi = new ProcessStartInfo("npx")
+                    {
+                        CreateNoWindow = false,
+                        WindowStyle = ProcessWindowStyle.Normal,
+                        UseShellExecute = true,
+                        WorkingDirectory = _exePath,
+                        Arguments = "hardhat node " + HardhatParams
 
-                };
-                Process.Start(flashswapP);
+
+                    };
+                    var _process = Process.Start(psi);
+                    var txt = File.CreateText(path);
+                    txt.Close();
+                    File.WriteAllText(path, _process.Id.ToString());
+
+                    Thread.Sleep(8000);
+                    //添加测试参数
+
+                    var deployP = new ProcessStartInfo("npx")
+                    {
+                        CreateNoWindow = false,
+                        WindowStyle = ProcessWindowStyle.Normal,
+                        UseShellExecute = true,
+                        WorkingDirectory = _exePath,
+                        Arguments = DeployStr
+
+                    };
+                    //Process.Start(deployP);
+                    var flashswapP = new ProcessStartInfo("npx")
+                    {
+                        CreateNoWindow = false,
+                        WindowStyle = ProcessWindowStyle.Normal,
+                        UseShellExecute = true,
+                        WorkingDirectory = _exePath,
+                        Arguments = flashswap
+
+                    };
+                    Process.Start(flashswapP);
+                }
 
             }
 
