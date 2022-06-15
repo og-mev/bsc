@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "eT/wqzMjD24DWYeO5VIKeLqWiYixBe17gKauMYa08vEaXqKBQzjn3Od2LVtbzGjtUKGSIPGFJlGbgJcOhCM4Fw==",
+  "dgSpecHash": "tmM7XXmOsHFYcZEGiO5NprxhHWVlzEyXZJdjAcAvrKnuYVLSOYH7zXOFxcfupamqaOoyYJ+mFumCm5R3wdEI0Q==",
   "success": true,
   "projectFilePath": "D:\\_Work\\_mev\\bsc\\arbitrage-CSharp\\arbitrage-CSharp.csproj",
   "expectedPackageFiles": [
@@ -66,7 +66,7 @@
     "C:\\Users\\Nothing\\.nuget\\packages\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.14.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Nothing\\.nuget\\packages\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.04-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Nothing\\.nuget\\packages\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
-    "C:\\Users\\Nothing\\.nuget\\packages\\stackexchange.redis\\2.5.61\\stackexchange.redis.2.5.61.nupkg.sha512",
+    "C:\\Users\\Nothing\\.nuget\\packages\\stackexchange.redis\\2.5.43\\stackexchange.redis.2.5.43.nupkg.sha512",
     "C:\\Users\\Nothing\\.nuget\\packages\\system.buffers\\4.3.0\\system.buffers.4.3.0.nupkg.sha512",
     "C:\\Users\\Nothing\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
     "C:\\Users\\Nothing\\.nuget\\packages\\system.collections.concurrent\\4.3.0\\system.collections.concurrent.4.3.0.nupkg.sha512",

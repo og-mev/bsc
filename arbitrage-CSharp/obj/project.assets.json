@@ -796,7 +796,7 @@
           }
         }
       },
-      "StackExchange.Redis/2.5.61": {
+      "StackExchange.Redis/2.5.43": {
         "type": "package",
         "dependencies": {
           "Pipelines.Sockets.Unofficial": "2.2.2",
@@ -3234,10 +3234,10 @@
         "runtimes/ubuntu.16.10-x64/native/System.Security.Cryptography.Native.OpenSsl.so"
       ]
     },
-    "StackExchange.Redis/2.5.61": {
-      "sha512": "h1Gz4itrHL/PQ0GBLTEiPK8bBkOp5SFO6iaRFSSn/x1qltBWENsz/NUxPid6WHX9yf2Tiyzn9D3R7mtnksODxg==",
+    "StackExchange.Redis/2.5.43": {
+      "sha512": "YQ38jVbX1b5mBi6lizESou+NpV6QZpeo6ofRR6qeuqJ8ePOmhcwhje3nDTNIGEkfPSK0sLuF6pR5rtFyq2F46g==",
       "type": "package",
-      "path": "stackexchange.redis/2.5.61",
+      "path": "stackexchange.redis/2.5.43",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3251,7 +3251,7 @@
         "lib/netcoreapp3.1/StackExchange.Redis.xml",
         "lib/netstandard2.0/StackExchange.Redis.dll",
         "lib/netstandard2.0/StackExchange.Redis.xml",
-        "stackexchange.redis.2.5.61.nupkg.sha512",
+        "stackexchange.redis.2.5.43.nupkg.sha512",
         "stackexchange.redis.nuspec"
       ]
     },
@@ -6074,7 +6074,7 @@
       "Nethereum.Uniswap >= 1.0.0",
       "Nethereum.Web3 >= 4.5.0",
       "Newtonsoft.Json >= 13.0.1",
-      "StackExchange.Redis >= 2.5.61",
+      "StackExchange.Redis >= 2.5.43",
       "System.Configuration.ConfigurationManager >= 6.0.0",
       "System.IO.Pipes >= 4.3.0",
       "dotnetCampus.Ipc >= 1.0.1"
@@ -6186,7 +6186,7 @@
           },
           "StackExchange.Redis": {
             "target": "Package",
-            "version": "[2.5.61, )"
+            "version": "[2.5.43, )"
           },
           "System.Configuration.ConfigurationManager": {
             "target": "Package",

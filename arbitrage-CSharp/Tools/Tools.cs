@@ -5,7 +5,7 @@ using System.Text;
 
 namespace arbitrage_CSharp.Tools
 {
-     public static class Tools
+    public static class Tools
     {
         public static BigDecimal Sqrt(this BigDecimal x, BigDecimal? guess = null)
         {
@@ -32,17 +32,22 @@ namespace arbitrage_CSharp.Tools
 
             bool canDo = true;
             canDo = (v > 0 ? v : -v) > epsilon;
-            while ( canDo )
+            while (canDo)
             {
                 x = y;
                 y = (x + c / x) / 2;
 
                 v = x - y;
-                canDo = (v>0? v:-v)> epsilon;
+                canDo = (v > 0 ? v : -v) > epsilon;
             }
             return x;
         }
     }
 
-   
+    public static DecodeTransaction<FunctionMessage>()
+    {
+
+    }
+
+
 }

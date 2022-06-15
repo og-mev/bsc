@@ -10,9 +10,12 @@ using arbitrage_CSharp.Mode;
 
 namespace arbitrage_CSharp
 {
+
     class Program
     {
         static Strategy strategy;
+
+        
         static void Main(string[] args)
         {
 
@@ -29,7 +32,7 @@ namespace arbitrage_CSharp
         }
         private static void OnParsedHandler(Options op)
         {
-            strategy = new Strategy(op.ConfigPath);
+            strategy = new Strategy(op.ConfigPath, SentMassage);
             strategy.StartAsync();
             while (true)
             {
@@ -59,19 +62,18 @@ namespace arbitrage_CSharp
                     while ((temp = rdr.ReadLine()) != "stop")
                     {
                         TX tx = JsonConvert.DeserializeObject<TX>(temp);
-                        strategy.OnTxChangeAsync(tx);
+                        await strategy.OnTxChangeAsync(tx);
                         Console.WriteLine("{0}:{1}", DateTime.Now, temp);
                     }
                 }
             }
         }
-        private async void SentMassage<T>(T msg)
+        private static void SentMassage(string sign,object obj)
         {
             Decoder decoder = Encoding.UTF8.GetDecoder();
             Byte[] bytes = new Byte[10];
             Char[] chars = new Char[10];
-            using (NamedPipeClientStream pipeStream =
-                    new NamedPipeClientStream("messagepipe"))
+            using (NamedPipeClientStream pipeStream = new NamedPipeClientStream("messagepipe"))
             {
                 pipeStream.Connect();
                 pipeStream.ReadMode = PipeTransmissionMode.Message;

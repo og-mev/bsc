@@ -106,7 +106,7 @@
             },
             "StackExchange.Redis": {
               "target": "Package",
-              "version": "[2.5.61, )"
+              "version": "[2.5.43, )"
             },
             "System.Configuration.ConfigurationManager": {
               "target": "Package",

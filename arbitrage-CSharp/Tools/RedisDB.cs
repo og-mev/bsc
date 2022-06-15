@@ -4,6 +4,7 @@ using System.Text;
 using StackExchange.Redis;
 using Newtonsoft.Json;
 using System.Threading;
+using Tools;
 
 namespace arbitrage_CSharp.Tools
 {
@@ -37,6 +38,7 @@ namespace arbitrage_CSharp.Tools
             if (connection == null || !connection.IsConnected)
             {
                 connection = ConnectionMultiplexer.Connect(RedisDB.configStr);
+                
                 instance = connection.GetDatabase();
             }
         }
@@ -45,6 +47,7 @@ namespace arbitrage_CSharp.Tools
         public static T StringGet<T>(this IDatabase database, RedisKey key, CommandFlags flags = CommandFlags.None)
         {
             string res = database.StringGet(key, flags);
+            Logger.Debug($"res {res}");
             if (res == null)
                 return default(T);
             return JsonConvert.DeserializeObject<T>(res);
@@ -54,6 +57,15 @@ namespace arbitrage_CSharp.Tools
             var val = JsonConvert.SerializeObject(value);
             return database.StringSet(key, val, expiry, when, flags);
         }
+
+//         public static T HashScan<T>(this IDatabase database, RedisKey key, RedisValue pattern = default, int pageSize = 250, long cursor = 0, int pageOffset = 0, CommandFlags flags = CommandFlags.None)
+//         {
+//             var res = database.HashScan(key, pattern, pageSize,  cursor, pageOffset, flags);
+//             Logger.Debug($"res {res}");
+//             if (res == null)
+//                 return default(T);
+//             return JsonConvert.DeserializeObject<T>(res);
+//         }
     }
 
 }

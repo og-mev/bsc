@@ -26,13 +26,15 @@ namespace arbitrage_CSharp
     class  Strategy
     {
         private readonly EthereumClientIntegrationFixture _ethereumClientIntegrationFixture;
+
+        
         /// <summary>
         /// 当前区块高度
         /// </summary>
         private int blockNum = 0;
         Config config;
 
-        private delegate void TxChange(TX transaction);
+        
 
         /// <summary>
         /// 存放所有token的兑换路径
@@ -58,8 +60,8 @@ namespace arbitrage_CSharp
         /// 调用 信息的接口
         /// <命令号，数据>
         /// </summary>
-        Action<string,TX> senMsg;
-        public Strategy(string ConfigPath,Action<string,TX> senMsg )
+        Action<string,object> SenMsg;
+        public Strategy(string ConfigPath, Action<string, object> SenMsg)
         {
             Config config = null;
             if (File.Exists(ConfigPath))
@@ -83,7 +85,7 @@ namespace arbitrage_CSharp
             {
                 this.config = config;
             }
-            this.senMsg = senMsg;
+            this.SenMsg = SenMsg;
             //string str = JsonConvert.SerializeObject(config,Formatting.Indented);
             //Logger.Debug(str);
             _ethereumClientIntegrationFixture = new EthereumClientIntegrationFixture();
@@ -97,9 +99,11 @@ namespace arbitrage_CSharp
             //poolDatas
 
             //1 拉取 redis 获取 全路径，并且监听更新
+            RedisDB.Init(config.RedisConfig);
             //RedisDB.Instance.StringGet<T>(DBKey);
             //poolPairsDic = await GetPoolDatasByContractAsync();//GetPoolDatasByFile();
-            poolPairsDic = GetPoolDatasByFile();
+            //poolPairsDic = GetPoolDatasByFile();
+            poolPairsDic = GetPoolDatasByRedis();
             PoolDataHelper.Init(poolPairsDic);
             //test 兑换 wbnb
             await TestGetBaseTokenAsync();
@@ -111,7 +115,6 @@ namespace arbitrage_CSharp
             this.tokensSwapPathsDic = tokensSwapPathsDic;
             //RedisDB.Init(config.RedisConfig);
             //2 监听 peending  tx
-            TxChange txChange = new TxChange(OnTxChangeAsync);
             var tx = new TX()
             {
 
@@ -119,7 +122,7 @@ namespace arbitrage_CSharp
             //test 
             try
             {
-                txChange(tx);
+                OnTxChangeAsync(tx);
             }
             catch (Exception ex)
             {
@@ -134,7 +137,7 @@ namespace arbitrage_CSharp
         /// 监听tx消息
         /// </summary>
         /// <param name="tx"></param>
-        public async void OnTxChangeAsync(TX tx)
+        public async Task OnTxChangeAsync(TX tx)
         {
             //3 根据 tx 的交易对 获取所有对应路径
             //解析tx,获取到的tx是什么样子的,有可能同一个 区块中有多笔 tx改变？
@@ -392,28 +395,17 @@ namespace arbitrage_CSharp
         /// <param name="txList"></param>
         public void AddTx(TXDatas datas)
         {
-            this.blockNum = datas.blockNum;
-            foreach (var tx in datas.txList)
-            {
-
-                PoolPairs pairs;
-                var oldPairs = poolPairsDic[tx.poolAddress];
-                var t0 = oldPairs.poolToken0;
-                var t1 = oldPairs.poolToken0;
-                if (!poolChangeDic.TryGetValue(tx.poolAddress, out pairs))
-                {
-                    pairs = new PoolPairs(new PoolToken(t0.tokenSymbol, 0, t0.tokenAddress, 0), new PoolToken(t1.tokenSymbol, 0, t1.tokenAddress, 0));
-                }
-            }
+            OnTxChangeAsync(datas.tx);
 
         }
         /// <summary>
         /// 提交签名给服务器
         /// </summary>
         /// <param name="sign"></param>
-        public void SendExchange(string sign ,int blockNum)
+        public void SendExchange(string sign ,int blockNum=0)
         {
-
+            Logger.Debug($"发送tx {sign}");
+            SenMsg(Commands.Send_Sign, sign);
         }
 
         #endregion
@@ -566,6 +558,112 @@ namespace arbitrage_CSharp
                 int de1 = int.Parse(v1["Exponent"].ToString());
                 pool.Value.poolToken1.tokenReverse = new BigDecimal(s1, de1);
             }
+            return allPoolDic;
+        }
+        public Dictionary<string, PoolPairs> GetPoolDatasByRedis()
+        {//需要解析
+
+            Dictionary<string, PoolPairs> allPoolDic = new Dictionary<string, PoolPairs>();
+
+            string keyR = "reserves";
+            string keyT = "tokens";
+            int pageSize = 250;
+            List<StackExchange.Redis.HashEntry> kp = new List<StackExchange.Redis.HashEntry>();
+            List<StackExchange.Redis.HashEntry> kT = new List<StackExchange.Redis.HashEntry>();
+            //int len = RedisDB.Instance.StringGet<int>(lenKey );
+            //             long len = RedisDB.Instance.HashLength(keyR);
+            //             long allPage = len / pageSize ;
+            //             if (len%pageSize>0)
+            //             {
+            //                 allPage += 1;
+            //             }
+            //获取所有池子信息
+            //for (int page = 0; page < allPage; page++)
+            {
+                var res = RedisDB.Instance.HashScan(keyR, "*", pageSize, 0* pageSize);
+                kp.AddRange(res);
+                Logger.Debug(res.ToString());
+            }
+            //获取所有的 token小数点信息
+            long lenT = RedisDB.Instance.HashLength(keyT);
+            var resT = RedisDB.Instance.HashScan(keyT, "*", pageSize, 0 * pageSize);
+            kT.AddRange(resT);
+            Dictionary<string, string> tokenDecimlDic = new Dictionary<string, string>();
+            foreach (var item in kT)
+            {
+                tokenDecimlDic.Add(item.Name.ToString(), item.Value);
+            }
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in kp)
+            {
+                prase(item);
+            }
+            
+            void prase(StackExchange.Redis.HashEntry s)
+            {
+                
+                string key = s.Name;
+                
+                //先只考虑 单个交易所
+                if (key.EndsWith(":PancakeSwap")) 
+                {
+                    try
+                    {
+                        string[] tokenAddr = key.Split(':');//0x93d5a19a993D195cfC75AcdD736A994428290a59:0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
+                        string[] tokenDatas = s.Value.ToString().Split('|');//r0|r1|pairAddr|update_timestamp   PancakeSwap: 3|3136980|0x696d16539Dd3eB00C19103f7d8cfA2cb32d66086|1654968667
+                        string addr0 = tokenAddr[0];
+                        string addr1 = tokenAddr[1];
+
+                        (int Decimal, string Symbol) tokenData0 = (0,null);
+                        (int Decimal, string Symbol) tokenData1 = (0,null);
+
+
+                        bool can = true;
+                        if (tokenDecimlDic.TryGetValue(tokenDecimlDic[addr0], out string data0Str))
+                        {
+                            tokenData0 = JsonConvert.DeserializeObject<(int Decimal, string Symbol)>(data0Str);
+                            
+                        }
+                        else
+                        {
+                            sb.AppendLine(addr0);
+                            can = false;
+                        }
+                        if (tokenDecimlDic.TryGetValue(tokenDecimlDic[addr1], out string data1Str))
+                        {
+                            tokenData1 = JsonConvert.DeserializeObject<(int Decimal, string Symbol)>(data1Str);
+                        }
+                        else
+                        {
+                            sb.AppendLine(addr1);
+                            can = false;
+                        }
+                        if (can)
+                        {
+                            PoolToken t0 = new PoolToken(tokenData0.Symbol, BigDecimal.Parse(tokenDatas[0]), addr0, tokenData0.Decimal);
+                            PoolToken t1 = new PoolToken(tokenData1.Symbol, BigDecimal.Parse(tokenDatas[1]), addr1, tokenData1.Decimal);
+                            string pairAddr = tokenDatas[2];
+                            PoolPairs poolP = new PoolPairs(t0, t1);
+                            if (!allPoolDic.ContainsKey(pairAddr))
+                            {
+                                allPoolDic.Add(pairAddr, poolP);
+                            }
+                            else
+                            {
+                                Logger.Debug($"same key {key}");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        Logger.Error(ex);
+                    }
+                }
+                
+
+            }
+            Logger.Error("没有的token" + sb.ToString());
             return allPoolDic;
         }
         #endregion
