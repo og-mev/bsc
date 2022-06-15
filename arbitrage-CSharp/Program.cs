@@ -4,13 +4,21 @@ using Tools;
 using System;
 using System.IO;
 using System.Threading;
+using System.IO.Pipes;
+using System.Text;
+using arbitrage_CSharp.Mode;
 
 namespace arbitrage_CSharp
 {
     class Program
     {
+        static Strategy strategy;
         static void Main(string[] args)
         {
+
+            
+
+
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledExceptionHundle);
             if (args.Length > 0)
             {
@@ -21,8 +29,8 @@ namespace arbitrage_CSharp
         }
         private static void OnParsedHandler(Options op)
         {
-            Strategy it = new Strategy(op.ConfigPath);
-            it.StartAsync();
+            strategy = new Strategy(op.ConfigPath);
+            strategy.StartAsync();
             while (true)
             {
                 Thread.Sleep(1 * 1000);
@@ -38,6 +46,51 @@ namespace arbitrage_CSharp
         static private void UnhandledExceptionHundle(object sender, UnhandledExceptionEventArgs e)
         {
             Logger.Error((Exception)e.ExceptionObject);
+        }
+        private async void ReadMassage(string pipeName = "testpipe")
+        {
+            using (NamedPipeClientStream pipeStream = new NamedPipeClientStream(pipeName))
+            {
+                pipeStream.Connect();
+                //在client读取server端写的数据
+                using (StreamReader rdr = new StreamReader(pipeStream))
+                {
+                    string temp;
+                    while ((temp = rdr.ReadLine()) != "stop")
+                    {
+                        TX tx = JsonConvert.DeserializeObject<TX>(temp);
+                        strategy.OnTxChangeAsync(tx);
+                        Console.WriteLine("{0}:{1}", DateTime.Now, temp);
+                    }
+                }
+            }
+        }
+        private async void SentMassage<T>(T msg)
+        {
+            Decoder decoder = Encoding.UTF8.GetDecoder();
+            Byte[] bytes = new Byte[10];
+            Char[] chars = new Char[10];
+            using (NamedPipeClientStream pipeStream =
+                    new NamedPipeClientStream("messagepipe"))
+            {
+                pipeStream.Connect();
+                pipeStream.ReadMode = PipeTransmissionMode.Message;
+                int numBytes;
+                do
+                {
+                    string message = "";
+
+                    do
+                    {
+                        numBytes = pipeStream.Read(bytes, 0, bytes.Length);
+                        int numChars = decoder.GetChars(bytes, 0, numBytes, chars, 0);
+                        message += new String(chars, 0, numChars);
+                    } while (!pipeStream.IsMessageComplete);
+
+                    decoder.Reset();
+                    Console.WriteLine(message);
+                } while (numBytes != 0);
+            }
         }
     }
     public class Options

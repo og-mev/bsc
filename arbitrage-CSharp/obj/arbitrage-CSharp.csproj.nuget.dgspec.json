@@ -111,6 +111,14 @@
             "System.Configuration.ConfigurationManager": {
               "target": "Package",
               "version": "[6.0.0, )"
+            },
+            "System.IO.Pipes": {
+              "target": "Package",
+              "version": "[4.3.0, )"
+            },
+            "dotnetCampus.Ipc": {
+              "target": "Package",
+              "version": "[1.0.1, )"
             }
           },
           "imports": [

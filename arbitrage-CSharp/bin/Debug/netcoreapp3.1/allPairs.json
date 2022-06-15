@@ -7959,26 +7959,6 @@
       "decimalNum": 18
     }
   },
-  "0x0ab22917fa941edca92a5b7e030c59fbc7d9019a": {
-    "poolToken0": {
-      "tokenSymbol": "SAT",
-      "tokenReverse": {
-        "Mantissa": 3115894123892158653849,
-        "Exponent": -18
-      },
-      "tokenAddress": "0xa1928c0d8f83c0bfb7ebe51b412b1fd29a277893",
-      "decimalNum": 18
-    },
-    "poolToken1": {
-      "tokenSymbol": "WBNB",
-      "tokenReverse": {
-        "Mantissa": 85748553319285734681,
-        "Exponent": -18
-      },
-      "tokenAddress": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
-      "decimalNum": 18
-    }
-  },
   "0xc7a48c63f1f86a5ab017efa1dd918b868863ba71": {
     "poolToken0": {
       "tokenSymbol": "KKC",
@@ -11979,26 +11959,7 @@
       "decimalNum": 18
     }
   },
-  "0x020db9ff8648acfc9c590eafb8f6bcd8f254d248": {
-    "poolToken0": {
-      "tokenSymbol": "SAT",
-      "tokenReverse": {
-        "Mantissa": 3731023613558216071623,
-        "Exponent": -18
-      },
-      "tokenAddress": "0xa1928c0d8f83c0bfb7ebe51b412b1fd29a277893",
-      "decimalNum": 18
-    },
-    "poolToken1": {
-      "tokenSymbol": "BUSD",
-      "tokenReverse": {
-        "Mantissa": 52533092067188152010605,
-        "Exponent": -18
-      },
-      "tokenAddress": "0xe9e7cea3dedca5984780bafc599bd69add087d56",
-      "decimalNum": 18
-    }
-  },
+  
   "0xe56b00c7bcb514085555dfa0b501d72cbad1d4f0": {
     "poolToken0": {
       "tokenSymbol": "MARV",

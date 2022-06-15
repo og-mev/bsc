@@ -240,64 +240,35 @@ namespace arbitrage_CSharp
                 pathSlices = pathSlices.ToArray(),
                 paths = paths.ToArray(),
             };
-            ///******************
             var contractHandler = web3.Eth.GetContractHandler(contract.Address);
-            //var signTx = await contractHandler.SignTransactionAsync<MultiSwapFunctionBase>(transfer);
-            //var back = await contractHandler.SignTransactionAsync(transfer);
 
-            ///******************
-            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            /*
+            
             var multiSwapFunction = new MultiSwapFunction()
             {
                 AmountToSend = 0,
-                 Nonce = 93,
+                 //Nonce = 93,
                  Gas = 1500000,
-                 GasPrice = 483672407,
-                 FromAddress = wallet.account.Address,
+                 GasPrice = 695522217,
+                 //FromAddress = wallet.account.Address,
              };
             multiSwapFunction.Symbols = symbols;
             multiSwapFunction.AmountIns = amountIns;
             multiSwapFunction.AmountOutMins = amountOutMins;
             multiSwapFunction.PathSlices = pathSlices;
             multiSwapFunction.Paths = paths;
-            multiSwapFunction.Symbols = new List<byte>() { 1};
-            multiSwapFunction.AmountIns = new List<BigInteger>() { 423970100504148248 };
-            multiSwapFunction.AmountOutMins = new List<BigInteger>() {BigInteger.Parse("1000000") };
-            multiSwapFunction.PathSlices = new List<byte>() {2 };
-            multiSwapFunction.Paths = new List<string>() { "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", "0xe9e7cea3dedca5984780bafc599bd69add087d56" };
-            //var multiSwapFunctionTxnReceipt = await contractHandler.SendRequestAndWaitForReceiptAsync(multiSwapFunction);
-            //var sign1 = await contractHandler.SignTransactionAsync(multiSwapFunction);
-            */
-            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+//             multiSwapFunction.Symbols = new List<byte>() { 1 };
+//             multiSwapFunction.AmountIns = new List<BigInteger>() { 1000 };
+//             multiSwapFunction.AmountOutMins = new List<BigInteger>() { BigInteger.Parse("0") };
+//             multiSwapFunction.PathSlices = new List<byte>() { 4 };
+//             multiSwapFunction.Paths = new List<string>() { "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", "0xe9e7cea3dedca5984780bafc599bd69add087d56", "0x55d398326f99059ff775485246999027b3197955", "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c" };
+            var sign1 = await contractHandler.SignTransactionAsync(multiSwapFunction);
+            
 
-
-            transfer.symbols = new List<byte>() { 1 }.ToArray();
-            transfer.amountIns = new List<BigInteger>() { 423970100504148248 }.ToArray();
-            transfer.amountOutMins = new List<BigInteger>() { BigInteger.Parse("1000000") }.ToArray();
-            transfer.pathSlices = new List<byte>() { 2 }.ToArray();
-            transfer.paths = new List<string>() { "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", "0xe9e7cea3dedca5984780bafc599bd69add087d56" }.ToArray();
-            var sign2 = await transferHandler.SignTransactionAsync(contract.Address, transfer);
-            //var tx = await transferHandler.SendRequestAndWaitForReceiptAsync(contract.Address, transfer);
-
-            //Logger.Debug("sign1 :" + sign1);
-            Logger.Debug("sign2 :" + sign2);
+            Logger.Debug("sign1 :" + sign1);
             Logger.Debug($" transfer.Nonce: { transfer.Nonce}   contract.Address {contract.Address}"  );
-
-            string txt = "f9026a55841cd441578316e36094202cce504e04bed6fc0521238ddf04bc9e8e15ab80b902045dbd7e4a00000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000120000000000000000000000000000000000000000000000000000000000000016000000000000000000000000000000000000000000000000000000000000001a000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000005e23e8f63efb918000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000f4240000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002000000000000000000000000bb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c000000000000000000000000e9e7cea3dedca5984780bafc599bd69add087d561ba039094bc84b92f9ebdc265e6549b5ab7b196e3ff417f710448b93b498d8f8b3f0a0362ef9c62f571cda90e83d91d9aff0d8db70dfa5d630a715f4274547e3d23fd4";
-            var txId = await web3.Eth.Transactions.SendRawTransaction.SendRequestAsync("0x" + sign2);
+            var txId = await web3.Eth.Transactions.SendRawTransaction.SendRequestAsync("0x" + sign1);
             Logger.Debug("txId:"+txId);
 
-
-            //var signedTransaction1 = await transferHandler.SignTransactionAsync(contract.Address, transfer);
-            // var tx = await transferHandler.SendRequestAsync(contract.Address, transfer);
-            //var multiSwap = this.contract.GetFunction("multiSwap");
-            //CallAsync<string>(symbols, amountIns, amountOutMins, pathSlices, paths, overrides);
-            //var v = await multiSwap.CallAsync<object>(symbols.ToArray(), amountIns.ToArray(), amountOutMins.ToArray(), pathSlices, paths);
-            //var task = await multiSwap.SendTransactionAsync(signedTransaction1, symbols.ToArray(), amountIns.ToArray(), amountOutMins.ToArray(), pathSlices, paths);
-
-            //Logger.Debug($"multiSwapFunctionTxnReceipt:{multiSwapFunctionTxnReceipt}");
-            //Logger.Debug($"tx:{tx}");
         }
         [Function("multiSwap")]
         class MultiSwapFunctionBase : FunctionMessage

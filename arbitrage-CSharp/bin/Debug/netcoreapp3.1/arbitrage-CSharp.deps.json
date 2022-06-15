@@ -24,7 +24,8 @@
           "Nethereum.Web3": "4.5.0",
           "Newtonsoft.Json": "13.0.1",
           "StackExchange.Redis": "2.5.61",
-          "System.Configuration.ConfigurationManager": "6.0.0"
+          "System.Configuration.ConfigurationManager": "6.0.0",
+          "System.IO.Pipes": "4.3.0"
         },
         "runtime": {
           "arbitrage-CSharp.dll": {}

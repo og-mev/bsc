@@ -23,14 +23,16 @@ using static Nethereum.Util.UnitConversion;
 
 namespace arbitrage_CSharp
 {
-    class Strategy
+    class  Strategy
     {
         private readonly EthereumClientIntegrationFixture _ethereumClientIntegrationFixture;
-
-
+        /// <summary>
+        /// 当前区块高度
+        /// </summary>
+        private int blockNum = 0;
         Config config;
 
-        private delegate void TxChange(TransactionReceipt transaction);
+        private delegate void TxChange(TX transaction);
 
         /// <summary>
         /// 存放所有token的兑换路径
@@ -46,8 +48,18 @@ namespace arbitrage_CSharp
         /// key 是
         /// </summary>
         Dictionary<string, PoolPairs> poolPairsDic;
+        /// <summary>
+        /// 集合一次区块 里面所有的 池子里面的token数量变化
+        /// 动态加到 里面去<poolAddress , PoolPairs 变化数量>
+        /// </summary>
+        Dictionary<string, PoolPairs> poolChangeDic = new Dictionary<string, PoolPairs>();
 
-        public Strategy(string ConfigPath)
+        /// <summary>
+        /// 调用 信息的接口
+        /// <命令号，数据>
+        /// </summary>
+        Action<string,TX> senMsg;
+        public Strategy(string ConfigPath,Action<string,TX> senMsg )
         {
             Config config = null;
             if (File.Exists(ConfigPath))
@@ -71,12 +83,12 @@ namespace arbitrage_CSharp
             {
                 this.config = config;
             }
+            this.senMsg = senMsg;
             //string str = JsonConvert.SerializeObject(config,Formatting.Indented);
             //Logger.Debug(str);
             _ethereumClientIntegrationFixture = new EthereumClientIntegrationFixture();
         }
 
-       
 
         public async void StartAsync()
         {
@@ -100,7 +112,7 @@ namespace arbitrage_CSharp
             //RedisDB.Init(config.RedisConfig);
             //2 监听 peending  tx
             TxChange txChange = new TxChange(OnTxChangeAsync);
-            var tx = new TransactionReceipt()
+            var tx = new TX()
             {
 
             };
@@ -122,10 +134,8 @@ namespace arbitrage_CSharp
         /// 监听tx消息
         /// </summary>
         /// <param name="tx"></param>
-        private async void OnTxChangeAsync(TransactionReceipt tx)
+        public async void OnTxChangeAsync(TX tx)
         {
-
-
             //3 根据 tx 的交易对 获取所有对应路径
             //解析tx,获取到的tx是什么样子的,有可能同一个 区块中有多笔 tx改变？
             string poolId = config.testConfig.poolId;
@@ -157,9 +167,13 @@ namespace arbitrage_CSharp
                 var tokenPaths = GetRandomPath(token0.tokenAddress, 3);
                 var (bestPath, bestAmount, amountOut) = GetPathsWithAmount(tokenPaths, token0, true);
 
-                if (bestAmount<0)
+                if (bestAmount<=0)
                 {
                     Logger.Debug("没有好的路径！！");
+                }
+                else
+                {
+                    Logger.Debug($"兑换率最高 bestAmount {bestAmount} amountOut{amountOut}");
                 }
                 //如果超过最大现金，设置为最大现金
                 if (bestAmount > balance)
@@ -169,24 +183,22 @@ namespace arbitrage_CSharp
                     bestAmount = balance;
                     
                 }
-//                 else if (bestAmount < 1 )
-//                 {
-//                     Logger.Debug($"小于1了 balance {balance} bestAmount{bestAmount}");
-//                     amountOut = 1;
-//                     bestAmount = 5;
-//                 }
+                //                 else if (bestAmount < 1 )
+                //                 {
+                //                     Logger.Debug($"小于1了 balance {balance} bestAmount{bestAmount}");
+                //                     amountOut = 1;
+                //                     bestAmount = 5;
+                //                 }
                 //由bigdecimal转换为bignumber
+                //取余，避免兑换小数差别
+                amountOut = amountOut * (1 - config.IgnoreRate);
+
                 var bestAmount_0 = bestAmount.Mantissa * BigDecimal.Pow(10, token0.decimalNum + bestAmount.Exponent);
                 var bestAmount_int = (BigInteger)((decimal)(bestAmount_0));
                 var amountOut_0 = amountOut.Mantissa * BigDecimal.Pow(10, token0.decimalNum + amountOut.Exponent);
                 var amountOut_int = (BigInteger)((decimal)(amountOut_0));
 
-                TestAllTokens(token0, token1);
-
-                //还原币为 实际值 到 bigintger 
-                //BigInteger bestAmount_BI = token0.tokenReverse
-
-
+                //TestAllTokens(token0, token1);
 
                 //5 签名后发给 ray
                 var flashswapAddr = JObject.Parse(File.ReadAllText(config.contractPath + "deploy.json"))["address"].ToString();
@@ -197,8 +209,9 @@ namespace arbitrage_CSharp
                 var swapArr = new List<(string symbol, BigInteger amountIn, BigInteger amountOutMin, string[] path)>();
 
 
-                var v0 = bestAmount_int;
-                var v1 = amountOut_int;
+                
+                var v0 = bestAmount_int - (bestAmount_int % 10000000);
+                var v1 = amountOut_int - (amountOut_int%10000000);
 
                 (string symbol, BigInteger amountIn, BigInteger amountOutMin, string[] path) swap = ("pancakeswap", v0, v1, bestPath.ToArray());
                 swapArr.Add(swap);
@@ -371,6 +384,39 @@ namespace arbitrage_CSharp
             return (_tokensSwapPathsDic,graph.AdjacencyList);
         }
 
+
+        #region 通信方法
+        /// <summary>
+        /// 添加tx
+        /// </summary>
+        /// <param name="txList"></param>
+        public void AddTx(TXDatas datas)
+        {
+            this.blockNum = datas.blockNum;
+            foreach (var tx in datas.txList)
+            {
+
+                PoolPairs pairs;
+                var oldPairs = poolPairsDic[tx.poolAddress];
+                var t0 = oldPairs.poolToken0;
+                var t1 = oldPairs.poolToken0;
+                if (!poolChangeDic.TryGetValue(tx.poolAddress, out pairs))
+                {
+                    pairs = new PoolPairs(new PoolToken(t0.tokenSymbol, 0, t0.tokenAddress, 0), new PoolToken(t1.tokenSymbol, 0, t1.tokenAddress, 0));
+                }
+            }
+
+        }
+        /// <summary>
+        /// 提交签名给服务器
+        /// </summary>
+        /// <param name="sign"></param>
+        public void SendExchange(string sign ,int blockNum)
+        {
+
+        }
+
+        #endregion
 
         #region 工具
         /// <summary>
@@ -545,6 +591,9 @@ namespace arbitrage_CSharp
         /// <returns></returns>
         private async Task TestGetBaseTokenAsync(string url = "http://127.0.0.1:8545/",string contractAddress= "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c")
         {
+            await Task.Delay(2000);
+            //var flashswapAddr = JObject.Parse(File.ReadAllText(config.contractPath + "deploy.json"))["address"].ToString();
+            //contractAddress = flashswapAddr;
             var account = new Account(config.privateKeys[0]);
             var address = account.Address;
             var web3 = new Web3(account, url);
@@ -603,6 +652,10 @@ namespace arbitrage_CSharp
         public string wbnbAbi = "./wbnbAbi.json";
 
         public decimal uniswapV2_fee = 0.0m;
+        /// <summary>
+        ///忽略比例 ，忽略兑换比例,取整
+        /// </summary>
+        public decimal IgnoreRate = 0.00001m;
         /// <summary>
         /// 当前各种币的数量的字典
         /// </summary>
