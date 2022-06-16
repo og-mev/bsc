@@ -122,7 +122,7 @@ namespace arbitrage_CSharp
             //test 
             try
             {
-                OnTxChangeAsync(tx);
+                await OnTxChangeAsync(tx);
             }
             catch (Exception ex)
             {
@@ -361,7 +361,7 @@ namespace arbitrage_CSharp
             {
                 edges.Add(new Tuple<string, string>(poolPair.Value.poolToken0.tokenAddress, poolPair.Value.poolToken1.tokenAddress));
             }
-
+            Logger.Debug("获得全部的 token");
             var graph = new Graph<string>(vertices, edges);
             //循环获得所有tokens的兑换路径
             for (int i = 0; i < allTokens.Count; i++)
@@ -382,6 +382,10 @@ namespace arbitrage_CSharp
                         sb.AppendLine($"{vertices[j]}");
                     }
                     Logger.Debug(sb.ToString());
+                }
+                if (i%200==0)
+                {
+                    Logger.Debug($"当前计算到了{i}");
                 }
             }
             return (_tokensSwapPathsDic,graph.AdjacencyList);
@@ -619,7 +623,7 @@ namespace arbitrage_CSharp
 
 
                         bool can = true;
-                        if (tokenDecimlDic.TryGetValue(tokenDecimlDic[addr0], out string data0Str))
+                        if (tokenDecimlDic.TryGetValue(addr0, out string data0Str))
                         {
                             tokenData0 = JsonConvert.DeserializeObject<(int Decimal, string Symbol)>(data0Str);
                             
@@ -629,7 +633,7 @@ namespace arbitrage_CSharp
                             sb.AppendLine(addr0);
                             can = false;
                         }
-                        if (tokenDecimlDic.TryGetValue(tokenDecimlDic[addr1], out string data1Str))
+                        if (tokenDecimlDic.TryGetValue(addr1, out string data1Str))
                         {
                             tokenData1 = JsonConvert.DeserializeObject<(int Decimal, string Symbol)>(data1Str);
                         }
@@ -660,8 +664,6 @@ namespace arbitrage_CSharp
                         Logger.Error(ex);
                     }
                 }
-                
-
             }
             Logger.Error("没有的token" + sb.ToString());
             return allPoolDic;
