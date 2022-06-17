@@ -20,6 +20,7 @@ using Nethereum.Util;
 using WBNB;
 using Nethereum.Web3.Accounts;
 using static Nethereum.Util.UnitConversion;
+using static arbitrage_CSharp.Tools.Util;
 
 namespace arbitrage_CSharp
 {
@@ -56,6 +57,10 @@ namespace arbitrage_CSharp
         /// 动态加到 里面去<poolAddress , PoolPairs 变化数量>
         /// </summary>
         Dictionary<string, PoolPairs> poolChangeDic = new Dictionary<string, PoolPairs>();
+        /// <summary>
+        /// 币种对应小数点 字典
+        /// </summary>
+        Dictionary<string, string> tokenDecimlDic = new Dictionary<string, string>();
 
         /// <summary>
         /// 调用 信息的接口
@@ -481,7 +486,17 @@ namespace arbitrage_CSharp
             return allPoolDic;
 
         }
-
+        /// <summary>
+        /// 拉取节点合约数据
+        /// </summary>
+        /// <param name="web3"></param>
+        /// <param name="symbolAddressList"></param>
+        /// <param name="tokenAbiStr"></param>
+        /// <param name="pairAbiStr"></param>
+        /// <param name="allPoolDic"></param>
+        /// <param name="allPairs"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
         private static async Task<(string pairAddress, PoolPairs pairs)> GetPoolData(Web3 web3, List<string> symbolAddressList, string tokenAbiStr, string pairAbiStr, Dictionary<string, PoolPairs> allPoolDic, Function allPairs, int i)
         {
             
@@ -565,6 +580,13 @@ namespace arbitrage_CSharp
             }
             return allPoolDic;
         }
+
+       
+
+        /// <summary>
+        /// 通过redis获取数据
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<string, PoolPairs> GetPoolDatasByRedis()
         {//需要解析
 
@@ -593,12 +615,12 @@ namespace arbitrage_CSharp
             long lenT = RedisDB.Instance.HashLength(keyT);
             var resT = RedisDB.Instance.HashScan(keyT, "*", pageSize, 0 * pageSize);
             kT.AddRange(resT);
-            Dictionary<string, string> tokenDecimlDic = new Dictionary<string, string>();
+            StringBuilder sb = new StringBuilder();
             foreach (var item in kT)
             {
                 tokenDecimlDic.Add(item.Name.ToString(), item.Value);
             }
-            StringBuilder sb = new StringBuilder();
+            
             foreach (var item in kp)
             {
                 prase(item);
@@ -614,41 +636,11 @@ namespace arbitrage_CSharp
                 {
                     try
                     {
-                        string[] tokenAddr = key.Split(':');//0x93d5a19a993D195cfC75AcdD736A994428290a59:0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
-                        string[] tokenDatas = s.Value.ToString().Split('|');//r0|r1|pairAddr|update_timestamp   PancakeSwap: 3|3136980|0x696d16539Dd3eB00C19103f7d8cfA2cb32d66086|1654968667
-                        string addr0 = tokenAddr[0];
-                        string addr1 = tokenAddr[1];
+                        (PoolPairs poolP, string pairAddr) = PraseRedis2Pair(key, s.Value,sb);
+                        
+                        if (poolP!=null)
+                        {
 
-                        (int Decimal, string Symbol) tokenData0 = (0,null);
-                        (int Decimal, string Symbol) tokenData1 = (0,null);
-
-
-                        bool can = true;
-                        if (tokenDecimlDic.TryGetValue(addr0, out string data0Str))
-                        {
-                            tokenData0 = JsonConvert.DeserializeObject<(int Decimal, string Symbol)>(data0Str);
-                            
-                        }
-                        else
-                        {
-                            sb.AppendLine(addr0);
-                            can = false;
-                        }
-                        if (tokenDecimlDic.TryGetValue(addr1, out string data1Str))
-                        {
-                            tokenData1 = JsonConvert.DeserializeObject<(int Decimal, string Symbol)>(data1Str);
-                        }
-                        else
-                        {
-                            sb.AppendLine(addr1);
-                            can = false;
-                        }
-                        if (can)
-                        {
-                            PoolToken t0 = new PoolToken(tokenData0.Symbol, BigDecimal.Parse(tokenDatas[0]), addr0, tokenData0.Decimal);
-                            PoolToken t1 = new PoolToken(tokenData1.Symbol, BigDecimal.Parse(tokenDatas[1]), addr1, tokenData1.Decimal);
-                            string pairAddr = tokenDatas[2];
-                            PoolPairs poolP = new PoolPairs(t0, t1);
                             if (!allPoolDic.ContainsKey(pairAddr))
                             {
                                 allPoolDic.Add(pairAddr, poolP);
@@ -666,8 +658,115 @@ namespace arbitrage_CSharp
                     }
                 }
             }
-            Logger.Error("没有的token" + sb.ToString());
+            
             return allPoolDic;
+        }
+
+        /// <summary>
+        /// 计算出 本次交易 所有币种变化的数量
+        /// </summary>
+        /// <param name="tXDatas"></param>
+        public void GetTokenChangeAmount(PathData pathData,string exchangeName = "PancakeSwap")
+        {
+            //拉取 数据库对应数据参数
+
+            var paths = pathData.paths;
+            for (int i = 0; i < paths.Count - 1; i++)
+            {
+                var addr0 = pathData.paths[i];
+                var addr1 = pathData.paths[i + 1];
+                
+                bool isReverse = false;
+                string key = $"reserves {addr0}:{addr1}:{exchangeName}";
+                var value = RedisDB.Instance.HashGet(key, StackExchange.Redis.RedisValue.EmptyString);
+                if (string.IsNullOrEmpty(value))
+                {
+                    key = $"reserves {addr1}:{addr0}:{exchangeName}";
+                    value = RedisDB.Instance.HashGet(key, StackExchange.Redis.RedisValue.EmptyString);
+                    isReverse = true;
+                }
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new Exception($" 找不到地址：reserves {addr0}:{addr1}:{exchangeName}");
+                }
+                else
+                {
+                    (PoolPairs poolP, string pairAddr) = PraseRedis2Pair(key, value, null);
+
+                    //正向计算
+                    if (pathData.amountKonw == AmountEnum.KnowIn)
+                    {
+                        
+                        CFMM cFMM = new CFMM(poolP.poolToken0.tokenReverse, poolP.poolToken1.tokenReverse);
+                    }//反向计算 ，把  path 翻转，依次计算值
+                    else if (pathData.amountKonw == AmountEnum.KnowOut)
+                    {
+                        dfgdfgdfgd
+                        CFMM cFMM = new CFMM(poolP.poolToken0.tokenReverse, poolP.poolToken1.tokenReverse);
+                    }
+                }
+            }
+            
+        }
+        /// <summary>
+        /// 返回 没有小数位数和Symbol
+        /// </summary>
+        /// <param name="reservesKey"></param>
+        /// <param name="reservesValue"></param>
+        /// <returns></returns>
+        private (PoolPairs poolP, string pairAddr) PraseRedis2Pair(string reservesKey, string reservesValue, StringBuilder sb)
+        {
+            
+
+            string[] tokenAddr = reservesKey.Split(':');//0x93d5a19a993D195cfC75AcdD736A994428290a59:0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
+            string[] tokenDatas = reservesValue.ToString().Split('|');//r0|r1|pairAddr|update_timestamp   PancakeSwap: 3|3136980|0x696d16539Dd3eB00C19103f7d8cfA2cb32d66086|1654968667
+            string addr0 = tokenAddr[0];
+            string addr1 = tokenAddr[1];
+
+            PoolToken t0 = new PoolToken("", BigDecimal.Parse(tokenDatas[0]), addr0, 0);
+            PoolToken t1 = new PoolToken("", BigDecimal.Parse(tokenDatas[1]), addr1, 0);
+            string pairAddr = tokenDatas[2];
+
+
+            (int Decimal, string Symbol) tokenData0 = (0, null);
+            (int Decimal, string Symbol) tokenData1 = (0, null);
+
+
+            bool can = true;
+            if (tokenDecimlDic.TryGetValue(addr0, out string data0Str))
+            {
+                tokenData0 = JsonConvert.DeserializeObject<(int Decimal, string Symbol)>(data0Str);
+
+            }
+            else
+            {
+                if (sb!=null)
+                    sb.AppendLine(addr0);
+                can = false;
+            }
+            if (tokenDecimlDic.TryGetValue(addr1, out string data1Str))
+            {
+                tokenData1 = JsonConvert.DeserializeObject<(int Decimal, string Symbol)>(data1Str);
+            }
+            else
+            {
+                if (sb != null)
+                    sb.AppendLine(addr1);
+                can = false;
+            }
+            PoolPairs poolP = null;
+            if (can)
+            {
+                t0.tokenSymbol = tokenData0.Symbol;
+                t0.decimalNum = tokenData0.Decimal;
+                t1.tokenSymbol = tokenData1.Symbol;
+                t1.decimalNum = tokenData1.Decimal;
+
+                poolP = new PoolPairs(t0, t1);
+               
+            }
+
+            return (poolP, pairAddr);
         }
         #endregion
 

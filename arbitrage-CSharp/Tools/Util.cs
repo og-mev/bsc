@@ -49,72 +49,116 @@ namespace arbitrage_CSharp.Tools
             }
             return x;
         }
-        public static void DecodeTransaction(Transaction txn)
+        public static PathData DecodeTransaction(Transaction txn)
         {
-            //(BigInteger)
-            // pairs 合约
-            if (txn.IsTransactionForFunctionMessage<SwapFunction>())
-            {
-                SwapFunction transfer = new SwapFunction().DecodeTransaction(txn);
-                Console.WriteLine(Web3.Convert.FromWei(transfer.AmountToSend));
-                Console.WriteLine(transfer.AmountToSend);
-            }
-            //router 合约
+            PathData data = null;
+            // pairs 合约 =========================================
+            //             if (txn.IsTransactionForFunctionMessage<SwapFunction>())
+            //             {
+            //                 SwapFunction transfer = new SwapFunction().DecodeTransaction(txn);
+            //                 Console.WriteLine(Web3.Convert.FromWei(transfer.AmountToSend));
+            //                 Console.WriteLine(transfer.AmountToSend);
+            //             }
+            //router 合约 ==========================================
             //swapETHForExactTokens
-            else if (txn.IsTransactionForFunctionMessage<SwapETHForExactTokensFunction>())
-            {
+            if (txn.IsTransactionForFunctionMessage<SwapETHForExactTokensFunction>())
+            {//0xbcdc1dc8719512a03eb48ff5c544179779f05204ef2b39684240c9bb89233c4a
                 SwapETHForExactTokensFunction transfer = new SwapETHForExactTokensFunction().DecodeTransaction(txn);
+                data = new PathData(transfer.AmountToSend, transfer.AmountOut, AmountEnum.KnowOut,transfer.Path, transfer.GasPrice.Value);
                 Console.WriteLine(Web3.Convert.FromWei(transfer.AmountToSend));
                 Console.WriteLine(transfer.AmountToSend);
             }//SwapExactETHForTokens
             else if (txn.IsTransactionForFunctionMessage<SwapExactETHForTokensFunction>())
-            {
+            {//0x91f60ab52184468a4ba6a223470395861488d9717a7a7d9dfc3ab238afe21f35
                 SwapExactETHForTokensFunction transfer = new SwapExactETHForTokensFunction().DecodeTransaction(txn);
+                data = new PathData(transfer.AmountToSend, transfer.AmountOutMin, AmountEnum.KnowIn, transfer.Path, transfer.GasPrice.Value);
                 Console.WriteLine(Web3.Convert.FromWei(transfer.AmountToSend));
                 Console.WriteLine(transfer.AmountToSend);
             }//SwapExactETHForTokensSupportingFeeOnTransferTokens
             else if (txn.IsTransactionForFunctionMessage<SwapExactETHForTokensSupportingFeeOnTransferTokensFunction>())
-            {
+            {//0xa7dd000089213d7b96e8f2588b2f9710573d37eb7cf10631be18d0912015bb7c
                 SwapExactETHForTokensSupportingFeeOnTransferTokensFunction transfer = new SwapExactETHForTokensSupportingFeeOnTransferTokensFunction().DecodeTransaction(txn);
+                data = new PathData(transfer.AmountToSend, transfer.AmountOutMin, AmountEnum.KnowIn, transfer.Path, transfer.GasPrice.Value);
                 Console.WriteLine(Web3.Convert.FromWei(transfer.AmountToSend));
                 Console.WriteLine(transfer.AmountToSend);
             }//SwapExactTokensForETH
             else if (txn.IsTransactionForFunctionMessage<SwapExactTokensForETHFunction>())
-            {
+            {//0x81ab040033cd65e1c3826d8162643d9e626629105a63a6ab55ed1c7b92154f64
                 SwapExactTokensForETHFunction transfer = new SwapExactTokensForETHFunction().DecodeTransaction(txn);
+                data = new PathData(transfer.AmountIn, transfer.AmountOutMin, AmountEnum.KnowIn, transfer.Path, transfer.GasPrice.Value);
                 Console.WriteLine(Web3.Convert.FromWei(transfer.AmountToSend));
                 Console.WriteLine(transfer.AmountToSend);
             }//SwapExactTokensForETHSupportingFeeOnTransferTokens
             else if (txn.IsTransactionForFunctionMessage<SwapExactTokensForETHSupportingFeeOnTransferTokensFunction>())
-            {
+            {//0x0467476f2d681fefbccd8944e6263930863f1f189343420ee3d8482ed2ba7113
                 SwapExactTokensForETHSupportingFeeOnTransferTokensFunction transfer = new SwapExactTokensForETHSupportingFeeOnTransferTokensFunction().DecodeTransaction(txn);
+                data = new PathData(transfer.AmountIn, transfer.AmountOutMin, AmountEnum.KnowIn, transfer.Path, transfer.GasPrice.Value);
                 Console.WriteLine(Web3.Convert.FromWei(transfer.AmountToSend));
                 Console.WriteLine(transfer.AmountToSend);
             }//SwapExactTokensForTokens
             else if (txn.IsTransactionForFunctionMessage<SwapExactTokensForTokensFunction>())
-            {
+            {//0x8006c0926b3a8fbb46bb33ca33568196b2a1800c5815fda1617933744420d6ba
                 SwapExactTokensForTokensFunction transfer = new SwapExactTokensForTokensFunction().DecodeTransaction(txn);
+                data = new PathData(transfer.AmountIn, transfer.AmountOutMin, AmountEnum.KnowIn, transfer.Path, transfer.GasPrice.Value);
                 Console.WriteLine(Web3.Convert.FromWei(transfer.AmountToSend));
                 Console.WriteLine(transfer.AmountToSend);
             }//SwapExactTokensForTokensSupportingFeeOnTransferTokens
             else if (txn.IsTransactionForFunctionMessage<SwapExactTokensForTokensSupportingFeeOnTransferTokensFunction>())
-            {
+            {//0xb61d3a904bbdc684e918c98551e7db49b50043500e7f66b166538d7b9332adcc
                 SwapExactTokensForTokensSupportingFeeOnTransferTokensFunction transfer = new SwapExactTokensForTokensSupportingFeeOnTransferTokensFunction().DecodeTransaction(txn);
+                data = new PathData(transfer.AmountIn, transfer.AmountOutMin, AmountEnum.KnowIn, transfer.Path, transfer.GasPrice.Value);
                 Console.WriteLine(Web3.Convert.FromWei(transfer.AmountToSend));
                 Console.WriteLine(transfer.AmountToSend);
             }//SwapTokensForExactETH
             else if (txn.IsTransactionForFunctionMessage<SwapTokensForExactETHFunction>())
-            {
+            {//0x2847f6bd8f0cd9b75e22b8de25572a385ae6aec98f0b2add25a28142b6dac7c7
                 SwapTokensForExactETHFunction transfer = new SwapTokensForExactETHFunction().DecodeTransaction(txn);
+                data = new PathData(transfer.AmountInMax, transfer.AmountOut, AmountEnum.KnowOut, transfer.Path, transfer.GasPrice.Value);
                 Console.WriteLine(Web3.Convert.FromWei(transfer.AmountToSend));
                 Console.WriteLine(transfer.AmountToSend);
             }//SwapTokensForExactTokens
             else if (txn.IsTransactionForFunctionMessage<SwapTokensForExactTokensFunction>())
-            {
+            {//0x7907604b5ab27ff76529975102a32f58f9454fc6336a701dc6de940ff0c875da
                 SwapTokensForExactTokensFunction transfer = new SwapTokensForExactTokensFunction().DecodeTransaction(txn);
+                data = new PathData(transfer.AmountInMax, transfer.AmountOut, AmountEnum.KnowOut, transfer.Path, transfer.GasPrice.Value);
                 Console.WriteLine(Web3.Convert.FromWei(transfer.AmountToSend));
                 Console.WriteLine(transfer.AmountToSend);
             }
+            return data;
+        }
+
+        public class PathData
+        {
+            public PathData(BigInteger amountIns, BigInteger amountOutMins, AmountEnum amountKonw ,List<string> paths, BigInteger gasPrice)
+            {
+                this.amountIns = amountIns;
+                this.amountOutMins = amountOutMins;
+                this.amountKonw = amountKonw;
+                this.paths = paths;
+                this.gasPrice = gasPrice;
+            }
+
+            public BigInteger amountIns { get; set; }
+            public BigInteger amountOutMins { get; set; }
+
+            public AmountEnum amountKonw = AmountEnum.None;
+            public List<string> paths { get; set; }
+
+            public BigInteger gasPrice { get; set; }
+
+            public override string ToString()
+            {
+                return $"{{{nameof(amountIns)}={amountIns.ToString()}, {nameof(amountOutMins)}={amountOutMins.ToString()}, {nameof(paths)}={paths}, {nameof(gasPrice)}={gasPrice.ToString()}}}";
+            }
+        }
+        /// <summary>
+        /// 一直数量是 in 还是out，none 表示没有赋值
+        /// </summary>
+        public enum AmountEnum
+        {
+            None,
+            KnowIn,
+            KnowOut
         }
 
     }
