@@ -61,8 +61,8 @@ namespace arbitrage_CSharp
                     string temp;
                     while ((temp = rdr.ReadLine()) != "stop")
                     {
-                        TX tx = JsonConvert.DeserializeObject<TX>(temp);
-                        await strategy.OnTxChangeAsync(tx);
+                        string tx = JsonConvert.DeserializeObject<string>(temp);
+                        //await strategy.OnTxChangeAsync(tx);
                         Console.WriteLine("{0}:{1}", DateTime.Now, temp);
                     }
                 }

@@ -34,9 +34,7 @@ namespace arbitrage_CSharp
         /// </summary>
         private int blockNum = 0;
         Config config;
-
-
-        
+        private Web3 web3;
 
         /// <summary>
         /// 存放所有token的兑换路径
@@ -100,7 +98,7 @@ namespace arbitrage_CSharp
 
         public async void StartAsync()
         {
-
+            web3 = new Web3(config.NodeUrl);
             //await GetPoolDatasByContractAsync();
             //poolDatas
 
@@ -128,7 +126,7 @@ namespace arbitrage_CSharp
             //test 
             try
             {
-                await OnTxChangeAsync(tx);
+                //await OnTxChangeAsync("");
             }
             catch (Exception ex)
             {
@@ -143,7 +141,7 @@ namespace arbitrage_CSharp
         /// 监听tx消息
         /// </summary>
         /// <param name="tx"></param>
-        public async Task OnTxChangeAsync(TX tx)
+        public async Task OnTxChangeAsync(Dictionary<string, Dictionary<string, BigInteger>> tx)
         {
             //3 根据 tx 的交易对 获取所有对应路径
             //解析tx,获取到的tx是什么样子的,有可能同一个 区块中有多笔 tx改变？
@@ -403,9 +401,14 @@ namespace arbitrage_CSharp
         /// 添加tx
         /// </summary>
         /// <param name="txList"></param>
-        public void AddTx(TXDatas datas)
+        public async Task AddTxAsync(string transaction)
         {
-            OnTxChangeAsync(datas.tx);
+            var transactionRpc = await web3.Eth.Transactions.GetTransactionByHash.SendRequestAsync(transaction);
+
+            var txPares = Util.DecodeTransaction(transactionRpc);
+
+            var tx = GetTokenChangeAmount(txPares,config.uniswapV2_fee,tokenDecimlDic);
+            OnTxChangeAsync(tx);
 
         }
         /// <summary>
@@ -666,7 +669,7 @@ namespace arbitrage_CSharp
         /// 计算出 本次交易 所有币种变化的数量
         /// </summary>
         /// <param name="tXDatas"></param>
-        public static void GetTokenChangeAmount(PathData pathData,decimal fee,Dictionary<string,string> tokenDecimlDic, string exchangeName = "PancakeSwap")
+        public static Dictionary<string, Dictionary<string, BigInteger>> GetTokenChangeAmount(PathData pathData,decimal fee,Dictionary<string,string> tokenDecimlDic, string exchangeName = "PancakeSwap")
         {
             //CFMM cFMM = new CFMM(poolP.poolToken0.tokenReverse, poolP.poolToken1.tokenReverse);
             //正向计算
@@ -773,7 +776,38 @@ namespace arbitrage_CSharp
                     }
                 }
             }
-            
+            return tokenChangeNumDic;
+        }
+        /// <summary>
+        /// 获取 某个池子里面 token变换后数量
+        /// </summary>
+        /// <param name="tokenChangeNumDic"> Dictionary<string, Dictionary<string, BigInteger>> </param>
+        /// <param name="dbKey"></param>
+        public (PoolPairs poolP, string pairAddr) GetTokenAfterTxChange(Dictionary<string, Dictionary<string, BigInteger>> tokenChangeNumDic ,string dbTab,string dbKey, string exchangeName= "PancakeSwap")
+        {
+            PoolToken t0, t1;
+
+            var value = RedisDB.Instance.HashGet(dbTab, dbKey);
+            (PoolPairs poolP, string pairAddr) = PraseRedis2Pair(dbKey, value, tokenDecimlDic, null);
+            string pairKey0 = GetReservesKey(poolP.poolToken0.tokenAddress, poolP.poolToken1.tokenAddress, exchangeName);
+            string pairKey1 = GetReservesKey(poolP.poolToken0.tokenAddress, poolP.poolToken1.tokenAddress, exchangeName);
+            Dictionary<string, BigInteger> keyValues;
+
+            if (!tokenChangeNumDic.TryGetValue(pairKey0, out keyValues))
+            {
+                if (!tokenChangeNumDic.TryGetValue(pairKey1, out keyValues))
+                {
+                    throw new Exception($"没找到对应池子 pairKey1 {pairKey1} pairKey1 {pairKey1} ");
+                }
+            }
+            t0 = poolP.poolToken0.Clone();
+            t1 = poolP.poolToken1.Clone();
+
+            t0.tokenReverse += keyValues[t0.tokenAddress];
+            t1.tokenReverse += keyValues[t1.tokenAddress];
+
+            return (new PoolPairs(t0, t1), pairAddr);
+
         }
         /// <summary>
         /// 获取 db key
@@ -921,6 +955,8 @@ namespace arbitrage_CSharp
     {
         
         public List<string> privateKeys = new List<string> { "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80" };//真实测试  0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+        //158.247.203.163
+        public string NodeUrl = "http://158.247.203.163:8545/";//"http://localhost:8545/";
 
         public string RedisConfig= "localhost,password=l3h2p1w0*";
 

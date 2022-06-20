@@ -372,6 +372,11 @@ namespace arbitrage_CSharp
             //return (BigInteger)(reverse * Math.Pow(10, decimalNum));
             return (BigInteger)(reverse * 1);
         }
+
+        public PoolToken Clone()
+        {
+            return new PoolToken(tokenSymbol, tokenReverse, tokenAddress, decimalNum);
+        }
     }
 
     public class PathDataAll
