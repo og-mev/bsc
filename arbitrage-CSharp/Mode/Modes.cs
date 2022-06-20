@@ -472,7 +472,7 @@ namespace arbitrage_CSharp
         /// <param name="cfmm"></param>
         /// <param name="fee"></param>
         /// <returns></returns>
-        public static BigDecimal GetDeltaB(CFMM cfmm, BigDecimal fee, decimal DeltaA)
+        public static BigDecimal GetDeltaB(CFMM cfmm, BigDecimal fee, BigDecimal DeltaA)
         {
             BigDecimal r = 1 - fee;
             BigDecimal deltaB = cfmm.R1 * r * DeltaA / (cfmm.R0 + r * DeltaA);

@@ -49,6 +49,13 @@ namespace arbitrage_CSharp.Tools
             }
             return x;
         }
+
+        public static BigInteger ParseBigDecimal(this BigDecimal c,int pow)
+        {
+            c = c*BigDecimal.Pow(10, pow);
+            string cs = c.ToString().Split('.')[0];
+            return BigInteger.Parse(cs);
+        }
         public static PathData DecodeTransaction(Transaction txn)
         {
             PathData data = null;

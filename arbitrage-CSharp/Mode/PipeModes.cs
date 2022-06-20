@@ -9,7 +9,7 @@ namespace arbitrage_CSharp.Mode
     /// <summary>
     /// 数量变化
     /// </summary>
-    class TX
+    public class TX
     {
         /// <summary>
         /// 池子地址
@@ -29,7 +29,7 @@ namespace arbitrage_CSharp.Mode
         public BigInteger gasPrice;
     }
 
-    class TXDatas
+    public class TXDatas
     {
         public TX tx;
     }

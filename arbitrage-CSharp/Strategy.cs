@@ -24,7 +24,7 @@ using static arbitrage_CSharp.Tools.Util;
 
 namespace arbitrage_CSharp
 {
-    class  Strategy
+    public class  Strategy
     {
         private readonly EthereumClientIntegrationFixture _ethereumClientIntegrationFixture;
 
@@ -636,7 +636,7 @@ namespace arbitrage_CSharp
                 {
                     try
                     {
-                        (PoolPairs poolP, string pairAddr) = PraseRedis2Pair(key, s.Value,sb);
+                        (PoolPairs poolP, string pairAddr) = PraseRedis2Pair(key, s.Value, tokenDecimlDic,sb);
                         
                         if (poolP!=null)
                         {
@@ -666,23 +666,45 @@ namespace arbitrage_CSharp
         /// 计算出 本次交易 所有币种变化的数量
         /// </summary>
         /// <param name="tXDatas"></param>
-        public void GetTokenChangeAmount(PathData pathData,string exchangeName = "PancakeSwap")
+        public static void GetTokenChangeAmount(PathData pathData,decimal fee,Dictionary<string,string> tokenDecimlDic, string exchangeName = "PancakeSwap")
         {
-            //拉取 数据库对应数据参数
+            //CFMM cFMM = new CFMM(poolP.poolToken0.tokenReverse, poolP.poolToken1.tokenReverse);
+            //正向计算
+            List<string> sortPath = new List<string>();
+            BigInteger amoutIn = 0;
+            if (pathData.amountKonw == AmountEnum.KnowIn)
+            {
+                sortPath = pathData.paths;
+                amoutIn = pathData.amountIns;
 
-            var paths = pathData.paths;
+            }//反向计算 ，把  path 翻转，依次计算值
+            else if (pathData.amountKonw == AmountEnum.KnowOut)
+            {
+                pathData.paths.Reverse();
+                sortPath = pathData.paths;
+                amoutIn = pathData.amountOutMins;
+
+            }
+            //拉取 数据库对应数据参数
+            //<air addr  <token addr , changeNum>>
+            Dictionary<string, Dictionary<string, BigInteger>> tokenChangeNumDic = new Dictionary<string, Dictionary<string, BigInteger>>();
+            List<(string name, BigDecimal changeNum)> tokenChangeNum = new List<(string name, BigDecimal changeNum)>();
+            var paths = sortPath;
             for (int i = 0; i < paths.Count - 1; i++)
             {
-                var addr0 = pathData.paths[i];
-                var addr1 = pathData.paths[i + 1];
+                var addr0 = paths[i];
+                var addr1 = paths[i + 1];
                 
                 bool isReverse = false;
-                string key = $"reserves {addr0}:{addr1}:{exchangeName}";
-                var value = RedisDB.Instance.HashGet(key, StackExchange.Redis.RedisValue.EmptyString);
+                
+                string keyTab = $"reserves";
+                string keyName = $"{addr0}:{addr1}:{exchangeName}";
+                string value = RedisDB.Instance.HashGet(keyTab, keyName);
                 if (string.IsNullOrEmpty(value))
                 {
-                    key = $"reserves {addr1}:{addr0}:{exchangeName}";
-                    value = RedisDB.Instance.HashGet(key, StackExchange.Redis.RedisValue.EmptyString);
+                    keyTab = $"reserves";
+                    keyName = $"{addr1}:{addr0}:{exchangeName}";
+                    value = RedisDB.Instance.HashGet(keyTab, keyName);
                     isReverse = true;
                 }
                 if (string.IsNullOrEmpty(value))
@@ -691,22 +713,79 @@ namespace arbitrage_CSharp
                 }
                 else
                 {
-                    (PoolPairs poolP, string pairAddr) = PraseRedis2Pair(key, value, null);
+                    (PoolPairs poolP, string pairAddr) = PraseRedis2Pair(keyName, value, tokenDecimlDic, null, isReverse);
+                    BigDecimal amountOut =0;
+                    //需要计算 是增加还是减少
+                    //正向 是已知a增加 求b减少
+                    CFMM cFMM = new CFMM(poolP.poolToken0.tokenReverse, poolP.poolToken1.tokenReverse);
+                    Dictionary<string, BigInteger> keyValues ;
+                    string pairKey0 = GetReservesKey( poolP.poolToken0.tokenAddress, poolP.poolToken1.tokenAddress , exchangeName);
+                    string pairKey1 = GetReservesKey(poolP.poolToken0.tokenAddress, poolP.poolToken1.tokenAddress, exchangeName);
 
-                    //正向计算
-                    if (pathData.amountKonw == AmountEnum.KnowIn)
+                    if (!tokenChangeNumDic.TryGetValue(pairKey0, out keyValues))
                     {
-                        
-                        CFMM cFMM = new CFMM(poolP.poolToken0.tokenReverse, poolP.poolToken1.tokenReverse);
-                    }//反向计算 ，把  path 翻转，依次计算值
-                    else if (pathData.amountKonw == AmountEnum.KnowOut)
+                        if (!tokenChangeNumDic.TryGetValue(pairKey1, out keyValues))
+                        {
+                            keyValues = new Dictionary<string, BigInteger>();
+                            tokenChangeNumDic.Add(pairKey0, keyValues);
+                        }
+                    }
+                    
+                    if (i==0)
+                    {//判断是否已经有这个池子，如果有直接添加值
+                     //判断池子是否有这个 token 如果有直接改变 值
+                        if (keyValues.ContainsKey(poolP.poolToken0.tokenAddress))
+                        {
+                            keyValues[poolP.poolToken0.tokenAddress] += amoutIn;
+                        }
+                        else
+                        {
+                            keyValues.Add(poolP.poolToken0.tokenAddress, amoutIn);
+                        }
+                        amountOut = CFMM.GetDeltaB(cFMM, fee,new BigDecimal(amoutIn,poolP.poolToken0.decimalNum));
+                    }
+                    else
+                    {//反向的话 是已知b 减少 a求增加
+
+                        BigDecimal nextOut = tokenChangeNum[i - 1].changeNum;
+                        amountOut = CFMM.GetDeltaB(cFMM, fee, nextOut);
+                        //判断池子是否有这个 token 如果有直接改变 值
+                        BigInteger nextOut_int = nextOut.ParseBigDecimal(poolP.poolToken0.decimalNum);
+                        if (keyValues.ContainsKey(poolP.poolToken0.tokenAddress))
+                        {
+                            keyValues[poolP.poolToken0.tokenAddress] += nextOut_int;
+                        }
+                        else
+                        {
+                            keyValues.Add(poolP.poolToken0.tokenAddress, nextOut_int);
+                        }
+                    }
+                    //token1 减少 数量
+                    tokenChangeNum.Add((poolP.poolToken1.tokenAddress, amountOut));
+                    if (keyValues.ContainsKey(poolP.poolToken1.tokenAddress))
                     {
-                        dfgdfgdfgd
-                        CFMM cFMM = new CFMM(poolP.poolToken0.tokenReverse, poolP.poolToken1.tokenReverse);
+
+                        keyValues[poolP.poolToken1.tokenAddress] -= amountOut.ParseBigDecimal(poolP.poolToken1.decimalNum);
+                    }
+                    else
+                    {
+                        keyValues.Add(poolP.poolToken1.tokenAddress, -amountOut.ParseBigDecimal(poolP.poolToken1.decimalNum));
                     }
                 }
             }
             
+        }
+        /// <summary>
+        /// 获取 db key
+        /// </summary>
+        /// <param name="addr0"></param>
+        /// <param name="addr1"></param>
+        /// <param name="exchangeName"></param>
+        /// <returns></returns>
+        public static string GetReservesKey(string addr0,string addr1,string exchangeName)
+        {
+            string pairKey = addr0 + ":" + addr1 + ":" + exchangeName;
+            return pairKey;
         }
         /// <summary>
         /// 返回 没有小数位数和Symbol
@@ -714,7 +793,7 @@ namespace arbitrage_CSharp
         /// <param name="reservesKey"></param>
         /// <param name="reservesValue"></param>
         /// <returns></returns>
-        private (PoolPairs poolP, string pairAddr) PraseRedis2Pair(string reservesKey, string reservesValue, StringBuilder sb)
+        private static (PoolPairs poolP, string pairAddr) PraseRedis2Pair(string reservesKey, string reservesValue, Dictionary<string, string> tokenDecimlDic, StringBuilder sb,bool isReverse = false)
         {
             
 
@@ -761,9 +840,17 @@ namespace arbitrage_CSharp
                 t0.decimalNum = tokenData0.Decimal;
                 t1.tokenSymbol = tokenData1.Symbol;
                 t1.decimalNum = tokenData1.Decimal;
+                if (isReverse)
+                {
+                    poolP = new PoolPairs(t1, t0);
 
-                poolP = new PoolPairs(t0, t1);
-               
+                }
+                else
+                {
+                    poolP = new PoolPairs(t0, t1);
+                }
+
+
             }
 
             return (poolP, pairAddr);
