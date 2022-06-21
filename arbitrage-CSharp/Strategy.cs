@@ -21,6 +21,8 @@ using WBNB;
 using Nethereum.Web3.Accounts;
 using static Nethereum.Util.UnitConversion;
 using static arbitrage_CSharp.Tools.Util;
+using Nethereum.Contracts.Standards.ERC20.TokenList;
+using System.Linq;
 
 namespace arbitrage_CSharp
 {
@@ -95,10 +97,68 @@ namespace arbitrage_CSharp
             _ethereumClientIntegrationFixture = new EthereumClientIntegrationFixture();
         }
 
+        public async Task GetBalanceAsync()
+        {
+            var _ethereumClientIntegrationFixture = new EthereumClientIntegrationFixture();
+            var web3 = _ethereumClientIntegrationFixture.GetWeb3();
+            //using the default uniswap token list with 93 tokens
+            Token token1 = new Token()
+            {
+                ChainId = 1,
+                Address = "0x55d398326f99059fF775485246999027B3197955",
+                Symbol = "USDT",
+                Name = "Tether USD",
+                Decimals = 10,
+            };
+            Token token2 = new Token()
+            {
+                ChainId = 1,
+                Address = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+                Symbol = "BUSD",
+                Name = "BUSD Token",
+                Decimals = 10,
+            };
+            Token token3 = new Token()
+            {
+                ChainId = 1,
+                Address = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+                Symbol = "WBNB",
+                Name = "Wrapped BNB",
+                Decimals = 10,
+            };
+
+            var tokens = new List<Token>() { token1, token2, token3 };
+            var owner = JObject.Parse(File.ReadAllText("D://_Work//_mev//bsc//contract//" + "deploy.json"))["address"].ToString(); ;
+
+            var tokensOwned = await web3.Eth.ERC20.GetAllTokenBalancesUsingMultiCallAsync(
+                    new string[] { owner }, tokens.Where(x => x.ChainId == 1),
+                    BlockParameter.CreateLatest());
+
+            //Filtering only the tokens from the token list that have a positive balance
+            var tokensWithBalance = tokensOwned.Where(x => x.GetTotalBalance() > 0);
+
+
+            foreach (var tokenWithBalance in tokensWithBalance)
+            {
+                Logger.Debug("-----------------------------");
+                Logger.Debug("Name:" + tokenWithBalance.Token.Name);
+                Logger.Debug("Token:" + tokenWithBalance.Token.Address);
+                Logger.Debug("ChainId:" + tokenWithBalance.Token.ChainId);
+                Logger.Debug("Decimals:" + tokenWithBalance.Token.Decimals);
+                //Getting the balance of the owner as we could have queried for multiple owners
+                var balance = tokenWithBalance.OwnersBalances.FirstOrDefault(x => x.Owner.IsTheSameAddress(owner)).Balance;
+                //Converting the balance to a whole unit using the decimal places
+                Logger.Debug("Balance:" + Nethereum.Util.UnitConversion.Convert.FromWei(balance, tokenWithBalance.Token.Decimals));
+                Logger.Debug("-----------------------------");
+            }
+
+        }
 
         public async void StartAsync()
         {
             web3 = new Web3(config.NodeUrl);
+            await TestGetBaseTokenAsync();
+            await GetBalanceAsync();
             //await GetPoolDatasByContractAsync();
             //poolDatas
 
@@ -110,7 +170,7 @@ namespace arbitrage_CSharp
             poolPairsDic = GetPoolDatasByRedis();
             PoolDataHelper.Init(poolPairsDic);
             //test 兑换 wbnb
-            await TestGetBaseTokenAsync();
+            
 
 
 
@@ -145,13 +205,6 @@ namespace arbitrage_CSharp
         {
             //3 根据 tx 的交易对 获取所有对应路径
             //解析tx,获取到的tx是什么样子的,有可能同一个 区块中有多笔 tx改变？ 不考虑
-
-            /* test
-            string poolId = config.testConfig.poolId;
-            string adressFrom = config.testConfig.adressFrom;//DAI
-            decimal amountFrom = 0;
-            string addressTo = config.testConfig.adressTo;//USDC
-            */
             //test下需要计算出能兑换多少，实际上通过服务器传送
             
 
@@ -159,29 +212,17 @@ namespace arbitrage_CSharp
             //循环所有的 有改变的 token，寻找 其中有利润的路径
             foreach (var changeToken in sortPath)
             {
-                string poolId = config.testConfig.poolId;
-                string adressFrom = config.testConfig.adressFrom;//DAI
-                decimal amountFrom = 0;
-                string addressTo = config.testConfig.adressTo;//USDC
-
-
-                var (poolPair, addr) = PoolDataHelper.GetPoolPair(adressFrom, addressTo);
-                var token0 = poolPair.GetToken(adressFrom, poolId);
-                var token1 = poolPair.GetToken(addressTo, poolId);
-                if (config.CurrTokenAmountDic.TryGetValue(token0.tokenAddress, out decimal balance))//有token 才进行计算
+                string tokenAddress = changeToken;
+                int decimalNum =  JsonConvert.DeserializeObject<(int Decimal, string Symbol)>(tokenDecimlDic[tokenAddress]).Decimal; 
+                if (config.CurrTokenAmountDic.TryGetValue(tokenAddress, out decimal balance))//有token 才进行计算
                 {
-                    CFMM cFMM = new CFMM(token0.tokenReverse, token1.tokenReverse);
-                    //test ______________________实际上会收到 值
-                    changeAmountTo = CFMM.GetDeltaB(cFMM, config.uniswapV2_fee, amountFrom);
-                    //test______________________________
                     //根据tx 修改池子里面的数量
-                    token0.tokenReverse += amountFrom;
-                    token1.tokenReverse -= changeAmountTo;
+
 
                     //4 根据盈利比例计算出所有可兑换的路径，以及最大兑换数量
                     //获取 两个token的路径
-                    var tokenPaths = GetRandomPath(token0.tokenAddress, 3);
-                    var (bestPath, bestAmount, amountOut) = GetPathsWithAmount(tokenPaths, token0, true);
+                    var tokenPaths = GetRandomPath(tokenAddress, 3);
+                    var (bestPath, bestAmount, amountOut) = GetPathsWithAmount(tokenPaths, true);
 
                     if (bestAmount <= 0)
                     {
@@ -197,21 +238,15 @@ namespace arbitrage_CSharp
                         Logger.Debug($"超过最大现金 balance {balance} bestAmount{bestAmount}");
                         amountOut = (amountOut / bestAmount) * balance;
                         bestAmount = balance;
-
                     }
-                    //                 else if (bestAmount < 1 )
-                    //                 {
-                    //                     Logger.Debug($"小于1了 balance {balance} bestAmount{bestAmount}");
-                    //                     amountOut = 1;
-                    //                     bestAmount = 5;
-                    //                 }
+
                     //由bigdecimal转换为bignumber
                     //取余，避免兑换小数差别
                     amountOut = amountOut * (1 - config.IgnoreRate);
 
-                    var bestAmount_0 = bestAmount.Mantissa * BigDecimal.Pow(10, token0.decimalNum + bestAmount.Exponent);
+                    var bestAmount_0 = bestAmount.Mantissa * BigDecimal.Pow(10, decimalNum + bestAmount.Exponent);
                     var bestAmount_int = (BigInteger)((decimal)(bestAmount_0));
-                    var amountOut_0 = amountOut.Mantissa * BigDecimal.Pow(10, token0.decimalNum + amountOut.Exponent);
+                    var amountOut_0 = amountOut.Mantissa * BigDecimal.Pow(10, decimalNum + amountOut.Exponent);
                     var amountOut_int = (BigInteger)((decimal)(amountOut_0));
 
                     //TestAllTokens(token0, token1);
@@ -224,16 +259,12 @@ namespace arbitrage_CSharp
                     //根据算法来交换 币
                     var swapArr = new List<(string symbol, BigInteger amountIn, BigInteger amountOutMin, string[] path)>();
 
-
-
                     var v0 = bestAmount_int - (bestAmount_int % 10000000);
                     var v1 = amountOut_int - (amountOut_int % 10000000);
 
                     (string symbol, BigInteger amountIn, BigInteger amountOutMin, string[] path) swap = ("pancakeswap", v0, v1, bestPath.ToArray());
                     swapArr.Add(swap);
                     await bridge.import_wallets(config.privateKeys.ToArray());
-
-
                     try
                     {
                         await bridge.swap(swapArr);
@@ -258,8 +289,7 @@ namespace arbitrage_CSharp
         /// 获取 路径对应的盈利 数量 和路径 
         /// </summary>
         /// <param name="tokenPaths"></param>
-        /// <param name="token0"> 表示我们拥有要兑换的</param>
-        private (List<string> backPath, BigDecimal bestAmountT0ALL,BigDecimal bestAmountOut) GetPathsWithAmount(List<List<string>> tokenPaths, PoolToken token0, bool islog = true)
+        private (List<string> backPath, BigDecimal bestAmountT0ALL,BigDecimal bestAmountOut) GetPathsWithAmount(List<List<string>> tokenPaths, bool islog = true)
         {
             List<string> backPath = new List<string>();
             BigDecimal bestAmountT0ALL = 0;
@@ -711,7 +741,7 @@ namespace arbitrage_CSharp
             foreach (var item in tokensSwapPathsDic)
             {
                 var tokenPaths = GetRandomPath(item.Key, 4);
-                var (bestPath, bestAmountIn, amountOut) = GetPathsWithAmount(tokenPaths, token0,  false);
+                var (bestPath, bestAmountIn, amountOut) = GetPathsWithAmount(tokenPaths,   false);
                 if (bestAmountIn > 0)
                 {
                     Logger.Debug($"有利润！！ {item.Key}  {bestAmountIn}  {string.Join("->", bestPath)}");
@@ -726,7 +756,7 @@ namespace arbitrage_CSharp
         /// <returns></returns>
         private async Task TestGetBaseTokenAsync(string url = "http://127.0.0.1:8545/",string contractAddress= "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c")
         {
-            await Task.Delay(2000);
+            await Task.Delay(15000);
             //var flashswapAddr = JObject.Parse(File.ReadAllText(config.contractPath + "deploy.json"))["address"].ToString();
             //contractAddress = flashswapAddr;
             var account = new Account(config.privateKeys[0]);
@@ -734,6 +764,9 @@ namespace arbitrage_CSharp
             var web3 = new Web3(account, url);
             string wnnbAbi = File.ReadAllText(config.wbnbAbi);
             var contractHandler = web3.Eth.GetContractHandler(contractAddress);
+
+            BigInteger v = await account.NonceService.GetNextNonceAsync();
+            //v += 1;
 
             BigInteger amount = UnitConversion.Convert.ToWei(1);
             //质押
@@ -743,6 +776,7 @@ namespace arbitrage_CSharp
                 Gas = 30000000,
                 GasPrice = 5000000000,
                 FromAddress = account.Address,
+                Nonce = v,
             };
 
             var depositFunctionTxnReceipt = await contractHandler.SendRequestAndWaitForReceiptAsync<DepositFunction>(deposit);
@@ -753,7 +787,8 @@ namespace arbitrage_CSharp
                 Gas = 30000000,
                 GasPrice = 5000000000,
                 FromAddress = account.Address,
-            };
+                Nonce = v+1
+        };
             transferFunction.Dst = address;
             transferFunction.Wad = amount;
             var transferFunctionTxnReceipt = await contractHandler.SendRequestAndWaitForReceiptAsync(transferFunction);
