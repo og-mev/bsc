@@ -7,6 +7,7 @@ using System.Threading;
 using System.IO.Pipes;
 using System.Text;
 using arbitrage_CSharp.Mode;
+using arbitrage_CSharp.Tools;
 
 namespace arbitrage_CSharp
 {
@@ -18,10 +19,6 @@ namespace arbitrage_CSharp
         
         static void Main(string[] args)
         {
-
-            
-
-
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledExceptionHundle);
             if (args.Length > 0)
             {
@@ -33,7 +30,9 @@ namespace arbitrage_CSharp
         private static void OnParsedHandler(Options op)
         {
             strategy = new Strategy(op.ConfigPath, SentMassage);
-            strategy.StartAsync();
+            strategy.StartAsync().Sync();
+            //Thread.Sleep(20 * 1000);
+            strategy.AddTxAsync("0x885b1ef42bba87c199de03390d64dff218937493f424d47076c80ff2ad66542f");
             while (true)
             {
                 Thread.Sleep(1 * 1000);

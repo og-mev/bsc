@@ -23,6 +23,8 @@ using static Nethereum.Util.UnitConversion;
 using static arbitrage_CSharp.Tools.Util;
 using Nethereum.Contracts.Standards.ERC20.TokenList;
 using System.Linq;
+using Nethereum.Uniswap.Contracts.UniswapV2Router02;
+using Nethereum.Uniswap.Contracts.UniswapV2Router02.ContractDefinition;
 
 namespace arbitrage_CSharp
 {
@@ -60,7 +62,7 @@ namespace arbitrage_CSharp
         /// <summary>
         /// 币种对应小数点 字典
         /// </summary>
-        Dictionary<string, string> tokenDecimlDic = new Dictionary<string, string>();
+        Dictionary<string, (int Decimal, string Symbol)> tokenDecimlDic = new Dictionary<string, (int Decimal, string Symbol)>();
 
         /// <summary>
         /// 调用 信息的接口
@@ -154,11 +156,11 @@ namespace arbitrage_CSharp
 
         }
 
-        public async void StartAsync()
+        public async Task StartAsync()
         {
             web3 = new Web3(config.NodeUrl);
             await TestGetBaseTokenAsync();
-            await GetBalanceAsync();
+            //await GetBalanceAsync();
             //await GetPoolDatasByContractAsync();
             //poolDatas
 
@@ -177,6 +179,7 @@ namespace arbitrage_CSharp
             //获取所有路径,和 每个token 的可以兑换tokens;
             var (tokensSwapPathsDic, adjacencyList) = GetAllPaths(poolPairsDic,4,false);
             this.tokensSwapPathsDic = tokensSwapPathsDic;
+            Logger.Debug("===================================init suc=====================================");
             //RedisDB.Init(config.RedisConfig);
             //2 监听 peending  tx
             var tx = new TX()
@@ -208,25 +211,25 @@ namespace arbitrage_CSharp
             //test下需要计算出能兑换多少，实际上通过服务器传送
             
 
-            BigDecimal changeAmountTo = 0;
             //循环所有的 有改变的 token，寻找 其中有利润的路径
             foreach (var changeToken in sortPath)
             {
                 string tokenAddress = changeToken;
-                int decimalNum =  JsonConvert.DeserializeObject<(int Decimal, string Symbol)>(tokenDecimlDic[tokenAddress]).Decimal; 
+                int decimalNum = tokenDecimlDic[tokenAddress].Decimal; 
                 if (config.CurrTokenAmountDic.TryGetValue(tokenAddress, out decimal balance))//有token 才进行计算
                 {
                     //根据tx 修改池子里面的数量
-
+                    //tokenChangeNumDic 每次都要维护这个值，在一个新tx后改变
 
                     //4 根据盈利比例计算出所有可兑换的路径，以及最大兑换数量
                     //获取 两个token的路径
                     var tokenPaths = GetRandomPath(tokenAddress, 3);
-                    var (bestPath, bestAmount, amountOut) = GetPathsWithAmount(tokenPaths, true);
+                    var (bestPath, bestAmount, amountOut) = GetPathsWithAmount(tokenPaths, tokenChangeNumDic, true);
 
                     if (bestAmount <= 0)
                     {
-                        Logger.Debug("没有好的路径！！");
+                        Logger.Debug($"没有好的路径！！{changeToken}");
+                        continue;
                     }
                     else
                     {
@@ -289,7 +292,7 @@ namespace arbitrage_CSharp
         /// 获取 路径对应的盈利 数量 和路径 
         /// </summary>
         /// <param name="tokenPaths"></param>
-        private (List<string> backPath, BigDecimal bestAmountT0ALL,BigDecimal bestAmountOut) GetPathsWithAmount(List<List<string>> tokenPaths, bool islog = true)
+        private (List<string> backPath, BigDecimal bestAmountT0ALL,BigDecimal bestAmountOut) GetPathsWithAmount(List<List<string>> tokenPaths,Dictionary<string, Dictionary<string, BigInteger>> tokenChangeNumDic, bool islog = true)
         {
             List<string> backPath = new List<string>();
             BigDecimal bestAmountT0ALL = 0;
@@ -305,7 +308,8 @@ namespace arbitrage_CSharp
                 List<string> pairPaths = new List<string>();
                 for (int i = 0; i < path.Count-1; i++)
                 {
-                    var (_poolPair,addr) = PoolDataHelper.GetPoolPair(path[i],path[i+1]);
+                    //获取本次区块改变后的值
+                    var (_poolPair,addr) = PoolDataHelper.GetPoolPair(path[i],path[i+1], tokenChangeNumDic);
                     if (islog)
                     {
                         Logger.Debug($"path[i]_path[+1]  {path[i]}_{path[i + 1]}");
@@ -447,10 +451,11 @@ namespace arbitrage_CSharp
         /// <param name="txList"></param>
         public async Task AddTxAsync(string transaction)
         {
-            var transactionRpc = await web3.Eth.Transactions.GetTransactionByHash.SendRequestAsync(transaction);
+            var web3_ = new Web3("https://mainnet.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02");
+            var transactionRpc = await web3_.Eth.Transactions.GetTransactionByHash.SendRequestAsync(transaction);
 
             var txPares = Util.DecodeTransaction(transactionRpc);
-
+            Logger.Debug(txPares.ToString());
             var (tokenChangeNumDic , sortPath) = GetTokenChangeAmount(txPares,config.uniswapV2_fee,tokenDecimlDic);
             OnTxChangeAsync(tokenChangeNumDic, sortPath);
 
@@ -478,7 +483,7 @@ namespace arbitrage_CSharp
         /// <param name="tokenDecimlDic"></param>
         /// <param name="exchangeName"></param>
         /// <returns>  <reserves key  <token adrr, changeNum >> </returns>
-        public static (Dictionary<string, Dictionary<string, BigInteger>> tokenChangeNumDic, List<string> sortPath) GetTokenChangeAmount(PathData pathData,decimal fee,Dictionary<string,string> tokenDecimlDic, string exchangeName = "PancakeSwap")
+        public static (Dictionary<string, Dictionary<string, BigInteger>> tokenChangeNumDic, List<string> sortPath) GetTokenChangeAmount(PathData pathData,decimal fee,Dictionary<string, (int Decimal, string Symbol)> tokenDecimlDic, string exchangeName = "PancakeSwap")
         {
             //CFMM cFMM = new CFMM(poolP.poolToken0.tokenReverse, poolP.poolToken1.tokenReverse);
             //正向计算
@@ -671,7 +676,7 @@ namespace arbitrage_CSharp
         /// <param name="reservesKey"></param>
         /// <param name="reservesValue"></param>
         /// <returns></returns>
-        private static (PoolPairs poolP, string pairAddr) PraseRedis2Pair(string reservesKey, string reservesValue, Dictionary<string, string> tokenDecimlDic, StringBuilder sb,bool isReverse = false)
+        private static (PoolPairs poolP, string pairAddr) PraseRedis2Pair(string reservesKey, string reservesValue, Dictionary<string, (int Decimal, string Symbol)> tokenDecimlDic, StringBuilder sb,bool isReverse = false)
         {
             
 
@@ -690,9 +695,9 @@ namespace arbitrage_CSharp
 
 
             bool can = true;
-            if (tokenDecimlDic.TryGetValue(addr0, out string data0Str))
+            if (tokenDecimlDic.TryGetValue(addr0, out (int Decimal, string Symbol) data0Str))
             {
-                tokenData0 = JsonConvert.DeserializeObject<(int Decimal, string Symbol)>(data0Str);
+                tokenData0 = data0Str;
 
             }
             else
@@ -701,9 +706,9 @@ namespace arbitrage_CSharp
                     sb.AppendLine(addr0);
                 can = false;
             }
-            if (tokenDecimlDic.TryGetValue(addr1, out string data1Str))
+            if (tokenDecimlDic.TryGetValue(addr1, out (int Decimal, string Symbol) data1Str))
             {
-                tokenData1 = JsonConvert.DeserializeObject<(int Decimal, string Symbol)>(data1Str);
+                tokenData1 = data1Str;
             }
             else
             {
@@ -741,7 +746,7 @@ namespace arbitrage_CSharp
             foreach (var item in tokensSwapPathsDic)
             {
                 var tokenPaths = GetRandomPath(item.Key, 4);
-                var (bestPath, bestAmountIn, amountOut) = GetPathsWithAmount(tokenPaths,   false);
+                var (bestPath, bestAmountIn, amountOut) = GetPathsWithAmount(tokenPaths,  null, false);
                 if (bestAmountIn > 0)
                 {
                     Logger.Debug($"有利润！！ {item.Key}  {bestAmountIn}  {string.Join("->", bestPath)}");
@@ -768,7 +773,7 @@ namespace arbitrage_CSharp
             BigInteger v = await account.NonceService.GetNextNonceAsync();
             //v += 1;
 
-            BigInteger amount = UnitConversion.Convert.ToWei(1);
+            BigInteger amount = UnitConversion.Convert.ToWei(1000);
             //质押
             DepositFunction deposit = new DepositFunction()
             {
@@ -788,12 +793,81 @@ namespace arbitrage_CSharp
                 GasPrice = 5000000000,
                 FromAddress = account.Address,
                 Nonce = v+1
-        };
+             };
             transferFunction.Dst = address;
             transferFunction.Wad = amount;
             var transferFunctionTxnReceipt = await contractHandler.SendRequestAndWaitForReceiptAsync(transferFunction);
 
             Logger.Debug($"change {amount} to bnb");
+
+            UniswapV2Router02Service ser = new UniswapV2Router02Service(web3, "0x10ed43c718714eb63d5aa57b78b54704e256024e");
+            List<Token> tokens = new List<Token>()
+            {
+                new Token()
+                {
+                    ChainId = 1,
+                    Address = "0x55d398326f99059ff775485246999027b3197955",
+                    Symbol = "USDT",
+                    Name = "Tether USD",
+                    Decimals = 18,
+                },
+                new Token()
+                {
+                    ChainId = 1,
+                    Address = "0xe9e7cea3dedca5984780bafc599bd69add087d56",
+                    Symbol = "BUSD",
+                    Name = "BUSD Token",
+                    Decimals = 18,
+                },
+                 new Token()
+                {
+                    ChainId = 1,
+                    Address = "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
+                    Symbol = "USDC",
+                    Name = "USDC",
+                    Decimals = 18,
+                },
+                  new Token()
+                {
+                    ChainId = 1,
+                    Address = "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82",
+                    Symbol = "Cake",
+                    Name = "Cake",
+                    Decimals = 18,
+                }
+            };
+
+            int add = 1;
+            int addAmount = 10;
+            string fromAddr = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";
+            foreach (var token in tokens)
+            {
+                add++;
+                SwapETHForExactTokensFunction function = new SwapETHForExactTokensFunction()
+                {
+                    AmountToSend = addAmount * BigInteger.Pow(10, token.Decimals - 10),
+                    Gas = 30000000,
+                    GasPrice = 5000000000,
+                    FromAddress = account.Address,
+                    Nonce = v + add,
+
+                    AmountOut = addAmount * BigInteger.Pow(10, token.Decimals-10),
+                    Path = new List<string>() { fromAddr, token.Address },
+                    To = account.Address,
+                    Deadline = 165545446800
+
+                };
+                
+                await ser.SwapETHForExactTokensRequestAsync(function);
+                Logger.Debug($"swap {token.Symbol} suc");
+            }
+            //新增 Tether USD USDT 0x55d398326f99059fF775485246999027B3197955
+
+            //新增 BUSD Token BUSD 0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56
+
+            //新增 PancakeSwap Token Cake 0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82
+
+            //新增 USD Coin USDC 0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d
         }
         #endregion
     }
@@ -828,10 +902,11 @@ namespace arbitrage_CSharp
         ///忽略比例 ，忽略兑换比例,取整
         /// </summary>
         public decimal IgnoreRate = 0.00001m;
+                    
         /// <summary>
         /// 当前各种币的数量的字典
         /// </summary>
-        public Dictionary<string, decimal> CurrTokenAmountDic = new Dictionary<string, decimal>() { { "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82", 100 } };
+        public Dictionary<string, decimal> CurrTokenAmountDic = new Dictionary<string, decimal>() { { "0x55d398326f99059ff775485246999027b3197955", 100 }, { "0xe9e7cea3dedca5984780bafc599bd69add087d56", 100 }, { "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", 100 }, { "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82", 100 } };
 
         public Dictionary<string, string> allPaths = new Dictionary<string, string>() { {"BNB-USDT", "exchangeName:USDT&231-BNB&232,exchangeName:USDT&233-BNB&234" } };
 
@@ -840,13 +915,17 @@ namespace arbitrage_CSharp
         public TestConfig testConfig = new TestConfig();
     }
 
-    public class TestConfig
+    public  class TestConfig
     {
         public string poolId = "0x74e4716e431f45807dcf19f284c7aa99f18a4fbc";//"0xae461ca67b15dc8dc81ce7615e0320da1a9ab8d5";
 
         public string adressFrom = "0x2170ed0880ac9a755fd29b2688956bd959f933f8";//"0x6b175474e89094c44da98b954eedeac495271d0f";
 
         public string adressTo = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c";//"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
+        /// <summary>
+        /// 测试，只下拉最多条数的 交易池，方便计算
+        /// </summary>
+        public int maxPairCount = 1000;
     }
     //https://mainnet.infura.io/v3/f7d3ed56ffc1466bbfa4d23738fc0a87
     //npx hardhat node --fork https://mainnet.infura.io/v3/f7d3ed56ffc1466bbfa4d23738fc0a87

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace arbitrage_CSharp.Tools
 {
@@ -55,7 +56,18 @@ namespace arbitrage_CSharp.Tools
             c = c*BigDecimal.Pow(10, pow);
             string cs = c.ToString().Split('.')[0];
             return BigInteger.Parse(cs);
+        } 
+        public static BigDecimal ParseBiginteger(BigInteger bestAmount,int decimalNum)
+        {
+            BigDecimal dec = new BigDecimal(bestAmount, -decimalNum);
+            return dec;
         }
+
+        //         public static BigDecimal.ParseBiginteger(this BigInteger,int nub)
+        //         {
+        //             bestAmount.Mantissa* BigDecimal.Pow(10, decimalNum + bestAmount.Exponent);
+        //         }
+
         public static PathData DecodeTransaction(Transaction txn)
         {
             PathData data = null;
@@ -131,7 +143,16 @@ namespace arbitrage_CSharp.Tools
                 Console.WriteLine(Web3.Convert.FromWei(transfer.AmountToSend));
                 Console.WriteLine(transfer.AmountToSend);
             }
+            for (int i = 0; i < data.paths.Count; i++)
+            {
+                data.paths[i] = data.paths[i].ToLower();
+            }
             return data;
+        }
+
+        public static void Sync(this Task task)
+        {
+            task.ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
         public class PathData
