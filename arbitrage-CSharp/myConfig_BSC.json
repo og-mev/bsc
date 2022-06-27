@@ -1,6 +1,6 @@
 {
-  "RedisConfig": "158.247.203.163:6379,password=yqll,defaultDatabase=1",
-  //"RedisConfig": "localhost,password=yqll,defaultDatabase=1",
+  //"RedisConfig": "158.247.203.163:6379,password=yqll,defaultDatabase=1",
+  "RedisConfig": "localhost,password=yqll,defaultDatabase=1",
   "pairsDataPath": "./allPairs.json",
   "tokenAbi": "./tokenAbi.json",
   "uniswapV3_factoryAbi": "./uniswapV3_factoryAbi.json",

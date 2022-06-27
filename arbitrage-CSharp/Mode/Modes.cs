@@ -32,7 +32,8 @@ namespace arbitrage_CSharp
 {
     public static class Constants
     {
-        public static readonly Dictionary<string, int> exchanges = new Dictionary<string, int> { { "pancakeswap" ,1 }, { "biswap", 2 } };
+        public static readonly Dictionary<string, int> exchanges = new Dictionary<string, int> { { "PancakeSwap", 1 }, { "BiSwap", 2 } };
+
     }
 
     public class ERC20
@@ -306,10 +307,13 @@ namespace arbitrage_CSharp
 
         public PoolToken poolToken1;
 
-        public PoolPairs(PoolToken poolTokenA, PoolToken poolTokenB)
+        public string exchangeName;
+
+        public PoolPairs(PoolToken poolTokenA, PoolToken poolTokenB,string exchangeName)
         {
             this.poolToken0 = poolTokenA;
             this.poolToken1 = poolTokenB;
+            this.exchangeName = exchangeName;
         }
 
         public PoolToken GetToken(string addr, string poolAddress="")
@@ -329,7 +333,7 @@ namespace arbitrage_CSharp
         }
         public override string ToString()
         {
-            return $" poolToken0 :{poolToken0.ToString()} poolToken1 :{poolToken1.ToString()}   ";
+            return $"exchangeName {exchangeName} poolToken0 :{poolToken0.ToString()} poolToken1 :{poolToken1.ToString()}   ";
         }
     }
 

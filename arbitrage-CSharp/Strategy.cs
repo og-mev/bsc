@@ -239,44 +239,80 @@ namespace arbitrage_CSharp
         /// 获取 路径对应的盈利 数量 和路径 
         /// </summary>
         /// <param name="tokenPaths"></param>
-        private (List<string> backPath, BigDecimal bestAmountT0ALL,BigDecimal bestAmountOut) GetPathsWithAmount(List<List<string>> tokenPaths,Dictionary<string, Dictionary<string, BigInteger>> tokenChangeNumDic, bool islog = true)
+        private (List<(string addr, string exchangeName)> backTokenPath, BigDecimal bestAmountT0ALL,BigDecimal bestAmountOut) GetPathsWithAmount(List<List<string>> tokenPaths,Dictionary<string, Dictionary<string, BigInteger>> tokenChangeNumDic, bool islog = true)
         {
-            List<string> backPath = new List<string>();
+            List<(string addr,string exchangeName )> backTokenPath = new List<(string addr, string exchangeName)>();
             BigDecimal bestAmountT0ALL = 0;
             BigDecimal bestProfit = 0;
             BigDecimal bestAmountOut = 0;
 
-            List<string> bestPairPaths = new List<string>();
+            List<(string pairAddr, string exchangeName)> bestPairPaths = new List<(string pairAddr, string exchangeName)>();
+
+            var exchangeNames = (from ex in Constants.exchanges
+                             select ex.Key).ToList();
+            
             //循环计算 所有路径的 最大盈利
-            foreach (var path in tokenPaths)
+            foreach (var tokendPath in tokenPaths)
             {
+                //把单条路径 通过不同交易所的相同交易对，扩展到n个路径  n 个path< path<pairAddr,exchangeName>>
+                List<List<(string pairAddr, string exchangeName)>> pathsExt = new List<List<(string pairAddr, string exchangeName)>>();
+
                 //把 所有路径合成 一个CFMM
                 List<PoolPairs> cFMMPaths = new List<PoolPairs>();
-                List<string> pairPaths = new List<string>();
-                for (int i = 0; i < path.Count-1; i++)
+                for (int tokenPathCount = 0; tokenPathCount < tokendPath.Count-1; tokenPathCount++)
                 {
+
+                    if (tokenPathCount==0)//第一次生成 添加 list
+                    {
+                        pathsExt.Add(new List<(string pairAddr, string exchangeName)>());
+                    }
+
                     //获取本次区块改变后的值
-                    var (_poolPair,addr) = PoolDataHelper.GetPoolPair(path[i],path[i+1], tokenChangeNumDic);
-                    if (islog)
+                    var dexPairDic = PoolDataHelper.GetPoolPair(tokendPath[tokenPathCount],tokendPath[tokenPathCount+1], exchangeNames,tokenChangeNumDic);
+
+                    //clone dexPairDic 数量 个 pathsExt
+                    List<List<(string pairAddr, string exchangeName)>> cloneList = new List<List<(string pairAddr, string exchangeName)>>();
+                    int dexCount = 0;
+                    foreach (var data in dexPairDic)
                     {
-                        Logger.Debug($"path[i]_path[+1]  {path[i]}_{path[i + 1]}");
-                    }
-                    
-                    //t0表示我们其实拥有的token，t1是要兑换的
-                    if (_poolPair!=null)
-                    {
+                        List<List<(string pairAddr, string exchangeName)>> clonePathsExt = pathsExt;
+                        if (dexCount >0 )
+                        {
+                            clonePathsExt = pathsExt.Clone();
+                        }
+
+                        dexCount++;
+                        string exchangeName = data.Key;
+                        var (_poolPair, pairAddr) = data.Value;
                         if (islog)
-                            Logger.Debug(_poolPair.ToString());
-                        cFMMPaths.Add(_poolPair);
-                        pairPaths.Add(addr);
+                        {
+                            Logger.Debug($" exchangeName: {exchangeName} path[i]_path[+1]  {tokendPath[tokenPathCount]}_{tokendPath[tokenPathCount + 1]}");
+                        }
+
+                        //t0表示我们其实拥有的token，t1是要兑换的
+                        if (_poolPair != null)
+                        {
+                            if (islog)
+                                Logger.Debug(_poolPair.ToString());
+                            cFMMPaths.Add(_poolPair);
+                            foreach (var clonePath in clonePathsExt)
+                            {
+                                clonePath.Add((pairAddr, _poolPair.exchangeName));
+                            }
+                        }
+                        cloneList.AddRange(clonePathsExt);
                     }
+                    pathsExt = cloneList;
                 }
+
+               
+
                 try
                 {
                     CFMM endCFMM = CFMM.GetVisualCFMM(config.uniswapV2_fee, cFMMPaths.ToArray());
                     BigDecimal bestAmountT0 = CFMM.GetBestChangeAmount(endCFMM.R0, endCFMM.R1, config.uniswapV2_fee);
                     if (islog)
-                        Logger.Debug($" bestAmountT0 {bestAmountT0} 路径最近兑换数量 {string.Join("-->", path.ToArray()) }");
+                        Logger.Debug($" bestAmountT0 {bestAmountT0} 路径最近兑换数量 {string.Join("-->", tokendPath.ToArray()) }");
                     //计算利润
                     if (bestAmountT0> 0)
                     {
@@ -287,10 +323,10 @@ namespace arbitrage_CSharp
                         if (profit>bestProfit)
                         {
                             bestProfit = profit;
-                            backPath = path;
+                            backTokenPath = tokendPath;
                             bestAmountT0ALL = bestAmountT0;
                             bestAmountOut = amountOut;
-                            bestPairPaths = pairPaths;
+                            bestPairPaths = allDexPairPaths;
                             //if (islog)
                             
                                 Logger.Debug($"有利润 bestProfit {bestProfit} bestAmountT0ALL {bestAmountT0ALL} amountOut{amountOut}");
@@ -303,9 +339,9 @@ namespace arbitrage_CSharp
                 }
             }
             Logger.Debug("path pairAddr: " + string.Join(" ", bestPairPaths));
-            Logger.Debug("backPath : " + string.Join(" ", backPath));
+            Logger.Debug("backTokenPath : " + string.Join(" ", backTokenPath));
             Logger.Debug($" bestProfit {bestProfit} ");
-            return (backPath, bestAmountT0ALL, bestAmountOut);
+            return (backTokenPath, bestAmountT0ALL, bestAmountOut);
 
         }
         /// <summary>
@@ -336,8 +372,8 @@ namespace arbitrage_CSharp
             //存放所有token 对应的兑换路径
             Dictionary<string, Dictionary<int, List<List<string>>>> _tokensSwapPathsDic = new Dictionary<string, Dictionary<int, List<List<string>>>>();
             List<string> allTokens = new List<string>();
-            List<string> vertices = new List<string>();
-            List<Tuple<string, string>> edges = new List<Tuple<string, string>>();
+            List<string> vertices = new List<string>();//顶点（tokens）
+            List<Tuple<string, string>> edges = new List<Tuple<string, string>>();//边 , 可以构成的交易对
             //获取有多少种类
             foreach (var item in poolPairsDic)
             {
@@ -614,7 +650,7 @@ namespace arbitrage_CSharp
 
                 t0.tokenReverse += keyValues[t0.tokenAddress];
                 t1.tokenReverse += keyValues[t1.tokenAddress];
-                changeDic.Add(realKey, new PoolPairs(t0, t1));
+                changeDic.Add(realKey, new PoolPairs(t0, t1, exchangeName));
             }
             return changeDic;
 
@@ -642,7 +678,7 @@ namespace arbitrage_CSharp
         {
             
 
-            string[] tokenAddr = reservesKey.Split(':');//0x93d5a19a993D195cfC75AcdD736A994428290a59:0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
+            string[] tokenAddr = reservesKey.Split(':');//0x93d5a19a993D195cfC75AcdD736A994428290a59:0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c:PancakeSwap
             string[] tokenDatas = reservesValue.ToString().Split('|');//r0|r1|pairAddr|update_timestamp   PancakeSwap: 3|3136980|0x696d16539Dd3eB00C19103f7d8cfA2cb32d66086|1654968667
             string addr0 = tokenAddr[0];
             string addr1 = tokenAddr[1];
@@ -650,6 +686,7 @@ namespace arbitrage_CSharp
             PoolToken t0 = new PoolToken("", BigDecimal.Parse(tokenDatas[0]), addr0, 0);
             PoolToken t1 = new PoolToken("", BigDecimal.Parse(tokenDatas[1]), addr1, 0);
             string pairAddr = tokenDatas[2];
+            string exchangeName = tokenAddr[2];
 
 
             (int Decimal, string Symbol) tokenData0 = (0, null);
@@ -687,12 +724,12 @@ namespace arbitrage_CSharp
                 t1.decimalNum = tokenData1.Decimal;
                 if (isReverse)
                 {
-                    poolP = new PoolPairs(t1, t0);
+                    poolP = new PoolPairs(t1, t0, exchangeName);
 
                 }
                 else
                 {
-                    poolP = new PoolPairs(t0, t1);
+                    poolP = new PoolPairs(t0, t1, exchangeName);
                 }
 
 
