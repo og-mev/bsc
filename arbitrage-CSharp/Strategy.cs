@@ -33,12 +33,10 @@ namespace arbitrage_CSharp
         private readonly EthereumClientIntegrationFixture _ethereumClientIntegrationFixture;
 
         
-        /// <summary>
-        /// 当前区块高度
-        /// </summary>
-        private int blockNum = 0;
         Config config;
         private Web3 web3;
+
+        private string contranctAddr;
 
         /// <summary>
         /// 存放所有token的兑换路径
@@ -46,19 +44,10 @@ namespace arbitrage_CSharp
         /// </summary>
         Dictionary<string, Dictionary<int, List<List<string>>>> tokensSwapPathsDic = new Dictionary<string, Dictionary<int, List<List<string>>>>();
         /// <summary>
-        /// token 的可兑换地址
-        /// </summary>
-        Dictionary<string, HashSet<string>> adjacencyList;
-        /// <summary>
         /// 所有池子里面的数据 ，测试用，正式情况通过redis获取
         /// key 是
         /// </summary>
         Dictionary<string, PoolPairs> poolPairsDic;
-        /// <summary>
-        /// 集合一次区块 里面所有的 池子里面的token数量变化
-        /// 动态加到 里面去<poolAddress , PoolPairs 变化数量>
-        /// </summary>
-        Dictionary<string, PoolPairs> poolChangeDic = new Dictionary<string, PoolPairs>();
         /// <summary>
         /// 币种对应小数点 字典
         /// </summary>
@@ -98,68 +87,26 @@ namespace arbitrage_CSharp
             //Logger.Debug(str);
             _ethereumClientIntegrationFixture = new EthereumClientIntegrationFixture();
         }
-
-        public async Task GetBalanceAsync()
+        /// <summary>
+        /// 一直异步获取值
+        /// </summary>
+        public async void GetBalanceAsyncWaitTime(int milliseconds, List<Token> tokens)
         {
-            var _ethereumClientIntegrationFixture = new EthereumClientIntegrationFixture();
-            var web3 = _ethereumClientIntegrationFixture.GetWeb3();
-            //using the default uniswap token list with 93 tokens
-            Token token1 = new Token()
+            while (true)
             {
-                ChainId = 1,
-                Address = "0x55d398326f99059fF775485246999027B3197955",
-                Symbol = "USDT",
-                Name = "Tether USD",
-                Decimals = 10,
-            };
-            Token token2 = new Token()
-            {
-                ChainId = 1,
-                Address = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
-                Symbol = "BUSD",
-                Name = "BUSD Token",
-                Decimals = 10,
-            };
-            Token token3 = new Token()
-            {
-                ChainId = 1,
-                Address = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-                Symbol = "WBNB",
-                Name = "Wrapped BNB",
-                Decimals = 10,
-            };
-
-            var tokens = new List<Token>() { token1, token2, token3 };
-            var owner = JObject.Parse(File.ReadAllText("D://_Work//_mev//bsc//contract//" + "deploy.json"))["address"].ToString(); ;
-
-            var tokensOwned = await web3.Eth.ERC20.GetAllTokenBalancesUsingMultiCallAsync(
-                    new string[] { owner }, tokens.Where(x => x.ChainId == 1),
-                    BlockParameter.CreateLatest());
-
-            //Filtering only the tokens from the token list that have a positive balance
-            var tokensWithBalance = tokensOwned.Where(x => x.GetTotalBalance() > 0);
-
-
-            foreach (var tokenWithBalance in tokensWithBalance)
-            {
-                Logger.Debug("-----------------------------");
-                Logger.Debug("Name:" + tokenWithBalance.Token.Name);
-                Logger.Debug("Token:" + tokenWithBalance.Token.Address);
-                Logger.Debug("ChainId:" + tokenWithBalance.Token.ChainId);
-                Logger.Debug("Decimals:" + tokenWithBalance.Token.Decimals);
-                //Getting the balance of the owner as we could have queried for multiple owners
-                var balance = tokenWithBalance.OwnersBalances.FirstOrDefault(x => x.Owner.IsTheSameAddress(owner)).Balance;
-                //Converting the balance to a whole unit using the decimal places
-                Logger.Debug("Balance:" + Nethereum.Util.UnitConversion.Convert.FromWei(balance, tokenWithBalance.Token.Decimals));
-                Logger.Debug("-----------------------------");
+                CurrTokenAmountDic = await GetBalanceAsync(web3, contranctAddr, tokens);
+                Logger.Debug("++++++++++++++++++++++++++++++++完成本次获取本金！++++++++++++++++++++++++++++");
+                await Task.Delay(milliseconds);
             }
-
         }
 
         public async Task StartAsync()
         {
             web3 = new Web3(config.NodeUrl);
-            await TestGetBaseTokenAsync();
+            contranctAddr = JObject.Parse(File.ReadAllText(config.contractPath + "deploy.json"))["address"].ToString();
+
+            GetBalanceAsyncWaitTime(config.SpanMillisecondsBalance, config.BalanceTokens);
+            await TestGetBaseTokenAsync(contranctAddr);
             //await GetBalanceAsync();
             //await GetPoolDatasByContractAsync();
             //poolDatas
@@ -180,7 +127,6 @@ namespace arbitrage_CSharp
             var (tokensSwapPathsDic, adjacencyList) = GetAllPaths(poolPairsDic,4,false);
             this.tokensSwapPathsDic = tokensSwapPathsDic;
             Logger.Debug("===================================init suc=====================================");
-            //RedisDB.Init(config.RedisConfig);
             //2 监听 peending  tx
             var tx = new TX()
             {
@@ -195,6 +141,12 @@ namespace arbitrage_CSharp
             {
                 Logger.Error(ex);
             }
+            foreach (var item in config.testConfig.txHashs)
+            {
+                Logger.Debug($"============================当前tx:  {item} +++++++++++++++++");
+                await this.AddTxAsync(item);
+            }
+
         }
 
 
@@ -215,8 +167,8 @@ namespace arbitrage_CSharp
             foreach (var changeToken in sortPath)
             {
                 string tokenAddress = changeToken;
-                int decimalNum = tokenDecimlDic[tokenAddress].Decimal; 
-                if (config.CurrTokenAmountDic.TryGetValue(tokenAddress, out decimal balance))//有token 才进行计算
+                int decimalNum = tokenDecimlDic[tokenAddress].Decimal;
+                if (CurrTokenAmountDic.TryGetValue(tokenAddress, out BigDecimal balance))//有token 才进行计算
                 {
                     //根据tx 修改池子里面的数量
                     //tokenChangeNumDic 每次都要维护这个值，在一个新tx后改变
@@ -255,12 +207,13 @@ namespace arbitrage_CSharp
                     //TestAllTokens(token0, token1);
 
                     //5 签名后发给 ray
-                    var flashswapAddr = JObject.Parse(File.ReadAllText(config.contractPath + "deploy.json"))["address"].ToString();
+                    var flashswapAddr = contranctAddr;
                     var swapAbi = JObject.Parse(File.ReadAllText(config.contractPath + "artifacts/contracts/flashswap.sol/Flashswap.json"))["abi"].ToString();
                     var bridge = new SwapBridge("BSC", flashswapAddr.ToLower(), swapAbi: swapAbi);
 
                     //根据算法来交换 币
                     var swapArr = new List<(string symbol, BigInteger amountIn, BigInteger amountOutMin, string[] path)>();
+
 
                     var v0 = bestAmount_int - (bestAmount_int % 10000000);
                     var v1 = amountOut_int - (amountOut_int % 10000000);
@@ -278,14 +231,8 @@ namespace arbitrage_CSharp
                         Logger.Error(ex);
                     }
                 }
-
-
-
-
             }
-           
-           
-            Logger.Debug("完成了！！！！！！！！！！！");
+            Logger.Debug("完成本次套利检查了！！！！！！！！！！！");
         }
 
         /// <summary>
@@ -451,13 +398,27 @@ namespace arbitrage_CSharp
         /// <param name="txList"></param>
         public async Task AddTxAsync(string transaction)
         {
-            var web3_ = new Web3("https://mainnet.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02");
-            var transactionRpc = await web3_.Eth.Transactions.GetTransactionByHash.SendRequestAsync(transaction);
+            //https://speedy-nodes-nyc.moralis.io/5c66f82a76ba601169cd112d/bsc/mainnet/archive
+            var _web3 = new Web3("https://speedy-nodes-nyc.moralis.io/5c66f82a76ba601169cd112d/bsc/mainnet/archive");
+            var transactionRpc = await _web3.Eth.Transactions.GetTransactionByHash.SendRequestAsync(transaction);
+            //var web3_ = new Web3("https://mainnet.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02");
+            //var transactionRpc = await web3.Eth.Transactions.GetTransactionByHash.SendRequestAsync(transaction);
 
             var txPares = Util.DecodeTransaction(transactionRpc);
-            Logger.Debug(txPares.ToString());
-            var (tokenChangeNumDic , sortPath) = GetTokenChangeAmount(txPares,config.uniswapV2_fee,tokenDecimlDic);
-            OnTxChangeAsync(tokenChangeNumDic, sortPath);
+            if (txPares!=null)
+            {
+                Logger.Debug(txPares.ToString());
+                var (tokenChangeNumDic, sortPath) = GetTokenChangeAmount(txPares, config.uniswapV2_fee, tokenDecimlDic);
+                if (tokenChangeNumDic!=null)
+                {
+                    OnTxChangeAsync(tokenChangeNumDic, sortPath);
+                }
+            }
+            else
+            {
+                Logger.Debug($"不是正确的swap方法 transactionRpc {transactionRpc}");
+            }
+            
 
         }
         /// <summary>
@@ -526,7 +487,8 @@ namespace arbitrage_CSharp
                 }
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new Exception($" 找不到地址：reserves {addr0}:{addr1}:{exchangeName}");
+                    Logger.Error($" 找不到地址：reserves {addr0}:{addr1}:{exchangeName}");
+                    return (null, null);
                 }
                 else
                 {
@@ -759,7 +721,7 @@ namespace arbitrage_CSharp
         /// <param name="url"></param>
         /// <param name="contractAddress"></param>
         /// <returns></returns>
-        private async Task TestGetBaseTokenAsync(string url = "http://127.0.0.1:8545/",string contractAddress= "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c")
+        private async Task TestGetBaseTokenAsync(string sendToAddr, string url = "http://127.0.0.1:8545/",string contractAddress= "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c")
         {
             await Task.Delay(15000);
             //var flashswapAddr = JObject.Parse(File.ReadAllText(config.contractPath + "deploy.json"))["address"].ToString();
@@ -771,7 +733,7 @@ namespace arbitrage_CSharp
             var contractHandler = web3.Eth.GetContractHandler(contractAddress);
 
             BigInteger v = await account.NonceService.GetNextNonceAsync();
-            //v += 1;
+            v += 1;
 
             BigInteger amount = UnitConversion.Convert.ToWei(1000);
             //质押
@@ -845,15 +807,15 @@ namespace arbitrage_CSharp
                 add++;
                 SwapETHForExactTokensFunction function = new SwapETHForExactTokensFunction()
                 {
-                    AmountToSend = addAmount * BigInteger.Pow(10, token.Decimals - 10),
+                    AmountToSend = addAmount * BigInteger.Pow(10, token.Decimals),
                     Gas = 30000000,
                     GasPrice = 5000000000,
                     FromAddress = account.Address,
                     Nonce = v + add,
 
-                    AmountOut = addAmount * BigInteger.Pow(10, token.Decimals-10),
+                    AmountOut = addAmount * BigInteger.Pow(10, token.Decimals),
                     Path = new List<string>() { fromAddr, token.Address },
-                    To = account.Address,
+                    To = sendToAddr,//account.Address,
                     Deadline = 165545446800
 
                 };
@@ -879,7 +841,8 @@ namespace arbitrage_CSharp
         
         public List<string> privateKeys = new List<string> { "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80" };//真实测试  0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
         //158.247.203.163
-        public string NodeUrl = "http://158.247.203.163:8545/";//"http://localhost:8545/";
+        //public string NodeUrl = "http://158.247.203.163:8545/";//"http://localhost:8545/";
+        public string NodeUrl = "http://localhost:8545/";
 
         public string RedisConfig= "localhost,password=l3h2p1w0*";
 
@@ -902,17 +865,66 @@ namespace arbitrage_CSharp
         ///忽略比例 ，忽略兑换比例,取整
         /// </summary>
         public decimal IgnoreRate = 0.00001m;
-                    
+        /// <summary>
+        /// 获取本金间隔时间
+        /// </summary>
+        public int SpanMillisecondsBalance = 30000;
+
         /// <summary>
         /// 当前各种币的数量的字典
         /// </summary>
         public Dictionary<string, decimal> CurrTokenAmountDic = new Dictionary<string, decimal>() { { "0x55d398326f99059ff775485246999027b3197955", 100 }, { "0xe9e7cea3dedca5984780bafc599bd69add087d56", 100 }, { "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", 100 }, { "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82", 100 } };
 
+        public List<Token> BalanceTokens = new List<Token>()
+            {
+            new Token()
+        {
+            ChainId = 1,
+                    Address = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+                    Symbol = "WBNB",
+                    Name = "WBNB",
+                    Decimals = 18,
+                },
+                new Token()
+        {
+            ChainId = 1,
+                    Address = "0x55d398326f99059ff775485246999027b3197955",
+                    Symbol = "USDT",
+                    Name = "Tether USD",
+                    Decimals = 18,
+                },
+                new Token()
+        {
+            ChainId = 1,
+                    Address = "0xe9e7cea3dedca5984780bafc599bd69add087d56",
+                    Symbol = "BUSD",
+                    Name = "BUSD Token",
+                    Decimals = 18,
+                },
+                 new Token()
+        {
+            ChainId = 1,
+                    Address = "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
+                    Symbol = "USDC",
+                    Name = "USDC",
+                    Decimals = 18,
+                },
+                  new Token()
+        {
+            ChainId = 1,
+                    Address = "0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82",
+                    Symbol = "Cake",
+                    Name = "Cake",
+                    Decimals = 18,
+                }
+    };
+        
         public Dictionary<string, string> allPaths = new Dictionary<string, string>() { {"BNB-USDT", "exchangeName:USDT&231-BNB&232,exchangeName:USDT&233-BNB&234" } };
 
         public List<PoolPairs> testPoolPairs = new List<PoolPairs>() ;
 
         public TestConfig testConfig = new TestConfig();
+
     }
 
     public  class TestConfig
@@ -926,6 +938,8 @@ namespace arbitrage_CSharp
         /// 测试，只下拉最多条数的 交易池，方便计算
         /// </summary>
         public int maxPairCount = 1000;
+
+        public List<string> txHashs;
     }
     //https://mainnet.infura.io/v3/f7d3ed56ffc1466bbfa4d23738fc0a87
     //npx hardhat node --fork https://mainnet.infura.io/v3/f7d3ed56ffc1466bbfa4d23738fc0a87

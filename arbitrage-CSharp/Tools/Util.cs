@@ -143,15 +143,22 @@ namespace arbitrage_CSharp.Tools
                 Console.WriteLine(Web3.Convert.FromWei(transfer.AmountToSend));
                 Console.WriteLine(transfer.AmountToSend);
             }
-            for (int i = 0; i < data.paths.Count; i++)
+            if (data!=null)
             {
-                data.paths[i] = data.paths[i].ToLower();
+                for (int i = 0; i < data.paths.Count; i++)
+                {
+                    data.paths[i] = data.paths[i].ToLower();
+                }
+                data.amountIns *= 10;
+                data.amountOutMins *= 10;
             }
+          
             return data;
         }
 
         public static void Sync(this Task task)
         {
+            
             task.ConfigureAwait(false).GetAwaiter().GetResult();
         }
 

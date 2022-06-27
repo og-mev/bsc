@@ -32,7 +32,9 @@ namespace arbitrage_CSharp
             strategy = new Strategy(op.ConfigPath, SentMassage);
             strategy.StartAsync().Sync();
             //Thread.Sleep(20 * 1000);
-            strategy.AddTxAsync("0x885b1ef42bba87c199de03390d64dff218937493f424d47076c80ff2ad66542f");
+
+
+            //strategy.AddTxAsync("0x885b1ef42bba87c199de03390d64dff218937493f424d47076c80ff2ad66542f").Sync();
             while (true)
             {
                 Thread.Sleep(1 * 1000);
