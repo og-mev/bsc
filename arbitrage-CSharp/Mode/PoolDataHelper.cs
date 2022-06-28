@@ -76,7 +76,7 @@ namespace arbitrage_CSharp.Mode
                     poolAddress = pairsTokenAddressDic[key1];
                     //return (new PoolPairs(poolPairs.poolToken1, poolPairs.poolToken0), pairsTokenAddressDic[token1address + "_" + token0Address]);
                 }
-                if (tokenChangeNumDic != null && pairs != null)
+                if (tokenChangeNumDic != null && tokenChangeNumDic.Count>0 && pairs != null)
                 {
                     var dic = tokenChangeNumDic.ContainsKey(key0) ? tokenChangeNumDic[key0] : tokenChangeNumDic[key1];
 

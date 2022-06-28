@@ -225,7 +225,11 @@ namespace arbitrage_CSharp
             StringBuilder sb = new StringBuilder();
             foreach (var item in kT)
             {
-                tokenDecimlDic.Add(item.Name.ToString(), JsonConvert.DeserializeObject<(int Decimal, string Symbol)>(item.Value) );
+                string s = item.Value;
+                //Logger.Debug(s);
+                //tokenDecimlDic.Add(item.Name.ToString(), JsonConvert.DeserializeObject<(int Decimal, string Symbol)>(s) );
+                TokenD tokenD = JsonConvert.DeserializeObject<TokenD>(s);
+                tokenDecimlDic.Add(item.Name.ToString(), (tokenD.Decimal,tokenD.Symbol));
             }
 
             foreach (var item in kp)
@@ -297,5 +301,11 @@ namespace arbitrage_CSharp
 
             return balanceDic;
         }
+    }
+
+    class TokenD
+    {
+        public int Decimal;
+        public string Symbol;
     }
 }

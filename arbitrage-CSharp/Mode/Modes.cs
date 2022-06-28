@@ -301,6 +301,7 @@ namespace arbitrage_CSharp
     /// <summary>
     /// 交易池中的交易对
     /// </summary>
+    [Serializable]
     public class PoolPairs
     {
         public PoolToken poolToken0;
@@ -336,7 +337,6 @@ namespace arbitrage_CSharp
             return $"exchangeName {exchangeName} poolToken0 :{poolToken0.ToString()} poolToken1 :{poolToken1.ToString()}   ";
         }
     }
-
     public class PoolToken
     {
         private string _tokenAddress;

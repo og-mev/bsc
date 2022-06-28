@@ -5,6 +5,7 @@ using Nethereum.Uniswap.Contracts.UniswapV2Router02.ContractDefinition;
 //using Nethereum.Uniswap.Contracts.UniswapV2Router01.ContractDefinition;
 using Nethereum.Util;
 using Nethereum.Web3;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -166,13 +167,10 @@ namespace arbitrage_CSharp.Tools
         /// <returns>List{``0}.</returns>
         public static List<T> Clone<T>(this List<T> List)
         {
-            using (Stream objectStream = new MemoryStream())
-            {
-                IFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(objectStream, List);
-                objectStream.Seek(0, SeekOrigin.Begin);
-                return formatter.Deserialize(objectStream) as List<T>;
-            }
+
+            var str = JsonConvert.SerializeObject(List);
+            return JsonConvert.DeserializeObject<List<T>>(str);
+
         }
         public static void Sync(this Task task)
         {
