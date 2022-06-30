@@ -172,6 +172,25 @@ namespace arbitrage_CSharp.Tools
             return JsonConvert.DeserializeObject<List<T>>(str);
 
         }
+        public static List<List<T>> CloneBigDecmic<T>(this List<List<T>> mList) 
+        {
+            var list = new List<List<T>>();
+            foreach (var item in mList)
+            {
+                var list1 = new List<T>();
+                foreach (var item1 in item)
+                {
+                    list1.Add(item1);
+                }
+                list.Add(list1);
+            }
+            if (list==mList)
+            {
+                list = mList;
+            }
+            return list;
+
+        }
         public static void Sync(this Task task)
         {
             

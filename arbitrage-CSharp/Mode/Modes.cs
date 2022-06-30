@@ -337,7 +337,7 @@ namespace arbitrage_CSharp
             return $"exchangeName {exchangeName} poolToken0 :{poolToken0.ToString()} poolToken1 :{poolToken1.ToString()}   ";
         }
     }
-    public class PoolToken
+    public class PoolToken 
     {
         private string _tokenAddress;
 
@@ -381,6 +381,7 @@ namespace arbitrage_CSharp
         {
             return new PoolToken(tokenSymbol, tokenReverse, tokenAddress, decimalNum);
         }
+
     }
 
     public class PathDataAll
@@ -533,6 +534,10 @@ namespace arbitrage_CSharp
         {
             CFMM A_B = null;
             CFMM B_C = null;
+            if (poolPairsPaths.Length == 1)
+            {
+                A_B = new CFMM(poolPairsPaths[0]);
+            }
             for (int i = 0; i < poolPairsPaths.Length-1; i++)
             {
                
