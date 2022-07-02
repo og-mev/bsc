@@ -5,7 +5,7 @@ async function main() {
     const dexBridge = new SwapBridge("BSC", swapContract, null);
     await sleep(2000);
     await dexBridge.import_wallets(["0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"]);
-    await dex2cex(dexBridge, null);
+    await cex2dex(dexBridge, null);
 }
 
 function symbol2token(chain, symbol) {
@@ -18,7 +18,7 @@ function symbol2token(chain, symbol) {
 
 }
 
-async function dex2cex(dexBridge, cexBridge) {
+async function cex2dex(dexBridge, cexBridge) {
     let token0 = symbol2token("BSC", "BNB");
     let token1 = symbol2token("BSC", "BUSD");
     console.log(token0);
