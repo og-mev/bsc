@@ -22,7 +22,7 @@ async function dex2cex(dexBridge, cexBridge) {
     let token0 = symbol2token("BSC", "BNB");
     let token1 = symbol2token("BSC", "BUSD");
     console.log(token0);
-    if (!token0) {
+    if (!token0 || !token1) {
         console.log("can't find token");
     }
     // return;
