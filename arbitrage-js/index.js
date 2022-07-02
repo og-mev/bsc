@@ -1,4 +1,5 @@
 const { ethers } = require("ethers");
+const ccxt = require('ccxt')
 const { ERC20, SwapPair, SwapBridge } = require("./common/classes");
 async function main() {
     let swapContract = require("../contract/deploy.json").address;
@@ -19,6 +20,22 @@ function symbol2token(chain, symbol) {
 }
 
 async function cex2dex(dexBridge, cexBridge) {
+    let exchange = new ccxt.binance();
+    await exchange.loadMarkets();
+    let symbols = exchange.symbols;
+    symbols.map(symbol => {
+        let symbol0 = symbol.split("/")[0];
+        let symbol1 = symbol.split("/")[1];
+        let token0 = symbol2token("BSC", symbol0);
+        let token1 = symbol2token("BSC", symbol1);
+        if (token0)
+            console.log(token0);
+        if (token1)
+            console.log(token1)
+    })
+    return
+
+
     let token0 = symbol2token("BSC", "BNB");
     let token1 = symbol2token("BSC", "BUSD");
     console.log(token0);
