@@ -27,8 +27,8 @@ class SwapPair {
 
 class SwapBridge {
 
-    constructor(symbol, address = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", rpcUrl = null, swapAbi = null) {
-        this.symbol = symbol;
+    constructor(chain, address = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", rpcUrl = null, swapAbi = null) {
+        this.chain = chain;
         this.address = address;
         this.#set_swap_abi(swapAbi);
         this.#init_provider(rpcUrl);
