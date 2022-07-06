@@ -25,6 +25,7 @@ using Nethereum.Contracts.Standards.ERC20.TokenList;
 using System.Linq;
 using Nethereum.Uniswap.Contracts.UniswapV2Router02;
 using Nethereum.Uniswap.Contracts.UniswapV2Router02.ContractDefinition;
+using StackExchange.Redis;
 
 namespace arbitrage_CSharp
 {
@@ -126,7 +127,7 @@ namespace arbitrage_CSharp
 
 
             //获取所有路径,和 每个token 的可以兑换tokens; 
-            var (tokensSwapPathsDic, adjacencyList) = GetAllPaths(poolPairsDic,5,false);
+            var tokensSwapPathsDic = GetAllPaths(poolPairsDic,5,false,config.SavePath,config.PathKey);
             this.tokensSwapPathsDic = tokensSwapPathsDic;
             Logger.Debug("===================================init suc=====================================");
             //2 监听 peending  tx
@@ -144,7 +145,7 @@ namespace arbitrage_CSharp
                 Logger.Error(ex);
             }
 
-            await OnTxChangeAsync(new Dictionary<string, Dictionary<string, BigInteger>>(), new List<string>() {"a" });
+            //await OnTxChangeAsync(new Dictionary<string, Dictionary<string, BigInteger>>(), new List<string>() {"a" });
             /*
             foreach (var item in config.testConfig.txHashs)
             {
@@ -167,8 +168,20 @@ namespace arbitrage_CSharp
             //循环所有的 有改变的 token，寻找 其中有利润的路径
             foreach (var changeToken in sortPath)
             {
+                Logger.Debug($"开始计算地址 {changeToken}");
                 string tokenAddress = changeToken;
-                int decimalNum = tokenDecimlDic[tokenAddress].Decimal;
+                int decimalNum = 0;
+                try
+                {
+                    decimalNum = tokenDecimlDic[tokenAddress].Decimal;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error($"tokenAddress {tokenAddress} not in tokenDecimlDic");
+                    continue;
+                    //throw ex;
+                }
+                
                 if (CurrTokenAmountDic.TryGetValue(tokenAddress, out BigDecimal balance))//有token 才进行计算
                 {
                     //根据tx 修改池子里面的数量
@@ -437,63 +450,78 @@ namespace arbitrage_CSharp
         /// <param name="poolPairsDic"></param>
         /// <param name="log"></param>
         /// <returns></returns>
-        private static (Dictionary<string, Dictionary<int, List<List<string>>>>,Dictionary<string,HashSet<string>>) GetAllPaths(Dictionary<string, PoolPairs> poolPairsDic,int maxHosp=5,bool log = true)
-        {
-            //存放所有token 对应的兑换路径
+        private static Dictionary<string, Dictionary<int, List<List<string>>>> GetAllPaths(Dictionary<string, PoolPairs> poolPairsDic,int maxHosp=5,bool log = true,bool SavePath = false,string pathKey="")
+        { //存放所有token 对应的兑换路径
             Dictionary<string, Dictionary<int, List<List<string>>>> _tokensSwapPathsDic = new Dictionary<string, Dictionary<int, List<List<string>>>>();
             List<string> allTokens = new List<string>();
             List<string> vertices = new List<string>();//顶点（tokens）
             List<Tuple<string, string>> edges = new List<Tuple<string, string>>();//边 , 可以构成的交易对
-            //获取有多少种类
-            foreach (var item in poolPairsDic)
+            Graph<string> graph = null;
+
+            if (SavePath)
             {
-                if (!allTokens.Contains(item.Value.poolToken0.tokenAddress))
+                //获取有多少种类
+                foreach (var item in poolPairsDic)
                 {
-                    allTokens.Add(item.Value.poolToken0.tokenAddress);
-                }
-                if (!allTokens.Contains(item.Value.poolToken1.tokenAddress))
-                {
-                    allTokens.Add(item.Value.poolToken1.tokenAddress);
-                }
-                
-            }
-            foreach (var item in allTokens)
-            {
-                vertices.Add(item);
-            }
-            // 构成图，把相同的 地址能连接的放到一起
-            foreach (var poolPair in poolPairsDic)
-            {
-                edges.Add(new Tuple<string, string>(poolPair.Value.poolToken0.tokenAddress, poolPair.Value.poolToken1.tokenAddress));
-            }
-            Logger.Debug("获得全部的 token");
-            var graph = new Graph<string>(vertices, edges);
-            //循环获得所有tokens的兑换路径
-            for (int i = 0; i < allTokens.Count; i++)
-            {
-                var token = allTokens[i];
-                var allPaths = Algorithms.DFSAllPaths<string>(graph, vertices[i], maxHosp);
-                _tokensSwapPathsDic.Add(token, allPaths);
-                if (log)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    foreach (var edge in edges)
+                    if (!allTokens.Contains(item.Value.poolToken0.tokenAddress))
                     {
-                        sb.AppendLine($"{edge.Item1} {edge.Item2} 100");
+                        allTokens.Add(item.Value.poolToken0.tokenAddress);
+                    }
+                    if (!allTokens.Contains(item.Value.poolToken1.tokenAddress))
+                    {
+                        allTokens.Add(item.Value.poolToken1.tokenAddress);
                     }
 
-                    for (int j = 0; j < vertices.Count; j++)
-                    {
-                        sb.AppendLine($"{vertices[j]}");
-                    }
-                    Logger.Debug(sb.ToString());
                 }
-                if (i%200==0)
+                foreach (var item in allTokens)
                 {
-                    Logger.Debug($"当前计算到了{i}");
+                    vertices.Add(item);
                 }
+                // 构成图，把相同的 地址能连接的放到一起
+                foreach (var poolPair in poolPairsDic)
+                {
+                    edges.Add(new Tuple<string, string>(poolPair.Value.poolToken0.tokenAddress, poolPair.Value.poolToken1.tokenAddress));
+                }
+                Logger.Debug("获得全部的 token");
+                graph = new Graph<string>(vertices, edges);
+                //循环获得所有tokens的兑换路径
+                for (int i = 0; i < allTokens.Count; i++)
+                {
+                    var token = allTokens[i];
+                    var allPaths = Algorithms.DFSAllPaths<string>(graph, vertices[i], maxHosp);
+                    _tokensSwapPathsDic.Add(token, allPaths);
+                    if (log)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        foreach (var edge in edges)
+                        {
+                            sb.AppendLine($"{edge.Item1} {edge.Item2} 100");
+                        }
+
+                        for (int j = 0; j < vertices.Count; j++)
+                        {
+                            sb.AppendLine($"{vertices[j]}");
+                        }
+                        Logger.Debug(sb.ToString());
+                    }
+                    if (i % 10 == 0)
+                    {
+                        Logger.Debug($"当前计算到了{i}");
+                    }
+                }
+                string json = JsonConvert.SerializeObject(_tokensSwapPathsDic);
+                RedisDB.Instance.StringSet(pathKey, json);
+
+
             }
-            return (_tokensSwapPathsDic,graph.AdjacencyList);
+            else//redis 读取
+            {
+                _tokensSwapPathsDic = RedisDB.Instance.StringGet<Dictionary<string, Dictionary<int, List<List<string>>>>>(pathKey);
+            }
+
+
+
+            return _tokensSwapPathsDic;
         }
 
 
@@ -502,20 +530,31 @@ namespace arbitrage_CSharp
         /// 添加tx
         /// </summary>
         /// <param name="txList"></param>
-        public async Task AddTxAsync(string transaction)
+        public async Task AddTxAsync(string transaction, bool isHash = true)
         {
-            //https://speedy-nodes-nyc.moralis.io/5c66f82a76ba601169cd112d/bsc/mainnet/archive
-            var _web3 = new Web3("https://speedy-nodes-nyc.moralis.io/5c66f82a76ba601169cd112d/bsc/mainnet/archive");
-            var transactionRpc = await _web3.Eth.Transactions.GetTransactionByHash.SendRequestAsync(transaction);
-            //var web3_ = new Web3("https://mainnet.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02");
-            //var transactionRpc = await web3.Eth.Transactions.GetTransactionByHash.SendRequestAsync(transaction);
+
+            Transaction transactionRpc = null;
+
+            if (isHash)
+            {
+                //https://speedy-nodes-nyc.moralis.io/5c66f82a76ba601169cd112d/bsc/mainnet/archive
+                var _web3 = new Web3("https://speedy-nodes-nyc.moralis.io/5c66f82a76ba601169cd112d/bsc/mainnet/archive");
+                transactionRpc = await _web3.Eth.Transactions.GetTransactionByHash.SendRequestAsync(transaction);
+                //var web3_ = new Web3("https://mainnet.infura.io/v3/ddd5ed15e8d443e295b696c0d07c8b02");
+                //var transactionRpc = await web3.Eth.Transactions.GetTransactionByHash.SendRequestAsync(transaction);
+                
+            }
+            else
+            {
+                transactionRpc = JsonConvert.DeserializeObject<Transaction>(transaction);
+            }
 
             var txPares = Util.DecodeTransaction(transactionRpc);
-            if (txPares!=null)
+            if (txPares != null)
             {
                 Logger.Debug(txPares.ToString());
                 var (tokenChangeNumDic, sortPath) = GetTokenChangeAmount(txPares, config.uniswapV2_fee, tokenDecimlDic);
-                if (tokenChangeNumDic!=null)
+                if (tokenChangeNumDic != null)
                 {
                     OnTxChangeAsync(tokenChangeNumDic, sortPath);
                 }
@@ -524,9 +563,8 @@ namespace arbitrage_CSharp
             {
                 Logger.Debug($"不是正确的swap方法 transactionRpc {transactionRpc}");
             }
-            
-
         }
+
         /// <summary>
         /// 提交签名给服务器
         /// </summary>
@@ -981,6 +1019,11 @@ namespace arbitrage_CSharp
         /// 获取本金间隔时间
         /// </summary>
         public int SpanMillisecondsBalance = 30000;
+        /// <summary>
+        /// 路径是否写入db
+        /// </summary>
+        public bool SavePath = false;
+        public string PathKey = "paths";
 
         /// <summary>
         /// 当前各种币的数量的字典

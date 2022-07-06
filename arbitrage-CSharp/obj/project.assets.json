@@ -6077,6 +6077,7 @@
       "StackExchange.Redis >= 2.5.43",
       "System.Configuration.ConfigurationManager >= 6.0.0",
       "System.IO.Pipes >= 4.3.0",
+      "System.Net.WebSockets.Client >= 4.3.2",
       "dotnetCampus.Ipc >= 1.0.1"
     ]
   },
@@ -6195,6 +6196,10 @@
           "System.IO.Pipes": {
             "target": "Package",
             "version": "[4.3.0, )"
+          },
+          "System.Net.WebSockets.Client": {
+            "target": "Package",
+            "version": "[4.3.2, )"
           },
           "dotnetCampus.Ipc": {
             "target": "Package",

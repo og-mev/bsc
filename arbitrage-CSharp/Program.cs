@@ -8,6 +8,9 @@ using System.IO.Pipes;
 using System.Text;
 using arbitrage_CSharp.Mode;
 using arbitrage_CSharp.Tools;
+using System.Net.WebSockets;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace arbitrage_CSharp
 {
@@ -15,7 +18,7 @@ namespace arbitrage_CSharp
     class Program
     {
         static Strategy strategy;
-
+        static WebSocketLink link;
         
         static void Main(string[] args)
         {
@@ -29,10 +32,20 @@ namespace arbitrage_CSharp
         }
         private static void OnParsedHandler(Options op)
         {
-            strategy = new Strategy(op.ConfigPath, SentMassage);
+            strategy = new Strategy(op.ConfigPath, SentMassageTo);
             strategy.StartAsync().Sync();
             //Thread.Sleep(20 * 1000);
-
+            bool readScokect = true;
+            if (readScokect)
+            {
+                //"ws://121.40.165.18:8800"
+                ReadMassage(false, "ws://158.247.203.163:18080/txs", (result) => {
+                    Logger.Debug(result);
+                    DoExe(result);
+                });
+                
+            }
+            
 
             //strategy.AddTxAsync("0x885b1ef42bba87c199de03390d64dff218937493f424d47076c80ff2ad66542f").Sync();
             while (true)
@@ -51,50 +64,82 @@ namespace arbitrage_CSharp
         {
             Logger.Error((Exception)e.ExceptionObject);
         }
-        private async void ReadMassage(string pipeName = "testpipe")
+        private static async void ReadMassage(bool usePipe = true, string pipeName = "testpipe",Action<string> readAc=null)
         {
-            using (NamedPipeClientStream pipeStream = new NamedPipeClientStream(pipeName))
+            if (usePipe)
             {
-                pipeStream.Connect();
-                //在client读取server端写的数据
-                using (StreamReader rdr = new StreamReader(pipeStream))
+                using (NamedPipeClientStream pipeStream = new NamedPipeClientStream(pipeName))
                 {
-                    string temp;
-                    while ((temp = rdr.ReadLine()) != "stop")
+                    pipeStream.Connect();
+                    //在client读取server端写的数据
+                    using (StreamReader rdr = new StreamReader(pipeStream))
                     {
-                        string tx = JsonConvert.DeserializeObject<string>(temp);
-                        //await strategy.OnTxChangeAsync(tx);
-                        Console.WriteLine("{0}:{1}", DateTime.Now, temp);
+                        string temp;
+                        while ((temp = rdr.ReadLine()) != "stop")
+                        {
+
+                            DoExe(temp);
+                        }
                     }
                 }
             }
-        }
-        private static void SentMassage(string sign,object obj)
-        {
-            Decoder decoder = Encoding.UTF8.GetDecoder();
-            Byte[] bytes = new Byte[10];
-            Char[] chars = new Char[10];
-            using (NamedPipeClientStream pipeStream = new NamedPipeClientStream("messagepipe"))
+            else
             {
-                pipeStream.Connect();
-                pipeStream.ReadMode = PipeTransmissionMode.Message;
-                int numBytes;
-                do
-                {
-                    string message = "";
-
-                    do
-                    {
-                        numBytes = pipeStream.Read(bytes, 0, bytes.Length);
-                        int numChars = decoder.GetChars(bytes, 0, numBytes, chars, 0);
-                        message += new String(chars, 0, numChars);
-                    } while (!pipeStream.IsMessageComplete);
-
-                    decoder.Reset();
-                    Console.WriteLine(message);
-                } while (numBytes != 0);
+                ReadMassageWS(pipeName, readAc);
             }
+           
         }
+        static private void DoExe(string temp)
+        {
+            strategy.AddTxAsync(temp, false);
+            Console.WriteLine("{0}:{1}", DateTime.Now, temp);
+        }
+
+        private static async Task ReadMassageWS(string url,Action<string> readAc)
+        {
+            var ws = new WebSocketLink(url, readAc );
+            ws.ConnectAuthReceive();
+            link = ws;
+        }
+        
+        private static void SentMassageTo(string command, object obj)
+        {
+            SentMassage(command, obj,false);
+        }
+        private static void SentMassage(string command,object obj, bool usePipe = true, string pipeName = "testpipe")
+        {
+            string signs = obj as string;
+            if (usePipe)
+            {
+                using (NamedPipeServerStream pipeStream = new NamedPipeServerStream("testpipe"))
+                {
+                    pipeStream.WaitForConnection();
+
+                    using (StreamWriter writer = new StreamWriter(pipeStream))
+                    {
+                        writer.AutoFlush = true;
+                        string temp;
+
+                        //while ((temp = Console.ReadLine()) != "stop")
+                        {
+                            
+   
+                             writer.WriteLine(signs);
+                            
+
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                link.SendRequest(signs);
+            }
+            
+        }
+
+      
     }
     public class Options
     {
